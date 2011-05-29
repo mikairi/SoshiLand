@@ -49,8 +49,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="assets\chance.jpg">
-      <Name>chance</Name>
+    <Compile Include="assets\chance1.jpg">
+      <Name>chance1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

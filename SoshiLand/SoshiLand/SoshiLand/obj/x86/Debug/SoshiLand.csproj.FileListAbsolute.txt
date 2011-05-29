@@ -5,7 +5,6 @@ C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\obj\x86\D
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\obj\x86\Debug\SoshiLand.exe
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\obj\x86\Debug\SoshiLand.pdb
-C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\chance.xnb
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\forever9.xnb
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_bali.xnb
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_damnoen_mart.xnb
@@ -22,3 +21,4 @@ C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\obj\x86\D
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\obj\x86\Debug\SoshiLand.exe.manifest
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\obj\x86\Debug\SoshiLand.application
 C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\main_screen_wide.xnb
+C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\chance1.xnb

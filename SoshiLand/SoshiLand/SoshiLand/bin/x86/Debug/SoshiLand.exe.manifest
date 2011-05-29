@@ -93,18 +93,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SoshiLand.exe" size="17920">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SoshiLand.exe" size="18432">
       <assemblyIdentity name="SoshiLand" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>ghY4dfxlkUWlSlVnWyVnjstkA64=</dsig:DigestValue>
+        <dsig:DigestValue>6hD4Cx/QZUg48zpUU33RvLTZ4vg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Content\assets\chance.xnb" size="34267">
+  <file name="Content\assets\chance1.xnb" size="34267">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />

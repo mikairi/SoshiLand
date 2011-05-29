@@ -11,15 +11,6 @@
       <Time>2011-04-30T00:27:25.2251325-04:00</Time>
     </Item>
     <Item>
-      <Source>assets\chance.jpg</Source>
-      <Name>assets\chance</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\chance.xnb</Output>
-      <Time>2011-04-30T02:04:48.5153496-04:00</Time>
-    </Item>
-    <Item>
       <Source>assets\forever9.jpg</Source>
       <Name>assets\forever9</Name>
       <Importer>TextureImporter</Importer>
@@ -117,6 +108,15 @@
       <Options>None</Options>
       <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\main_screen_wide.xnb</Output>
       <Time>2011-05-29T16:14:55.7687532-04:00</Time>
+    </Item>
+    <Item>
+      <Source>assets\chance1.jpg</Source>
+      <Name>assets\chance1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\chance1.xnb</Output>
+      <Time>2011-04-30T02:04:48.5153496-04:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

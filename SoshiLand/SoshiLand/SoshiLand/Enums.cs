@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SoshiLand
 {
-    enum Cards
+    enum Props
     {
         None,
         LaScala,
