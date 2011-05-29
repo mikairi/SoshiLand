@@ -1,21 +1,35 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010 Express for Windows Phone
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoshiLand", "SoshiLand\SoshiLand\SoshiLand.csproj", "{A39C7110-803F-414F-9CA7-793FE2E8808D}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "SoshiLandContent", "SoshiLand\SoshiLandContent\SoshiLandContent.contentproj", "{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoshiLandContent", "SoshiLand\SoshiLandContent\SoshiLandContent.contentproj", "{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Debug|x86.ActiveCfg = Debug|x86
 		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Debug|x86.Build.0 = Debug|x86
+		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Release|Any CPU.ActiveCfg = Release|x86
+		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Release|x86.ActiveCfg = Release|x86
 		{A39C7110-803F-414F-9CA7-793FE2E8808D}.Release|x86.Build.0 = Release|x86
+		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Debug|x86.ActiveCfg = Debug|x86
+		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Release|Any CPU.ActiveCfg = Release|x86
+		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
