@@ -109,6 +109,15 @@
       <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_temp_mount.xnb</Output>
       <Time>2011-04-30T02:04:48.5253502-04:00</Time>
     </Item>
+    <Item>
+      <Source>assets\main_screen_wide.png</Source>
+      <Name>assets\main_screen_wide</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\main_screen_wide.xnb</Output>
+      <Time>2011-05-29T16:14:55.7687532-04:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>

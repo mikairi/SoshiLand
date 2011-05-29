@@ -93,14 +93,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SoshiLand.exe" size="16896">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SoshiLand.exe" size="17920">
       <assemblyIdentity name="SoshiLand" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>CTGlkeyiN24s8HOdTpHxn/Yvutw=</dsig:DigestValue>
+        <dsig:DigestValue>ghY4dfxlkUWlSlVnWyVnjstkA64=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -129,6 +129,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>vQAAfhj8Ndz6F8vC8ecRWuCOGxs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\assets\main_screen_wide.xnb" size="8294587">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>5tGXxsWu8Hx0IuBbQNrjr2zCUp0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\assets\prop_bali.xnb" size="34747">

@@ -53,8 +53,8 @@ namespace SoshiLand
             Window.AllowUserResizing = false;
 
             // Preferred window size is 640x640
-            graphics.PreferredBackBufferHeight = 640;
-            graphics.PreferredBackBufferWidth = 640;
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace SoshiLand
             spriteBatch = new SpriteBatch( GraphicsDevice );
 
             // Load the background which is also the board.
-            background = Content.Load<Texture2D>( "assets\\main_board" );
+            background = Content.Load<Texture2D>( "assets\\main_screen_wide" );
             mainFrame = new Rectangle( 0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height );
 
             // Load property cards.
@@ -132,38 +132,38 @@ namespace SoshiLand
 
             MouseState ms = Mouse.GetState();
 
-            // Set drawId based on the mouse position when left-clicked
-            if ( ms.LeftButton == ButtonState.Pressed )
-            {
-                if ( ms.Y <= 75 )
-                {
-                    if ( ms.X >= 74 )
-                    {
-                        if ( ms.X <= 120 )
-                            drawId = 1;
-                        else if ( ms.X <= 164 )
-                            drawId = 2;
-                        else if ( ms.X <= 208 )
-                            drawId = 3;
-                        else if ( ms.X <= 252 )
-                            drawId = 4;
-                        else if ( ms.X <= 298 )
-                            drawId = 5;
-                        else if ( ms.X <= 343 )
-                            drawId = 6;
-                        else if ( ms.X <= 388 )
-                            drawId = 7;
-                        else if ( ms.X <= 433 )
-                            drawId = 8;
-                        else if ( ms.X <= 478 )
-                            drawId = 9;
-                        else if ( ms.X <= 522 )
-                            drawId = 10;
-                        else if ( ms.X <= 566 )
-                            drawId = 11;
-                    }
-                }
-            }
+            // Set drawId based on the mouse position when left-clicked. Commented out to develop new UI.
+            //if ( ms.LeftButton == ButtonState.Pressed )
+            //{
+            //    if ( ms.Y <= 75 )
+            //    {
+            //        if ( ms.X >= 74 )
+            //        {
+            //            if ( ms.X <= 120 )
+            //                drawId = 1;
+            //            else if ( ms.X <= 164 )
+            //                drawId = 2;
+            //            else if ( ms.X <= 208 )
+            //                drawId = 3;
+            //            else if ( ms.X <= 252 )
+            //                drawId = 4;
+            //            else if ( ms.X <= 298 )
+            //                drawId = 5;
+            //            else if ( ms.X <= 343 )
+            //                drawId = 6;
+            //            else if ( ms.X <= 388 )
+            //                drawId = 7;
+            //            else if ( ms.X <= 433 )
+            //                drawId = 8;
+            //            else if ( ms.X <= 478 )
+            //                drawId = 9;
+            //            else if ( ms.X <= 522 )
+            //                drawId = 10;
+            //            else if ( ms.X <= 566 )
+            //                drawId = 11;
+            //        }
+            //    }
+            //}
 
             // drawId is set to 0 when right clicked
             if ( ms.RightButton == ButtonState.Pressed )
