@@ -10,3 +10,6 @@ Content\assets\prop_parthenon.xnb
 Content\assets\prop_stat_liberty.xnb
 Content\assets\prop_taj_mahal.xnb
 Content\assets\prop_temp_mount.xnb
+Input\KeyboardBuffer.cs
+Input\MessageHook.cs
+Input\Stack.cs

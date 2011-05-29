@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\main_board.xnb</Output>
-      <Time>2011-04-30T00:27:25.2251325-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\main_board.xnb</Output>
+      <Time>2011-05-26T09:14:00.82505-04:00</Time>
     </Item>
     <Item>
       <Source>assets\chance.jpg</Source>
@@ -16,8 +16,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\chance.xnb</Output>
-      <Time>2011-04-30T02:04:48.5153496-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\chance.xnb</Output>
+      <Time>2011-05-26T09:14:00.8210498-04:00</Time>
     </Item>
     <Item>
       <Source>assets\forever9.jpg</Source>
@@ -25,8 +25,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\forever9.xnb</Output>
-      <Time>2011-04-30T02:04:48.5173497-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\forever9.xnb</Output>
+      <Time>2011-05-26T09:14:00.8220498-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_bali.jpg</Source>
@@ -34,8 +34,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_bali.xnb</Output>
-      <Time>2011-04-30T02:04:48.5193499-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_bali.xnb</Output>
+      <Time>2011-05-26T09:14:00.8260501-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_damnoen_mart.jpg</Source>
@@ -43,8 +43,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_damnoen_mart.xnb</Output>
-      <Time>2011-04-30T02:04:48.5203499-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_damnoen_mart.xnb</Output>
+      <Time>2011-05-26T09:14:00.8280502-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_eiffel.jpg</Source>
@@ -52,8 +52,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_eiffel.xnb</Output>
-      <Time>2011-04-30T02:04:48.52135-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_eiffel.xnb</Output>
+      <Time>2011-05-26T09:14:00.8300503-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_great_wall.jpg</Source>
@@ -61,8 +61,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_great_wall.xnb</Output>
-      <Time>2011-04-30T02:04:48.52135-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_great_wall.xnb</Output>
+      <Time>2011-05-26T09:14:00.8310503-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_la_scala.jpg</Source>
@@ -70,8 +70,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_la_scala.xnb</Output>
-      <Time>2011-04-30T02:04:48.52235-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_la_scala.xnb</Output>
+      <Time>2011-05-26T09:14:00.8320504-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_parthenon.jpg</Source>
@@ -79,8 +79,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_parthenon.xnb</Output>
-      <Time>2011-04-30T02:04:48.5233501-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_parthenon.xnb</Output>
+      <Time>2011-05-26T09:14:00.8330505-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_stat_liberty.jpg</Source>
@@ -88,8 +88,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_stat_liberty.xnb</Output>
-      <Time>2011-04-30T02:04:48.5243501-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_stat_liberty.xnb</Output>
+      <Time>2011-05-26T09:14:00.8340505-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_taj_mahal.jpg</Source>
@@ -97,8 +97,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_taj_mahal.xnb</Output>
-      <Time>2011-04-30T02:04:48.5243501-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_taj_mahal.xnb</Output>
+      <Time>2011-05-26T09:14:00.8350506-04:00</Time>
     </Item>
     <Item>
       <Source>assets\prop_temp_mount.jpg</Source>
@@ -106,8 +106,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_temp_mount.xnb</Output>
-      <Time>2011-04-30T02:04:48.5253502-04:00</Time>
+      <Output>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\assets\prop_temp_mount.xnb</Output>
+      <Time>2011-05-26T09:14:00.8370507-04:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -115,10 +115,10 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLandContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLandContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLandContent\</RootDirectory>
+      <LoggerRootDirectory>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\</LoggerRootDirectory>
+      <IntermediateDirectory>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLandContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLand\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -147,7 +147,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2011-04-13T09:06:22.092534-04:00</Value>
+        <Value>2010-09-28T23:24:36.9911624-04:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

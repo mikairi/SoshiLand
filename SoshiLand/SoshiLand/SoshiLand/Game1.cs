@@ -9,6 +9,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+// Network Library
+using Lidgren.Network;
+// Library for Keyboard Input
+// This will be primarily used for Chat and Text input
+// Since XNA has a very poor interface for doing text input because the rate of input is dependent on the frame rate.
+using Nuclex.Input;
+
 namespace SoshiLand
 {
     /// <summary>
@@ -22,6 +29,10 @@ namespace SoshiLand
         KeyboardState prevKeyboardState = Keyboard.GetState();
 
         Rectangle mainFrame;
+
+        // Input Manager for text input
+        InputManager input;
+        private string enteredText;
 
         // The background which is also the board.
         Texture2D background;
@@ -55,6 +66,9 @@ namespace SoshiLand
             // Preferred window size is 640x640
             graphics.PreferredBackBufferHeight = 640;
             graphics.PreferredBackBufferWidth = 640;
+
+            input = new InputManager(Services, Window.Handle);
+            Components.Add(input);
         }
 
         /// <summary>
@@ -68,6 +82,14 @@ namespace SoshiLand
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
+            input.GetKeyboard().CharacterEntered += keyboardCharacterEntered;
+        }
+
+        private void keyboardCharacterEntered(char character)
+        {
+            enteredText += character;
+            Console.Write(character);
         }
 
         /// <summary>

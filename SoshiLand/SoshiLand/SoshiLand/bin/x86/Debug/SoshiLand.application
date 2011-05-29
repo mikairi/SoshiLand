@@ -8,14 +8,14 @@
     <framework targetVersion="4.0" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="SoshiLand.exe.manifest" size="12756">
+    <dependentAssembly dependencyType="install" codebase="SoshiLand.exe.manifest" size="16005">
       <assemblyIdentity name="SoshiLand.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="en-US" processorArchitecture="x86" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>ujain7/ZHAgFACbm9b49MuVNfGQ=</dsig:DigestValue>
+        <dsig:DigestValue>Iafon5N3hNi5+zEPgsRrLKQf61M=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
