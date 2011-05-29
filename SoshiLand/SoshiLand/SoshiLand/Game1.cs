@@ -31,6 +31,7 @@ namespace SoshiLand
         Rectangle mainFrame;
 
         // Input Manager for text input
+        // Remember that this is here specifically for text input!
         InputManager input;
         private string enteredText;
 

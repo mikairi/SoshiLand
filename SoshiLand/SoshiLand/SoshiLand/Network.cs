@@ -41,13 +41,13 @@ namespace SoshiLand
         {
             if (isServer)
             {
-                server = new NetServer(config);
-                server.Start();
+                server = new NetServer(config);                                         // Load Host Configuration
+                server.Start();                                                         // Starts the host server
             }
             else
             {
-                client = new NetClient(config);
-                client.Start();
+                client = new NetClient(config);                                         // Load client configuration
+                client.Start();                                                         // Starts the client server
             }
         }
 
