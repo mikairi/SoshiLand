@@ -1,2 +1,0 @@
-C:\Users\Kai Minato\SSFProject\SoshiLand\SoshiLand\SoshiLand\SoshiLandContent\obj\x86\Debug\ResolveAssemblyReference.cache
-D:\XNA Projects\SoshiLand\SoshiLand\SoshiLand\SoshiLandContent\obj\x86\Debug\ResolveAssemblyReference.cache

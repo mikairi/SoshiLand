@@ -49,8 +49,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="assets\chance.jpg">
-      <Name>chance</Name>
+    <Compile Include="assets\chance1.jpg">
+      <Name>chance1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -101,6 +101,13 @@
     </Compile>
     <Compile Include="assets\prop_temp_mount.jpg">
       <Name>prop_temp_mount</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="assets\main_screen_wide.png">
+      <Name>main_screen_wide</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
