@@ -48,11 +48,14 @@ namespace SoshiLand
         Texture2D propStatLiberty;
         Texture2D propEiffel;
         Texture2D propParthenon;
-        Texture2D chance;
+        Texture2D chance1;
         Texture2D forever9;
 
+        // The position to display a magnified property card.
+        Vector2 zoomPos;
+
         // An integer that determines which property card to show. 0 means no card is selected.
-        int drawId = 0;
+        Props drawId = Props.None;
 
         public Game1()
         {
@@ -65,8 +68,8 @@ namespace SoshiLand
             Window.AllowUserResizing = false;
 
             // Preferred window size is 640x640
-            graphics.PreferredBackBufferHeight = 640;
-            graphics.PreferredBackBufferWidth = 640;
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
 
             input = new InputManager(Services, Window.Handle);
             Components.Add(input);
@@ -103,8 +106,9 @@ namespace SoshiLand
             spriteBatch = new SpriteBatch( GraphicsDevice );
 
             // Load the background which is also the board.
-            background = Content.Load<Texture2D>( "assets\\main_board" );
+            background = Content.Load<Texture2D>( "assets\\main_screen_wide" );
             mainFrame = new Rectangle( 0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height );
+            zoomPos = new Vector2( (float) mainFrame.Width * (float) 0.84375, (float) mainFrame.Height * (float) 0.0875 );
 
             // Load property cards.
             propLaScala = Content.Load<Texture2D>( "assets\\prop_la_scala" );
@@ -116,7 +120,7 @@ namespace SoshiLand
             propStatLiberty = Content.Load<Texture2D>( "assets\\prop_stat_liberty" );
             propEiffel = Content.Load<Texture2D>( "assets\\prop_eiffel" );
             propParthenon = Content.Load<Texture2D>( "assets\\prop_parthenon" );
-            chance = Content.Load<Texture2D>( "assets\\chance" );
+            chance1 = Content.Load<Texture2D>( "assets\\chance1" );
             forever9 = Content.Load<Texture2D>( "assets\\forever9" );
         }
 
@@ -155,42 +159,38 @@ namespace SoshiLand
 
             MouseState ms = Mouse.GetState();
 
-            // Set drawId based on the mouse position when left-clicked
-            if ( ms.LeftButton == ButtonState.Pressed )
+            // Set drawId based on the mouse position when left-clicked. Commented out to develop new UI.
+            if ( ms.Y <= 84 )
             {
-                if ( ms.Y <= 75 )
+                if ( ms.X >= 324 )
                 {
-                    if ( ms.X >= 74 )
-                    {
-                        if ( ms.X <= 120 )
-                            drawId = 1;
-                        else if ( ms.X <= 164 )
-                            drawId = 2;
-                        else if ( ms.X <= 208 )
-                            drawId = 3;
-                        else if ( ms.X <= 252 )
-                            drawId = 4;
-                        else if ( ms.X <= 298 )
-                            drawId = 5;
-                        else if ( ms.X <= 343 )
-                            drawId = 6;
-                        else if ( ms.X <= 388 )
-                            drawId = 7;
-                        else if ( ms.X <= 433 )
-                            drawId = 8;
-                        else if ( ms.X <= 478 )
-                            drawId = 9;
-                        else if ( ms.X <= 522 )
-                            drawId = 10;
-                        else if ( ms.X <= 566 )
-                            drawId = 11;
-                    }
+                    if ( ms.X <= 375 )
+                        drawId = Props.LaScala;
+                    else if ( ms.X <= 425 )
+                        drawId = Props.Bali;
+                    else if ( ms.X <= 474 )
+                        drawId = Props.Chance1;
+                    else if ( ms.X <= 525 )
+                        drawId = Props.TempleMount;
+                    else if ( ms.X <= 575 )
+                        drawId = Props.DamnoenMarket;
+                    else if ( ms.X <= 626 )
+                        drawId = Props.GreatWall;
+                    else if ( ms.X <= 677 )
+                        drawId = Props.TajMahal;
+                    else if ( ms.X <= 727 )
+                        drawId = Props.StatueLiberty;
+                    else if ( ms.X <= 778 )
+                        drawId = Props.Forever9;
+                    else if ( ms.X <= 827 )
+                        drawId = Props.EiffelTower;
+                    else if ( ms.X <= 876 )
+                        drawId = Props.Parthenon;
+                    else drawId = Props.None;
                 }
+                else drawId = Props.None;
             }
-
-            // drawId is set to 0 when right clicked
-            if ( ms.RightButton == ButtonState.Pressed )
-                drawId = 0;
+            else drawId = Props.None;
 
             base.Update( gameTime );
         }
@@ -210,38 +210,38 @@ namespace SoshiLand
             // Draw a property card based on the current drawId
             switch ( drawId )
             {
-                case 1:
-                    spriteBatch.Draw( propLaScala, makeTexturePos( propLaScala ), Color.White );
+                case Props.LaScala:
+                    spriteBatch.Draw( propLaScala, zoomPos, Color.White );
                     break;
-                case 2:
-                    spriteBatch.Draw( propBali, makeTexturePos( propBali ), Color.White );
+                case Props.Bali:
+                    spriteBatch.Draw( propBali, zoomPos, Color.White );
                     break;
-                case 3:
-                    spriteBatch.Draw( chance, makeTexturePos( chance ), Color.White );
+                case Props.Chance1:
+                    spriteBatch.Draw( chance1, zoomPos, Color.White );
                     break;
-                case 4:
-                    spriteBatch.Draw( propTempMount, makeTexturePos( propTempMount ), Color.White );
+                case Props.TempleMount:
+                    spriteBatch.Draw( propTempMount, zoomPos, Color.White );
                     break;
-                case 5:
-                    spriteBatch.Draw( propDamnoenMart, makeTexturePos( propDamnoenMart ), Color.White );
+                case Props.DamnoenMarket:
+                    spriteBatch.Draw( propDamnoenMart, zoomPos, Color.White );
                     break;
-                case 6:
-                    spriteBatch.Draw( propGreatWall, makeTexturePos( propGreatWall ), Color.White );
+                case Props.GreatWall:
+                    spriteBatch.Draw( propGreatWall, zoomPos, Color.White );
                     break;
-                case 7:
-                    spriteBatch.Draw( propTajMahal, makeTexturePos( propTajMahal ), Color.White );
+                case Props.TajMahal:
+                    spriteBatch.Draw( propTajMahal, zoomPos, Color.White );
                     break;
-                case 8:
-                    spriteBatch.Draw( propStatLiberty, makeTexturePos( propStatLiberty ), Color.White );
+                case Props.StatueLiberty:
+                    spriteBatch.Draw( propStatLiberty, zoomPos, Color.White );
                     break;
-                case 9:
-                    spriteBatch.Draw( forever9, makeTexturePos( forever9 ), Color.White );
+                case Props.Forever9:
+                    spriteBatch.Draw( forever9, zoomPos, Color.White );
                     break;
-                case 10:
-                    spriteBatch.Draw( propEiffel, makeTexturePos( propEiffel ), Color.White );
+                case Props.EiffelTower:
+                    spriteBatch.Draw( propEiffel, zoomPos, Color.White );
                     break;
-                case 11:
-                    spriteBatch.Draw( propParthenon, makeTexturePos( propParthenon ), Color.White );
+                case Props.Parthenon:
+                    spriteBatch.Draw( propParthenon, zoomPos, Color.White );
                     break;
                 default:
                     break;
