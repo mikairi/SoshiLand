@@ -229,7 +229,7 @@ namespace SoshiLand
                 if (kbInput.IsKeyDown(Keys.H))
                 {
                     networkChosen = true;
-                    network = new Network(14242);
+                    network = new Network(14567);
                     network.startNetwork();
                     Console.WriteLine("HOST SERVER STARTED");
 
@@ -244,7 +244,7 @@ namespace SoshiLand
                     Console.WriteLine("CLIENT SERVER STARTED");
 
                     // TEMPORARY - FOR TESTING
-                    networkIP = new System.Net.IPEndPoint(0x8201a8c0, 14242);
+                    networkIP = new System.Net.IPEndPoint(0x8201a8c0, 14567);
 
                     networkMessage = "Press Enter to enter a Host to connect to.";
                 }
@@ -280,18 +280,6 @@ namespace SoshiLand
                     Console.WriteLine("ENTER IP");
                     networkMessage = "Enter an IP and press Enter.";
                 }
-            }
-
-            
-
-            if (kbInput.IsKeyDown(Keys.P) && prevKeyboardState.IsKeyUp(Keys.P))
-            {
-                network.clientDiscoverHost(networkIP);
-            }
-
-            if (kbInput.IsKeyDown(Keys.O) && prevKeyboardState.IsKeyUp(Keys.O))
-            {
-                network.clientDiscoverLAN();
             }
 
             // Network Update Code
