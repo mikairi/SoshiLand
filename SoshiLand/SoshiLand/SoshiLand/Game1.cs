@@ -216,6 +216,7 @@ namespace SoshiLand
                     network = new Network(14242);
                     network.startNetwork();
                     Console.WriteLine("HOST SERVER STARTED");
+
                 }
                 else if (kbInput.IsKeyDown(Keys.C))
                 {
@@ -225,7 +226,7 @@ namespace SoshiLand
                     Console.WriteLine("CLIENT SERVER STARTED");
 
                     // TEMPORARY - FOR TESTING
-                    networkIP = new System.Net.IPEndPoint(0xc0a80182, 14242);
+                    networkIP = new System.Net.IPEndPoint(0x8201a8c0, 14242);
                 }
             }
 
@@ -251,7 +252,14 @@ namespace SoshiLand
             }
 
             if (kbInput.IsKeyDown(Keys.P))
+            {
                 network.clientDiscoverHost(networkIP);
+            }
+
+            if (kbInput.IsKeyDown(Keys.O))
+            {
+                network.clientDiscoverLAN();
+            }
 
             // Network Update Code
             if (network != null) 

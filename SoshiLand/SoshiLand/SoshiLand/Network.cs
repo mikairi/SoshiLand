@@ -57,6 +57,11 @@ namespace SoshiLand
             client.DiscoverKnownPeer(ip);
         }
 
+        public void clientDiscoverLAN()
+        {
+            client.DiscoverLocalPeers(14242);
+        }
+
         public void Update(GameTime gameTime)
         {
             
@@ -78,6 +83,9 @@ namespace SoshiLand
 
                             // Send the response to the sender of the request
                             server.SendDiscoveryResponse(response, incomingMessage.SenderEndpoint);
+                            
+                            Console.WriteLine("CLIENT DISCOVERED: " + incomingMessage.SenderEndpoint);
+
                             break;
                         case NetIncomingMessageType.VerboseDebugMessage:
                         case NetIncomingMessageType.DebugMessage:
