@@ -30,13 +30,20 @@ namespace SoshiLand
 
         Rectangle mainFrame;
 
+        // Temporary Text Variables
+        SpriteFont spriteFont;
+        Rectangle boxIP;
+
         // Network Variables
         bool printToConsole = false;
         Network network;
         bool networkChosen = false;
         bool enterIP = false;
         string IP;
+        bool ipEntered = false;
         System.Net.IPEndPoint networkIP;
+
+        string networkMessage = "C (client) or H (Host) for server selection";
 
         // Input Manager for text input
         // Remember that this is here specifically for text input!
@@ -104,7 +111,15 @@ namespace SoshiLand
             if (printToConsole)
                 Console.Write(character);
             if (enterIP)
-                IP += character;
+            {
+                // If the character is a backspace
+                string testString = char.ConvertFromUtf32(8);
+                char testChar = testString[0];
+                if (character == testChar)
+                    IP = IP.Substring(0, IP.Length - 1);
+                else
+                    IP += character;
+            }
         }
 
         /// <summary>
@@ -133,6 +148,9 @@ namespace SoshiLand
             propParthenon = Content.Load<Texture2D>( "assets\\prop_parthenon" );
             chance1 = Content.Load<Texture2D>( "assets\\chance1" );
             forever9 = Content.Load<Texture2D>( "assets\\forever9" );
+
+            // Load Sprite Font
+            spriteFont = Content.Load<SpriteFont>( "SpriteFont1" );
         }
 
         /// <summary>
@@ -165,8 +183,6 @@ namespace SoshiLand
             //    mainFrame.Width = mainFrame.Height;
             //    mainFrame.X = (GraphicsDevice.Viewport.Width - mainFrame.Width) / 2;
             //}
-
-            prevKeyboardState = kbInput;
 
             MouseState ms = Mouse.GetState();
 
@@ -217,6 +233,8 @@ namespace SoshiLand
                     network.startNetwork();
                     Console.WriteLine("HOST SERVER STARTED");
 
+                    networkMessage = "Your IP is: " + network.getThisIP();
+                    networkMessage = "Wait for Clients to connect.";
                 }
                 else if (kbInput.IsKeyDown(Keys.C))
                 {
@@ -227,36 +245,51 @@ namespace SoshiLand
 
                     // TEMPORARY - FOR TESTING
                     networkIP = new System.Net.IPEndPoint(0x8201a8c0, 14242);
+
+                    networkMessage = "Press Enter to enter a Host to connect to.";
                 }
             }
 
             // Enter Host IP
-            if (!enterIP)
-            {
-                if (kbInput.IsKeyDown(Keys.Enter))
-                {
-                    enterIP = true;
-                }
-            }
 
-            if (enterIP)
+            if (enterIP && !ipEntered)
             {
                 printToConsole = true;
-                if (kbInput.IsKeyDown(Keys.Enter))
+                if (kbInput.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
                     enterIP = false;
-                    printToConsole = false;
-                    //System.Net.IPEndPoint = new System.Net.IPEndPoint(192.168.2.1, 14242);
-                    //network.clientDiscoverHost(
+                    //printToConsole = false;
+
+                    Console.WriteLine();
+                    Console.WriteLine("ENTERED IP: " + IP);
+                    networkMessage = "Connecting to " + IP + " ...";
+
+                    network.clientDiscoverHost(network.convertIP(IP));
+
+                    ipEntered = true;
+                }
+
+            }
+
+
+            if (!enterIP && !ipEntered)
+            {
+                if (kbInput.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                {
+                    enterIP = true;
+                    Console.WriteLine("ENTER IP");
+                    networkMessage = "Enter an IP and press Enter.";
                 }
             }
 
-            if (kbInput.IsKeyDown(Keys.P))
+            
+
+            if (kbInput.IsKeyDown(Keys.P) && prevKeyboardState.IsKeyUp(Keys.P))
             {
                 network.clientDiscoverHost(networkIP);
             }
 
-            if (kbInput.IsKeyDown(Keys.O))
+            if (kbInput.IsKeyDown(Keys.O) && prevKeyboardState.IsKeyUp(Keys.O))
             {
                 network.clientDiscoverLAN();
             }
@@ -264,6 +297,8 @@ namespace SoshiLand
             // Network Update Code
             if (network != null) 
                 network.Update(gameTime);
+
+            prevKeyboardState = kbInput;
 
             base.Update( gameTime );
         }
@@ -279,6 +314,12 @@ namespace SoshiLand
             spriteBatch.Begin();
 
             spriteBatch.Draw( background, mainFrame, Color.White );
+            spriteBatch.DrawString(spriteFont, networkMessage, new Vector2(10, 10), Color.Black);
+            if (network != null)
+                spriteBatch.DrawString(spriteFont, network.NetworkMessage, new Vector2(10, 100), Color.Green);
+            spriteBatch.DrawString(spriteFont, "Host IP:", new Vector2(10, 50), Color.Red);
+            if (IP != null)
+                spriteBatch.DrawString(spriteFont, IP, new Vector2(10, 70), Color.Red);
 
             // Draw a property card based on the current drawId
             switch ( drawId )
