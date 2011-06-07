@@ -33,7 +33,7 @@ namespace SoshiLand
 
             config = new NetPeerConfiguration("serverConfig");
             config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);          // Enables Server to detect client discovery request messages
-            config.Port = networkPort;                                                         // Sets the network port that the server will listen to
+            config.Port = networkPort;                                                  // Sets the network port that the server will listen to
             isServer = true;                                                            // Sets the server flag
         }
 

@@ -30,6 +30,14 @@ namespace SoshiLand
 
         Rectangle mainFrame;
 
+        // Network Variables
+        bool printToConsole = false;
+        Network network;
+        bool networkChosen = false;
+        bool enterIP = false;
+        string IP;
+        System.Net.IPEndPoint networkIP;
+
         // Input Manager for text input
         // Remember that this is here specifically for text input!
         InputManager input;
@@ -93,7 +101,10 @@ namespace SoshiLand
         private void keyboardCharacterEntered(char character)
         {
             enteredText += character;
-            Console.Write(character);
+            if (printToConsole)
+                Console.Write(character);
+            if (enterIP)
+                IP += character;
         }
 
         /// <summary>
@@ -191,6 +202,60 @@ namespace SoshiLand
                 else drawId = Props.None;
             }
             else drawId = Props.None;
+
+            //////////////////
+            // Network Code //
+            //////////////////
+
+            // Choose between Host or Client
+            if (!networkChosen)
+            {
+                if (kbInput.IsKeyDown(Keys.H))
+                {
+                    networkChosen = true;
+                    network = new Network(14242);
+                    network.startNetwork();
+                    Console.WriteLine("HOST SERVER STARTED");
+                }
+                else if (kbInput.IsKeyDown(Keys.C))
+                {
+                    networkChosen = true;
+                    network = new Network();
+                    network.startNetwork();
+                    Console.WriteLine("CLIENT SERVER STARTED");
+
+                    // TEMPORARY - FOR TESTING
+                    networkIP = new System.Net.IPEndPoint(0xc0a80182, 14242);
+                }
+            }
+
+            // Enter Host IP
+            if (!enterIP)
+            {
+                if (kbInput.IsKeyDown(Keys.Enter))
+                {
+                    enterIP = true;
+                }
+            }
+
+            if (enterIP)
+            {
+                printToConsole = true;
+                if (kbInput.IsKeyDown(Keys.Enter))
+                {
+                    enterIP = false;
+                    printToConsole = false;
+                    //System.Net.IPEndPoint = new System.Net.IPEndPoint(192.168.2.1, 14242);
+                    //network.clientDiscoverHost(
+                }
+            }
+
+            if (kbInput.IsKeyDown(Keys.P))
+                network.clientDiscoverHost(networkIP);
+
+            // Network Update Code
+            if (network != null) 
+                network.Update(gameTime);
 
             base.Update( gameTime );
         }
