@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using System.Text.RegularExpressions;
+
 // Network Library
 using Lidgren.Network;
 // Library for Keyboard Input
@@ -39,7 +41,7 @@ namespace SoshiLand
         Network network;
         bool networkChosen = false;
         bool enterIP = false;
-        string IP;
+        string IP = "";
         bool ipEntered = false;
         System.Net.IPEndPoint networkIP;
 
@@ -112,13 +114,20 @@ namespace SoshiLand
                 Console.Write(character);
             if (enterIP)
             {
+                Regex regex = new Regex("[\\d|\\.]");
+
                 // If the character is a backspace
                 string testString = char.ConvertFromUtf32(8);
                 char testChar = testString[0];
-                if (character == testChar)
+                // Backspace
+                if (character == testChar && IP.Length > 0)
                     IP = IP.Substring(0, IP.Length - 1);
-                else
+                    // Digits and period
+                else if (regex.IsMatch(character.ToString()))
                     IP += character;
+                    // Everything else, reject
+                else
+                    Console.WriteLine("Not a valid input for IP.");
             }
         }
 
@@ -229,7 +238,7 @@ namespace SoshiLand
                 if (kbInput.IsKeyDown(Keys.H))
                 {
                     networkChosen = true;
-                    network = new Network(14567);
+                    network = new Network(14242);
                     network.startNetwork();
                     Console.WriteLine("HOST SERVER STARTED");
 
@@ -244,7 +253,7 @@ namespace SoshiLand
                     Console.WriteLine("CLIENT SERVER STARTED");
 
                     // TEMPORARY - FOR TESTING
-                    networkIP = new System.Net.IPEndPoint(0x8201a8c0, 14567);
+                    networkIP = new System.Net.IPEndPoint(0x8201a8c0, 14242);
 
                     networkMessage = "Press Enter to enter a Host to connect to.";
                 }
