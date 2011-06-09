@@ -34,18 +34,12 @@ namespace SoshiLand
 
         // Temporary Text Variables
         SpriteFont spriteFont;
-        Rectangle boxIP;
 
         // Network Variables
-        bool printToConsole = false;
         Network network;
         bool networkChosen = false;
         bool enterIP = false;
         string IP = "";
-        bool ipEntered = false;
-        System.Net.IPEndPoint networkIP;
-
-        string networkMessage = "C (client) or H (Host) for server selection";
 
         // Input Manager for text input
         // Remember that this is here specifically for text input!
@@ -110,8 +104,6 @@ namespace SoshiLand
         private void keyboardCharacterEntered(char character)
         {
             enteredText += character;
-            if (printToConsole)
-                Console.Write(character);
             if (enterIP)
             {
                 Regex regex = new Regex("[\\d|\\.]");
@@ -235,6 +227,8 @@ namespace SoshiLand
             // Choose between Host or Client
             if (!networkChosen)
             {
+                // Choose Host
+                // This can be replaced by an actual interface instead of just press H or C.
                 if (kbInput.IsKeyDown(Keys.H))
                 {
                     networkChosen = true;
@@ -242,52 +236,14 @@ namespace SoshiLand
                     network.startNetwork();
                     Console.WriteLine("HOST SERVER STARTED");
 
-                    networkMessage = "Your IP is: " + network.getThisIP();
-                    networkMessage = "Wait for Clients to connect.";
                 }
+                    // Choose Client
                 else if (kbInput.IsKeyDown(Keys.C))
                 {
                     networkChosen = true;
                     network = new Network();
                     network.startNetwork();
                     Console.WriteLine("CLIENT SERVER STARTED");
-
-                    // TEMPORARY - FOR TESTING
-                    networkIP = new System.Net.IPEndPoint(0x8201a8c0, 14242);
-
-                    networkMessage = "Press Enter to enter a Host to connect to.";
-                }
-            }
-
-            // Enter Host IP
-
-            if (enterIP && !ipEntered)
-            {
-                printToConsole = true;
-                if (kbInput.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
-                {
-                    enterIP = false;
-                    //printToConsole = false;
-
-                    Console.WriteLine();
-                    Console.WriteLine("ENTERED IP: " + IP);
-                    networkMessage = "Connecting to " + IP + " ...";
-
-                    network.clientDiscoverHost(network.convertIP(IP));
-
-                    ipEntered = true;
-                }
-
-            }
-
-
-            if (!enterIP && !ipEntered)
-            {
-                if (kbInput.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
-                {
-                    enterIP = true;
-                    Console.WriteLine("ENTER IP");
-                    networkMessage = "Enter an IP and press Enter.";
                 }
             }
 
@@ -311,7 +267,9 @@ namespace SoshiLand
             spriteBatch.Begin();
 
             spriteBatch.Draw( background, mainFrame, Color.White );
-            spriteBatch.DrawString(spriteFont, networkMessage, new Vector2(10, 10), Color.Black);
+
+            // Prints network message to screen. This should be somewhere in the corner, bottom of the window, or some form of console.
+            // This will contain useful information for the user, such as connection status.
             if (network != null)
                 spriteBatch.DrawString(spriteFont, network.NetworkMessage, new Vector2(10, 100), Color.Green);
             spriteBatch.DrawString(spriteFont, "Host IP:", new Vector2(10, 50), Color.Red);

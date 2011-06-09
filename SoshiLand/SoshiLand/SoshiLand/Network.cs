@@ -17,23 +17,28 @@ namespace SoshiLand
     class Network
     {
         // Configuration settings
-        private NetPeerConfiguration config;
-        private NetClient client = null;
-        private NetServer server = null;
-        private bool isServer = false;
-        private int networkPort;
+        private NetPeerConfiguration config;                // Network Configuration
+        private NetClient client = null;                    // Client Object
+        private NetServer server = null;                    // Host object
+        private bool isServer = false;                      // boolean to distinguish between Host or Client
+        private int networkPort = 14242;                    // Port to listen to (host) or to connect to (client). Default is 14242
 
-        private bool connectionEstablished = false;
+        private bool connectionEstablished = false;         // boolean for whether a connection is established
 
-        private IPEndPoint connectToIP;
+
+        private IPEndPoint connectToIP;                     // IP that client is attempting to connect to
+
+        // Polling Variables
         private int numberOfPolls = 100;
         private Timer pollTimer = new Timer(2000);
+
 
         string periodsLoading = ".";
 
         private string networkSystemMessage = "TEST";       // For network messages, mostly informative for the user
 
-
+        // The message that the network wants to communicate to the system / user.
+        // This will contain useful messages about the status of the connection
         public string NetworkMessage
         {
             get { return networkSystemMessage; }
@@ -56,6 +61,7 @@ namespace SoshiLand
             isServer = true;                                                            // Sets the server flag
         }
 
+        // This simply starts the server (Host or Client)
         public void startNetwork()
         {
             if (isServer)
@@ -86,6 +92,7 @@ namespace SoshiLand
             pollDiscoverHost(ip);
         }
 
+        // Same as clientDiscoverHost, but on LAN (so no need to specify an IP)
         public void clientDiscoverLAN()
         {
             client.DiscoverLocalPeers(14242);
@@ -102,7 +109,8 @@ namespace SoshiLand
             return periodsLoading;
         }
 
-        private void PollEventInterval(object source, ElapsedEventArgs e)
+        // The polling interval for connecting to a host
+        private void PollHostInterval(object source, ElapsedEventArgs e)
         {
             // Debug message
             Console.WriteLine("POLLING IP: " + connectToIP.Address.ToString(), e.SignalTime);
@@ -150,7 +158,7 @@ namespace SoshiLand
                 numberOfPolls = 10;                // Arbitrary value for number of Polls.
 
                 // Start the Polling Timer
-                pollTimer.Elapsed += new ElapsedEventHandler(PollEventInterval);
+                pollTimer.Elapsed += new ElapsedEventHandler(PollHostInterval);
                 pollTimer.Enabled = true;
             }
         }
@@ -205,6 +213,7 @@ namespace SoshiLand
             byte part2Byte = 0;
             byte part3Byte = 0;
             byte part4Byte = 0;
+            // Try to convert the IP into bytes. The try/catch statement ensures that the values are valid (ie. between 0-255)
             try
             {
                 part1Byte = System.Convert.ToByte(part1);
@@ -228,7 +237,7 @@ namespace SoshiLand
 
             // Create the IPEndPoint
             // Temporarily hardcoded with port
-            IPEndPoint tempIPEndPoint = new IPEndPoint(tempIPAddress, 14242);
+            IPEndPoint tempIPEndPoint = new IPEndPoint(tempIPAddress, networkPort);
 
             return tempIPEndPoint;
         }
