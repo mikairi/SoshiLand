@@ -32,7 +32,7 @@ namespace SoshiLand
 
         Rectangle mainFrame;
 
-        // Temporary Text Variables
+        // Text Variables
         SpriteFont spriteFont;
 
         // Network Variables
