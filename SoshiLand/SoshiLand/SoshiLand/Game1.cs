@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using System.Text.RegularExpressions;
+
 // Network Library
 using Lidgren.Network;
 // Library for Keyboard Input
@@ -29,6 +31,15 @@ namespace SoshiLand
         KeyboardState prevKeyboardState = Keyboard.GetState();
 
         Rectangle mainFrame;
+
+        // Text Variables
+        SpriteFont spriteFont;
+
+        // Network Variables
+        Network network;
+        bool networkChosen = false;
+        bool enterIP = false;
+        string IP = "";
 
         // Input Manager for text input
         // Remember that this is here specifically for text input!
@@ -93,7 +104,23 @@ namespace SoshiLand
         private void keyboardCharacterEntered(char character)
         {
             enteredText += character;
-            Console.Write(character);
+            if (enterIP)
+            {
+                Regex regex = new Regex("[\\d|\\.]");
+
+                // If the character is a backspace
+                string testString = char.ConvertFromUtf32(8);
+                char testChar = testString[0];
+                // Backspace
+                if (character == testChar && IP.Length > 0)
+                    IP = IP.Substring(0, IP.Length - 1);
+                    // Digits and period
+                else if (regex.IsMatch(character.ToString()))
+                    IP += character;
+                    // Everything else, reject
+                else
+                    Console.WriteLine("Not a valid input for IP.");
+            }
         }
 
         /// <summary>
@@ -122,6 +149,9 @@ namespace SoshiLand
             propParthenon = Content.Load<Texture2D>( "assets\\prop_parthenon" );
             chance1 = Content.Load<Texture2D>( "assets\\chance1" );
             forever9 = Content.Load<Texture2D>( "assets\\forever9" );
+
+            // Load Sprite Font
+            spriteFont = Content.Load<SpriteFont>( "SpriteFont1" );
         }
 
         /// <summary>
@@ -154,8 +184,6 @@ namespace SoshiLand
             //    mainFrame.Width = mainFrame.Height;
             //    mainFrame.X = (GraphicsDevice.Viewport.Width - mainFrame.Width) / 2;
             //}
-
-            prevKeyboardState = kbInput;
 
             MouseState ms = Mouse.GetState();
 
@@ -192,6 +220,39 @@ namespace SoshiLand
             }
             else drawId = Props.None;
 
+            //////////////////
+            // Network Code //
+            //////////////////
+
+            // Choose between Host or Client
+            if (!networkChosen)
+            {
+                // Choose Host
+                // This can be replaced by an actual interface instead of just press H or C.
+                if (kbInput.IsKeyDown(Keys.H))
+                {
+                    networkChosen = true;
+                    network = new Network(14242);
+                    network.startNetwork();
+                    Console.WriteLine("HOST SERVER STARTED");
+
+                }
+                    // Choose Client
+                else if (kbInput.IsKeyDown(Keys.C))
+                {
+                    networkChosen = true;
+                    network = new Network();
+                    network.startNetwork();
+                    Console.WriteLine("CLIENT SERVER STARTED");
+                }
+            }
+
+            // Network Update Code
+            if (network != null) 
+                network.Update(gameTime);
+
+            prevKeyboardState = kbInput;
+
             base.Update( gameTime );
         }
 
@@ -206,6 +267,11 @@ namespace SoshiLand
             spriteBatch.Begin();
 
             spriteBatch.Draw( background, mainFrame, Color.White );
+
+            // Prints network message to screen. This should be somewhere in the corner, bottom of the window, or some form of console.
+            // This will contain useful information for the user, such as connection status.
+            if (network != null)
+                spriteBatch.DrawString(spriteFont, network.NetworkMessage, new Vector2(10, 100), Color.Green);
 
             // Draw a property card based on the current drawId
             switch ( drawId )
