@@ -272,9 +272,6 @@ namespace SoshiLand
             // This will contain useful information for the user, such as connection status.
             if (network != null)
                 spriteBatch.DrawString(spriteFont, network.NetworkMessage, new Vector2(10, 100), Color.Green);
-            spriteBatch.DrawString(spriteFont, "Host IP:", new Vector2(10, 50), Color.Red);
-            if (IP != null)
-                spriteBatch.DrawString(spriteFont, IP, new Vector2(10, 70), Color.Red);
 
             // Draw a property card based on the current drawId
             switch ( drawId )
