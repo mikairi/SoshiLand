@@ -213,19 +213,18 @@ namespace SoshiLand
             byte part2Byte = 0;
             byte part3Byte = 0;
             byte part4Byte = 0;
+
             // Try to convert the IP into bytes. The try/catch statement ensures that the values are valid (ie. between 0-255)
-            try
-            {
+            try{
                 part1Byte = System.Convert.ToByte(part1);
                 part2Byte = System.Convert.ToByte(part2);
                 part3Byte = System.Convert.ToByte(part3);
                 part4Byte = System.Convert.ToByte(part4);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Console.WriteLine("WARNING! Could not convert IP into bytes. Was there a segment greater than 255?");
                 Console.WriteLine(e.Message.ToString());
             }
+
             // Build the IP Byte array
             byte[] ipByteArray = new byte[4];
             ipByteArray[0] = part1Byte;

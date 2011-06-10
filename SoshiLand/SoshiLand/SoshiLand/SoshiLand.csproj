@@ -142,14 +142,21 @@
   <ItemGroup>
     <Compile Include="Network.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="PropertyTile.cs" />
+    <Compile Include="SoshilandGame.cs" />
+    <Compile Include="Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="ssl.ico" />
+    <Content Include="PropertyCards.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SoshiLandContent\SoshiLandContent.contentproj">

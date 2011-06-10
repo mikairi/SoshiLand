@@ -99,6 +99,8 @@ namespace SoshiLand
             base.Initialize();
 
             input.GetKeyboard().CharacterEntered += keyboardCharacterEntered;
+
+            SoshilandGame testGame = new SoshilandGame();
         }
 
         private void keyboardCharacterEntered(char character)
