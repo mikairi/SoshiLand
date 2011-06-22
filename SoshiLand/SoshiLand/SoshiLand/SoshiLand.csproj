@@ -156,6 +156,7 @@
     <Content Include="ssl.ico" />
     <Content Include="PropertyCards.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
