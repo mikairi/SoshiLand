@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoshiLand", "SoshiLand\SoshiLand\SoshiLand.csproj", "{A39C7110-803F-414F-9CA7-793FE2E8808D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoshiLandContent", "SoshiLand\SoshiLandContent\SoshiLandContent.contentproj", "{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExEnCore Silverlight", "SoshiLand\SoshiLand\References\ExEnCore\ExEnCore Silverlight.csproj", "{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExEnSilver", "SoshiLand\SoshiLand\References\ExEnSilver\ExEnSilver.csproj", "{5A28896D-B208-4130-B41E-C77B7C14482A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoshiLand Silverlight", "SoshiLand\SoshiLand\SoshiLand Silverlight\SoshiLand Silverlight.csproj", "{8E09D58D-C44F-4350-9130-305ACD033320}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +37,36 @@ Global
 		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Release|Any CPU.ActiveCfg = Release|x86
 		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{A91BA9A7-6C10-4768-B8E1-6E8B015C002F}.Release|x86.ActiveCfg = Release|x86
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7D87751B-AEF3-4ED6-BC1D-A3826363A5B2}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5A28896D-B208-4130-B41E-C77B7C14482A}.Release|x86.ActiveCfg = Release|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8E09D58D-C44F-4350-9130-305ACD033320}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
