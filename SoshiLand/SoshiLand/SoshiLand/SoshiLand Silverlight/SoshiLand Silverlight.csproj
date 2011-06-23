@@ -72,11 +72,18 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlankGame.cs" />
+    <Compile Include="PropertyTile.cs" />
     <Compile Include="Silverlight Application.cs" />
+    <Compile Include="SoshilandGame.cs" />
+    <Compile Include="Tile.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\SpriteFont1.spritefont" />
     <None Include="Info.plist" />
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
@@ -84,43 +91,44 @@
     <None Include="TestPageDebug.html" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\chance1.jpg" />
+    <Content Include="Content\assets\chance1.jpg" />
+    <Content Include="PropertyCards.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\forever9.jpg" />
+    <Content Include="Content\assets\forever9.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\main_board.jpg" />
+    <Content Include="Content\assets\main_board.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\main_screen_wide.png" />
+    <Content Include="Content\assets\main_screen_wide.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_bali.jpg" />
+    <Content Include="Content\assets\prop_bali.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_damnoen_mart.jpg" />
+    <Content Include="Content\assets\prop_damnoen_mart.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_eiffel.jpg" />
+    <Content Include="Content\assets\prop_eiffel.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_great_wall.jpg" />
+    <Content Include="Content\assets\prop_great_wall.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_la_scala.jpg" />
+    <Content Include="Content\assets\prop_la_scala.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_parthenon.jpg" />
+    <Content Include="Content\assets\prop_parthenon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_stat_liberty.jpg" />
+    <Content Include="Content\assets\prop_stat_liberty.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_taj_mahal.jpg" />
+    <Content Include="Content\assets\prop_taj_mahal.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\prop_temp_mount.jpg" />
+    <Content Include="Content\assets\prop_temp_mount.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\References\ExEnCore\ExEnCore Silverlight.csproj">

@@ -140,7 +140,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Network.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

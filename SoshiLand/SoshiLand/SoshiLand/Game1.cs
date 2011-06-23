@@ -4,19 +4,11 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 using System.Text.RegularExpressions;
-
-// Network Library
-using Lidgren.Network;
-// Library for Keyboard Input
-// This will be primarily used for Chat and Text input
-// Since XNA has a very poor interface for doing text input because the rate of input is dependent on the frame rate.
-using Nuclex.Input;
 
 namespace SoshiLand
 {
@@ -34,17 +26,6 @@ namespace SoshiLand
 
         // Text Variables
         SpriteFont spriteFont;
-
-        // Network Variables
-        Network network;
-        bool networkChosen = false;
-        bool enterIP = false;
-        string IP = "";
-
-        // Input Manager for text input
-        // Remember that this is here specifically for text input!
-        InputManager input;
-        private string enteredText;
 
         // The background which is also the board.
         Texture2D background;
@@ -81,9 +62,6 @@ namespace SoshiLand
             // Preferred window size is 640x640
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
-
-            input = new InputManager(Services, Window.Handle);
-            Components.Add(input);
         }
 
         /// <summary>
@@ -96,33 +74,10 @@ namespace SoshiLand
         {
             // TODO: Add your initialization logic here
 
+            SoshilandGame testGame = new SoshilandGame();
+
             base.Initialize();
 
-            input.GetKeyboard().CharacterEntered += keyboardCharacterEntered;
-
-            SoshilandGame testGame = new SoshilandGame();
-        }
-
-        private void keyboardCharacterEntered(char character)
-        {
-            enteredText += character;
-            if (enterIP)
-            {
-                Regex regex = new Regex("[\\d|\\.]");
-
-                // If the character is a backspace
-                string testString = char.ConvertFromUtf32(8);
-                char testChar = testString[0];
-                // Backspace
-                if (character == testChar && IP.Length > 0)
-                    IP = IP.Substring(0, IP.Length - 1);
-                    // Digits and period
-                else if (regex.IsMatch(character.ToString()))
-                    IP += character;
-                    // Everything else, reject
-                else
-                    Console.WriteLine("Not a valid input for IP.");
-            }
         }
 
         /// <summary>
@@ -222,37 +177,6 @@ namespace SoshiLand
             }
             else drawId = Props.None;
 
-            //////////////////
-            // Network Code //
-            //////////////////
-
-            // Choose between Host or Client
-            if (!networkChosen)
-            {
-                // Choose Host
-                // This can be replaced by an actual interface instead of just press H or C.
-                if (kbInput.IsKeyDown(Keys.H))
-                {
-                    networkChosen = true;
-                    network = new Network(14242);
-                    network.startNetwork();
-                    Console.WriteLine("HOST SERVER STARTED");
-
-                }
-                    // Choose Client
-                else if (kbInput.IsKeyDown(Keys.C))
-                {
-                    networkChosen = true;
-                    network = new Network();
-                    network.startNetwork();
-                    Console.WriteLine("CLIENT SERVER STARTED");
-                }
-            }
-
-            // Network Update Code
-            if (network != null) 
-                network.Update(gameTime);
-
             prevKeyboardState = kbInput;
 
             base.Update( gameTime );
@@ -269,11 +193,6 @@ namespace SoshiLand
             spriteBatch.Begin();
 
             spriteBatch.Draw( background, mainFrame, Color.White );
-
-            // Prints network message to screen. This should be somewhere in the corner, bottom of the window, or some form of console.
-            // This will contain useful information for the user, such as connection status.
-            if (network != null)
-                spriteBatch.DrawString(spriteFont, network.NetworkMessage, new Vector2(10, 100), Color.Green);
 
             // Draw a property card based on the current drawId
             switch ( drawId )

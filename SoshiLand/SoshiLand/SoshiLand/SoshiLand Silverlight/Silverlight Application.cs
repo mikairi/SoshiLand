@@ -7,7 +7,7 @@ namespace SoshiLandSilverlight
 	{
 		protected override void SetupMainPage(MainPage mainPage)
 		{
-            var game = new SoshiLandSilverlightGame();
+            var game = new Game1();
 			mainPage.Children.Add(game);
 			game.Play();
 		}
