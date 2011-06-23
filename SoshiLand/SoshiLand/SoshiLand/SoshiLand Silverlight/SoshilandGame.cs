@@ -102,8 +102,10 @@ namespace SoshiLandSilverlight
 
                 if (nodeType == XmlNodeType.Element)
                 {
-                    if (xmlReader.Name == "Color")
-                        Console.WriteLine("TEST THIS WORKS!");
+                    if (xmlReader.Name == "Color" && !Game1.DEBUG)
+                        //Game1.DEBUG = false;;
+                        ;
+                    
                 }
             }
 

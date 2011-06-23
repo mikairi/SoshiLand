@@ -82,7 +82,8 @@
     <Compile Include="Tile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\SpriteFont1-exenfont.exenfont" />
+    <Resource Include="Content\nobile.ttf" />
+    <None Include="Content\SpriteFont1-exenfont.exenfont" />
     <None Include="Info.plist" />
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
@@ -91,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\assets\chance1.jpg" />
-    <Content Include="Content\SpriteFont1-exenfont.png" />
+    <Resource Include="Content\SpriteFont1-exenfont.png" />
     <Content Include="PropertyCards.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,8 @@ namespace SoshiLandSilverlight
 
         public static ContentManager Content;
 
+        public static bool DEBUG = true;
+        string testString = "I don't know why this is happening";
         KeyboardState prevKeyboardState = Keyboard.GetState();
 
         Rectangle mainFrame;
@@ -75,6 +77,8 @@ namespace SoshiLandSilverlight
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            SoshilandGame testGame = new SoshilandGame();
 
             base.Initialize();
 
@@ -190,10 +194,13 @@ namespace SoshiLandSilverlight
         {
             GraphicsDevice.Clear( Color.White );
 
+            
             spriteBatch.Begin();
 
+            
             spriteBatch.Draw( background, mainFrame, Color.White );
 
+            
             // Draw a property card based on the current drawId
             switch ( drawId )
             {
@@ -233,10 +240,12 @@ namespace SoshiLandSilverlight
                 default:
                     break;
             }
-            
+
+            spriteBatch.DrawString(spriteFont, "DEBUG WORKING!", new Vector2(0, 0), Color.Indigo);
             spriteBatch.End();
 
             base.Draw( gameTime );
+            
         }
 
         // Return a Vector2 indicating the position to draw a property card (or a sprite in general).
