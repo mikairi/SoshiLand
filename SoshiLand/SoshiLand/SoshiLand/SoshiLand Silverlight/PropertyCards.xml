@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+NOTE: Colors are numbered 1-9 because it's difficult to convert from string to Color in XNA.
+So... We'll use a number system for that.
+-->
+
+<PropertyCards>
+  <Color color ="1">
+    <Tile name ="Bukit Timah Reserve">
+      <Member>Taeyeon</Member>
+      <Location>Singapore</Location>
+      <Rent>2</Rent>
+      <House1Rent>10</House1Rent>
+      <House2Rent>30</House2Rent>
+      <House3Rent>90</House3Rent>
+      <House4Rent>160</House4Rent>
+      <Hotel>250</Hotel>
+      <MortgageValue>30</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>
+      <PropertyPrice>60</PropertyPrice>
+    </Tile>
+    <Tile name ="CN Tower">
+      <Member>Jessica</Member>
+      <Location>Toronto, Canada</Location>
+      <Rent>2</Rent>
+      <House1Rent>10</House1Rent>
+      <House2Rent>30</House2Rent>
+      <House3Rent>90</House3Rent>
+      <House4Rent>160</House4Rent>
+      <Hotel>250</Hotel>
+      <MortgageValue>30</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>         <!-- Note for later: Why does this Hotel cost more than the other Orange ones?-->
+      <PropertyPrice>60</PropertyPrice>
+    </Tile>
+    <Tile name ="Kuwait National Museum">
+      <Member>Sunny</Member>
+      <Location>Kuwait City, Kuwait</Location>
+      <Rent>2</Rent>
+      <House1Rent>10</House1Rent>
+      <House2Rent>30</House2Rent>
+      <House3Rent>90</House3Rent>
+      <House4Rent>160</House4Rent>
+      <Hotel>250</Hotel>
+      <MortgageValue>30</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>
+      <PropertyPrice>60</PropertyPrice>
+    </Tile>
+    <Tile name ="Hollywood Walk of Fame">
+      <Member>Tiffany</Member>
+      <Location>Hollywood, California, USA</Location>
+      <Rent>2</Rent>
+      <House1Rent>10</House1Rent>
+      <House2Rent>30</House2Rent>
+      <House3Rent>90</House3Rent>
+      <House4Rent>160</House4Rent>
+      <Hotel>250</Hotel>
+      <MortgageValue>30</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>
+      <PropertyPrice>60</PropertyPrice>
+    </Tile>
+  </Color>
+  
+  <Color color ="2">
+    <Tile name ="Angkor Wat">
+      <Member>Hyoyeon</Member>
+      <Location>Angkor, Cambodia</Location>
+      <Rent>6</Rent>
+      <House1Rent>30</House1Rent>
+      <House2Rent>90</House2Rent>
+      <House3Rent>270</House3Rent>
+      <House4Rent>400</House4Rent>
+      <Hotel>550</Hotel>
+      <MortgageValue>50</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>
+      <PropertyPrice>100</PropertyPrice>
+    </Tile>
+    <Tile name ="Disneyland">
+      <Member>Yuri</Member>
+      <Location>Anaheim, California, USA</Location>
+      <Rent>6</Rent>
+      <House1Rent>30</House1Rent>
+      <House2Rent>90</House2Rent>
+      <House3Rent>270</House3Rent>
+      <House4Rent>400</House4Rent>
+      <Hotel>550</Hotel>
+      <MortgageValue>50</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>
+      <PropertyPrice>100</PropertyPrice>
+    </Tile>
+    <Tile name ="Amazon Rainforest">
+      <Member>Sooyoung</Member>
+      <Location>South America</Location>
+      <Rent>6</Rent>
+      <House1Rent>30</House1Rent>
+      <House2Rent>90</House2Rent>
+      <House3Rent>270</House3Rent>
+      <House4Rent>400</House4Rent>
+      <Hotel>550</Hotel>
+      <MortgageValue>50</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>
+      <PropertyPrice>100</PropertyPrice>
+    </Tile>
+    <Tile name ="Hong Kong">
+      <Member>Yoona</Member>
+      <Location>China</Location>
+      <Rent>6</Rent>
+      <House1Rent>30</House1Rent>
+      <House2Rent>90</House2Rent>
+      <House3Rent>270</House3Rent>
+      <House4Rent>400</House4Rent>
+      <Hotel>550</Hotel>
+      <MortgageValue>50</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>
+      <PropertyPrice>100</PropertyPrice>
+    </Tile>
+  </Color>
+  <Color color="3">
+    <Tile name ="United Nations Headquarters">
+      <Member>Seohyun</Member>
+      <Location>New York, USA</Location>
+      <Rent>6</Rent>
+      <House1Rent>30</House1Rent>
+      <House2Rent>90</House2Rent>
+      <House3Rent>270</House3Rent>
+      <House4Rent>400</House4Rent>
+      <Hotel>550</Hotel>
+      <MortgageValue>50</MortgageValue>
+      <HouseCost>50</HouseCost>
+      <HotelCost>50</HotelCost>
+      <PropertyPrice>100</PropertyPrice>
+    </Tile>
+    <Tile name ="Sydney Opera House">
+      <Member>Taeyeon</Member>
+      <Location>Syndey, Australia</Location>
+      <Rent>10</Rent>
+      <House1Rent>50</House1Rent>
+      <House2Rent>150</House2Rent>
+      <House3Rent>450</House3Rent>
+      <House4Rent>625</House4Rent>
+      <Hotel>750</Hotel>
+      <MortgageValue>70</MortgageValue>
+      <HouseCost>70</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>140</PropertyPrice>
+    </Tile>
+    <Tile name ="Golden Gate Bridge">
+      <Member>Jessica</Member>
+      <Location>San Francisco, California, USA</Location>
+      <Rent>10</Rent>
+      <House1Rent>50</House1Rent>
+      <House2Rent>150</House2Rent>
+      <House3Rent>450</House3Rent>
+      <House4Rent>625</House4Rent>
+      <Hotel>750</Hotel>
+      <MortgageValue>70</MortgageValue>
+      <HouseCost>70</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>140</PropertyPrice>
+    </Tile>
+    <Tile name ="Malibu Beach">
+      <Member>Sunny</Member>
+      <Location>Malibu, California, USA</Location>
+      <Rent>10</Rent>
+      <House1Rent>50</House1Rent>
+      <House2Rent>150</House2Rent>
+      <House3Rent>450</House3Rent>
+      <House4Rent>625</House4Rent>
+      <Hotel>750</Hotel>
+      <MortgageValue>70</MortgageValue>
+      <HouseCost>70</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>140</PropertyPrice>
+    </Tile>
+  </Color>
+
+  <Color color ="4">
+    <Tile name ="Barcelona International Airport">
+      <Member>Tiffany</Member>
+      <Location>Syndey, Australia</Location>
+      <Rent>12</Rent>
+      <House1Rent>60</House1Rent>
+      <House2Rent>180</House2Rent>
+      <House3Rent>500</House3Rent>
+      <House4Rent>700</House4Rent>
+      <Hotel>900</Hotel>
+      <MortgageValue>80</MortgageValue>
+      <HouseCost>100</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>160</PropertyPrice>
+    </Tile>
+    <Tile name ="Wenceslsas Square">
+      <Member>Hyoyeon</Member>
+      <Location>Prague, Czech Republic</Location>
+      <Rent>14</Rent>
+      <House1Rent>70</House1Rent>
+      <House2Rent>200</House2Rent>
+      <House3Rent>550</House3Rent>
+      <House4Rent>755</House4Rent>
+      <Hotel>950</Hotel>
+      <MortgageValue>90</MortgageValue>
+      <HouseCost>100</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>200</PropertyPrice>
+    </Tile>
+    <Tile name ="Great Barrier Reef">
+      <Member>Yuri</Member>
+      <Location>Coral Sea</Location>
+      <Rent>14</Rent>
+      <House1Rent>70</House1Rent>
+      <House2Rent>200</House2Rent>
+      <House3Rent>550</House3Rent>
+      <House4Rent>755</House4Rent>
+      <Hotel>950</Hotel>
+      <MortgageValue>90</MortgageValue>
+      <HouseCost>100</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>180</PropertyPrice>
+    </Tile>
+    <Tile name ="Leaning Tower of Pisa">
+      <Member>Sooyoung</Member>
+      <Location>Pisa, Italy</Location>
+      <Rent>14</Rent>
+      <House1Rent>70</House1Rent>
+      <House2Rent>200</House2Rent>
+      <House3Rent>550</House3Rent>
+      <House4Rent>755</House4Rent>
+      <Hotel>950</Hotel>
+      <MortgageValue>90</MortgageValue>
+      <HouseCost>100</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>180</PropertyPrice>
+    </Tile>
+  </Color>
+
+  <Color color ="5">
+    <Tile name ="Big Ben">
+      <Member>Yoona</Member>
+      <Location>London, England</Location>
+      <Rent>16</Rent>
+      <House1Rent>80</House1Rent>
+      <House2Rent>220</House2Rent>
+      <House3Rent>600</House3Rent>
+      <House4Rent>800</House4Rent>
+      <Hotel>1000</Hotel>
+      <MortgageValue>100</MortgageValue>
+      <HouseCost>100</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>200</PropertyPrice>
+    </Tile>
+    <Tile name ="Great Pyramid of Giza">
+      <Member>Seohyun</Member>
+      <Location>El Giza, Egypt</Location>
+      <Rent>16</Rent>
+      <House1Rent>80</House1Rent>
+      <House2Rent>220</House2Rent>
+      <House3Rent>600</House3Rent>
+      <House4Rent>800</House4Rent>
+      <Hotel>1000</Hotel>
+      <MortgageValue>100</MortgageValue>
+      <HouseCost>100</HouseCost>
+      <HotelCost>100</HotelCost>
+      <PropertyPrice>200</PropertyPrice>
+    </Tile>
+    <Tile name ="La Scala">
+      <Member>Taeyeon</Member>
+      <Location>Milan, Italy</Location>
+      <Rent>18</Rent>
+      <House1Rent>90</House1Rent>
+      <House2Rent>250</House2Rent>
+      <House3Rent>700</House3Rent>
+      <House4Rent>875</House4Rent>
+      <Hotel>1050</Hotel>
+      <MortgageValue>110</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>220</PropertyPrice>
+    </Tile>
+    <Tile name ="Bali">
+      <Member>Jessica</Member>
+      <Location>Indonesia</Location>
+      <Rent>18</Rent>
+      <House1Rent>90</House1Rent>
+      <House2Rent>250</House2Rent>
+      <House3Rent>700</House3Rent>
+      <House4Rent>875</House4Rent>
+      <Hotel>1050</Hotel>
+      <MortgageValue>110</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>220</PropertyPrice>
+    </Tile>
+  </Color>
+
+  <Color color ="6">
+    <Tile name ="Temple Mount">
+      <Member>Sunny</Member>
+      <Location>Jerusalem, Israel</Location>
+      <Rent>18</Rent>
+      <House1Rent>90</House1Rent>
+      <House2Rent>250</House2Rent>
+      <House3Rent>700</House3Rent>
+      <House4Rent>875</House4Rent>
+      <Hotel>1050</Hotel>
+      <MortgageValue>110</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>220</PropertyPrice>
+    </Tile>
+    <Tile name ="Damnoen Saduak Floating Market">
+      <Member>Tiffany</Member>
+      <Location>Bangkok, Thailand</Location>
+      <Rent>20</Rent>
+      <House1Rent>100</House1Rent>
+      <House2Rent>300</House2Rent>
+      <House3Rent>750</House3Rent>
+      <House4Rent>925</House4Rent>
+      <Hotel>1100</Hotel>
+      <MortgageValue>120</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>240</PropertyPrice>
+    </Tile>
+    <Tile name ="Great Wall of China">
+      <Member>Hyoyeon</Member>
+      <Location>China</Location>
+      <Rent>20</Rent>
+      <House1Rent>100</House1Rent>
+      <House2Rent>300</House2Rent>
+      <House3Rent>750</House3Rent>
+      <House4Rent>925</House4Rent>
+      <Hotel>1100</Hotel>
+      <MortgageValue>120</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>240</PropertyPrice>
+    </Tile>
+    <Tile name ="Taj Mahal">
+      <Member>Yuri</Member>
+      <Location>Agra, India</Location>
+      <Rent>22</Rent>
+      <House1Rent>110</House1Rent>
+      <House2Rent>330</House2Rent>
+      <House3Rent>800</House3Rent>
+      <House4Rent>975</House4Rent>
+      <Hotel>1150</Hotel>
+      <MortgageValue>130</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>260</PropertyPrice>
+    </Tile>
+  </Color>
+
+  <Color color="7">
+    <Tile name ="Statue of Liberty">
+      <Member>Sooyoung</Member>
+      <Location>New York, USA</Location>
+      <Rent>22</Rent>
+      <House1Rent>110</House1Rent>
+      <House2Rent>330</House2Rent>
+      <House3Rent>800</House3Rent>
+      <House4Rent>975</House4Rent>
+      <Hotel>1150</Hotel>
+      <MortgageValue>130</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>260</PropertyPrice>
+    </Tile>
+    <Tile name ="Eiffel Tower">
+      <Member>Yoona</Member>
+      <Location>Paris, France</Location>
+      <Rent>24</Rent>
+      <House1Rent>120</House1Rent>
+      <House2Rent>360</House2Rent>
+      <House3Rent>850</House3Rent>
+      <House4Rent>1025</House4Rent>
+      <Hotel>1200</Hotel>
+      <MortgageValue>140</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>280</PropertyPrice>
+    </Tile>
+    <Tile name ="Parthenon">
+      <Member>Seohyun</Member>
+      <Location>Athens, Greece</Location>
+      <Rent>24</Rent>
+      <House1Rent>120</House1Rent>
+      <House2Rent>360</House2Rent>
+      <House3Rent>850</House3Rent>
+      <House4Rent>1025</House4Rent>
+      <Hotel>1200</Hotel>
+      <MortgageValue>140</MortgageValue>
+      <HouseCost>150</HouseCost>
+      <HotelCost>150</HotelCost>
+      <PropertyPrice>280</PropertyPrice>
+    </Tile>
+    <Tile name ="White House">
+      <Member>Taeyeon</Member>
+      <Location>Washington D.C, USA</Location>
+      <Rent>26</Rent>
+      <House1Rent>130</House1Rent>
+      <House2Rent>390</House2Rent>
+      <House3Rent>900</House3Rent>
+      <House4Rent>1105</House4Rent>
+      <Hotel>1275</Hotel>
+      <MortgageValue>150</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>300</PropertyPrice>
+    </Tile>
+  </Color>
+
+  <Color color="8">
+    <Tile name ="Gyeongbokgoong">
+      <Member>Jessica</Member>
+      <Location>Seoul, South Korea</Location>
+      <Rent>26</Rent>
+      <House1Rent>130</House1Rent>
+      <House2Rent>390</House2Rent>
+      <House3Rent>900</House3Rent>
+      <House4Rent>1105</House4Rent>
+      <Hotel>1275</Hotel>
+      <MortgageValue>150</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>300</PropertyPrice>
+    </Tile>
+    <Tile name ="Mount Everest">
+      <Member>Sunny</Member>
+      <Location>China</Location>
+      <Rent>26</Rent>
+      <House1Rent>130</House1Rent>
+      <House2Rent>390</House2Rent>
+      <House3Rent>900</House3Rent>
+      <House4Rent>1105</House4Rent>
+      <Hotel>1275</Hotel>
+      <MortgageValue>150</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>300</PropertyPrice>
+    </Tile>
+    <Tile name ="Grand Canal">
+      <Member>Tiffany</Member>
+      <Location>Venice, Italy</Location>
+      <Rent>28</Rent>
+      <House1Rent>150</House1Rent>
+      <House2Rent>450</House2Rent>
+      <House3Rent>1000</House3Rent>
+      <House4Rent>1200</House4Rent>
+      <Hotel>1400</Hotel>
+      <MortgageValue>160</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>320</PropertyPrice>
+    </Tile>
+    <Tile name ="The Venetian Resort Hotel Casino">
+      <Member>Hyoyeon</Member>
+      <Location>Las Vegas, Nevada, USA</Location>
+      <Rent>28</Rent>
+      <House1Rent>150</House1Rent>
+      <House2Rent>450</House2Rent>
+      <House3Rent>1000</House3Rent>
+      <House4Rent>1200</House4Rent>
+      <Hotel>1400</Hotel>
+      <MortgageValue>160</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>340</PropertyPrice>
+    </Tile>
+  </Color>
+
+  <Color color="9">
+    <Tile name ="Château de Chillon">
+      <Member>Yuri</Member>
+      <Location>Veytaux, Switzerland</Location>
+      <Rent>28</Rent>
+      <House1Rent>150</House1Rent>
+      <House2Rent>450</House2Rent>
+      <House3Rent>1000</House3Rent>
+      <House4Rent>1200</House4Rent>
+      <Hotel>1400</Hotel>
+      <MortgageValue>160</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>340</PropertyPrice>
+    </Tile>
+    <Tile name ="Tokyo Dome">
+      <Member>Sooyoung</Member>
+      <Location>Tokyo, Japan</Location>
+      <Rent>28</Rent>
+      <House1Rent>150</House1Rent>
+      <House2Rent>450</House2Rent>
+      <House3Rent>1000</House3Rent>
+      <House4Rent>1200</House4Rent>
+      <Hotel>1400</Hotel>
+      <MortgageValue>160</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>350</PropertyPrice>
+    </Tile>
+    <Tile name ="Colosseum">
+      <Member>Yoona</Member>
+      <Location>Rome, Italy</Location>
+      <Rent>35</Rent>
+      <House1Rent>175</House1Rent>
+      <House2Rent>500</House2Rent>
+      <House3Rent>1100</House3Rent>
+      <House4Rent>1300</House4Rent>
+      <Hotel>1500</Hotel>
+      <MortgageValue>175</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>400</PropertyPrice>
+    </Tile>
+    <Tile name ="Blue House">
+      <Member>Seohyun</Member>
+      <Location>Seoul, South Korea</Location>
+      <Rent>50</Rent>
+      <House1Rent>200</House1Rent>
+      <House2Rent>600</House2Rent>
+      <House3Rent>1400</House3Rent>
+      <House4Rent>1700</House4Rent>
+      <Hotel>2000</Hotel>
+      <MortgageValue>200</MortgageValue>
+      <HouseCost>200</HouseCost>
+      <HotelCost>200</HotelCost>
+      <PropertyPrice>400</PropertyPrice>
+    </Tile>
+  </Color>
+</PropertyCards>

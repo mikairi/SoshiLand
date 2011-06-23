@@ -116,8 +116,14 @@
     <Compile Include="SpriteFont1.spritefont">
       <Name>SpriteFont1</Name>
       <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
+      <Processor>NuclexFontDescriptionProcessorShim</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SoshiLand\References\ExEnFontShim\ExEnFontShim.csproj">
+      <Project>{BEC8D75B-1BC7-4899-B8C5-58E4B6A64AB1}</Project>
+      <Name>ExEnFontShim</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
