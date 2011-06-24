@@ -179,8 +179,10 @@ namespace SoshiLand
             }
             else drawId = Props.None;
 
-            if (kbInput.IsKeyDown(Keys.D) && prevKeyboardState.IsKeyUp(Keys.D))
+            if (kbInput.IsKeyDown(Keys.R) && prevKeyboardState.IsKeyUp(Keys.R))
                 testGame.RollDice(testPlayer);
+            if (kbInput.IsKeyDown(Keys.I) && prevKeyboardState.IsKeyUp(Keys.I))
+                testGame.TESTPLAYERORDER();
 
             prevKeyboardState = kbInput;
 

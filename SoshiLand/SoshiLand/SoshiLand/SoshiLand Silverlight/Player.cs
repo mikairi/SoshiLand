@@ -12,6 +12,12 @@ namespace SoshiLandSilverlight
         private bool Jail = false;                  // boolean for when player is in Jail or not
         private int currentPositionOnBoard;          // Player's position on the board in the Tiles[] array (index 0)
 
+        public bool inJail
+        {
+            set { Jail = true; }
+            get { return Jail; }
+        }
+
         public int CurrentBoardPosition
         {
             set { currentPositionOnBoard = value; }
