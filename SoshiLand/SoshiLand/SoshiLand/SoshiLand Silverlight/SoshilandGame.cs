@@ -97,7 +97,10 @@ namespace SoshiLandSilverlight
                 }
 
                 if (Game1.DEBUG)
+                {
+                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
                     Console.WriteLine("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
+                }
             }
 
             // Initialize the list of players
@@ -107,8 +110,10 @@ namespace SoshiLandSilverlight
             if (tiedPlayers.Count > 0)
             {
                 if (Game1.DEBUG)
+                {
+                    Game1.debugMessageQueue.addMessageToQueue("There's a tie!");
                     Console.WriteLine("There's a tie!");
-
+                }
                 // New list to store second round of tied players
                 List<Player> secondRoundOfTied = new List<Player>();
                 // Keep rolling until no more tied players
@@ -176,9 +181,13 @@ namespace SoshiLandSilverlight
 
             if (Game1.DEBUG)
             {
+                Game1.debugMessageQueue.addMessageToQueue("Player Order Determined! ");
                 Console.WriteLine("Player Order Determined! ");
                 for (int i = 1; i < ListOfPlayers.Count + 1; i++)
+                {
+                    Game1.debugMessageQueue.addMessageToQueue(i + ": " + ListOfPlayers[i - 1].getName);
                     Console.WriteLine(i + ": " + ListOfPlayers[i - 1].getName);
+                }
 
             }
         }
@@ -228,9 +237,13 @@ namespace SoshiLandSilverlight
 
             if (Game1.DEBUG)
             {
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
                 Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
                 if (DoublesRolled)
+                {
+                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
                     Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
+                }
             }
 
             // Only move if the player is not in jail, or if doubles were rolled (getting the player out of jail)
@@ -257,7 +270,10 @@ namespace SoshiLandSilverlight
             p.CurrentBoardPosition = position;
 
             if (Game1.DEBUG)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
                 Console.WriteLine("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
+            }
         }
 
         private void InitializeTiles()

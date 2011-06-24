@@ -27,6 +27,11 @@ namespace SoshiLandSilverlight
         // For debugging, since Silverlight doesn't seem to allow debugging within the IDE.
         public static bool DEBUG = true;
         public static string DEBUGMESSAGE = "Initial Debug Message";
+        public static DebugMessageQueue debugMessageQueue;
+
+        // Test
+        SoshilandGame testGame;
+        Player testPlayer = new Player("Test Player");
 
         KeyboardState prevKeyboardState = Keyboard.GetState();
 
@@ -80,7 +85,9 @@ namespace SoshiLandSilverlight
         {
             // TODO: Add your initialization logic here
 
-            SoshilandGame testGame = new SoshilandGame();
+            debugMessageQueue = new DebugMessageQueue();
+
+            testGame = new SoshilandGame();
 
             base.Initialize();
 
@@ -112,9 +119,6 @@ namespace SoshiLandSilverlight
             propParthenon = Content.Load<Texture2D>( "assets\\prop_parthenon" );
             chance1 = Content.Load<Texture2D>( "assets\\chance1" );
             forever9 = Content.Load<Texture2D>( "assets\\forever9" );
-            
-            // Load Sprite Font
-            spriteFont = Content.Load<SpriteFont>("SpriteFont1");  
         }
 
         /// <summary>
@@ -182,7 +186,12 @@ namespace SoshiLandSilverlight
                 else drawId = Props.None;
             }
             else drawId = Props.None;
-            
+
+            if (kbInput.IsKeyDown(Keys.R) && prevKeyboardState.IsKeyUp(Keys.R))
+                testGame.RollDice(testPlayer);
+            if (kbInput.IsKeyDown(Keys.I) && prevKeyboardState.IsKeyUp(Keys.I))
+                testGame.TESTPLAYERORDER();
+
             prevKeyboardState = kbInput;
 
             base.Update( gameTime );
@@ -243,9 +252,11 @@ namespace SoshiLandSilverlight
                     break;
             }
 
-
             if (DEBUG)
-                spriteBatch.DrawString(spriteFont, DEBUGMESSAGE, new Vector2(0, 0), Color.Indigo);
+                debugMessageQueue.PrintMessages(gameTime, spriteBatch);
+
+            
+                
             spriteBatch.End();
 
             base.Draw( gameTime );
