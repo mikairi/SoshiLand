@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+
+
 namespace SoshiLandSilverlight
 {
     class PropertyTile : Tile
     {
+        private Player owner = null;               // Owner of the property
+
         private string member;              // Name of SNSD member who owns the Property
         private Color color;                // Property Color
         private uint baseRent = 0;          // Rent
@@ -21,6 +25,12 @@ namespace SoshiLandSilverlight
         private uint hotelCost = 0;         // Cost for Hotel (+ 4 houses)
         private uint propertyPrice = 0;     // Cost to initially purchase property
 
+        private uint currentRentCost = 0;   // Current Rent Cost
+
+        public uint Rent
+        {
+            get { return Rent; }
+        }
 
         public PropertyTile(
             TileType t,
@@ -51,6 +61,37 @@ namespace SoshiLandSilverlight
             houseCost = hC;
             hotelCost = hotelC;
             propertyPrice = pP;
+
+        }
+
+        public Player Owner
+        {
+            set { owner = value; }
+            get { return owner; }
+        }
+
+        private bool addHouse()
+        {
+            // This assumes that the player already has monopoly over this color
+            // There is another function that will allow house building based on a bool value for monopoly
+            // There will also be another function that will check if the houses are equal or less across the monopoly
+
+            // Checks if the player has enough money to buy a house
+            if (houseCost > owner.getMoney)
+            {
+                if (Game1.DEBUG)
+                {
+                    Game1.debugMessageQueue.addMessageToQueue("Player \"" + this.getName + "\" purchases a house for " + getName);
+                    Console.WriteLine("Player \"" + this.getName + "\" purchases a house for " + getName);
+                }
+
+                owner.PlayerPaysBank(houseCost);
+                // Player has enough funds and return success
+                return true;
+            }
+            else
+                // Player does not have enough funds
+                return false;
 
         }
 

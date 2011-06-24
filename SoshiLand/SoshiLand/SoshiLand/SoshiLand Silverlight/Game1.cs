@@ -254,7 +254,14 @@ namespace SoshiLandSilverlight
             }
 
             if (DEBUG)
+            {
                 debugMessageQueue.PrintMessages(gameTime, spriteBatch);
+                
+                // Post player standings on right side
+
+
+            }
+
 
             spriteBatch.End();
 

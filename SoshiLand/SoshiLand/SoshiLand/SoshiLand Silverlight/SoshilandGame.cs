@@ -24,7 +24,9 @@ namespace SoshiLandSilverlight
 
         private bool gameInitialized = false;           // Flag for when the game is officially started
 
-
+        // Player Options during turn
+        private bool optionPurchaseOrAuctionProperty = false;
+        private bool optionDevelopProperty = false;
 
         // TEMPORARY
         Player[] playerArray;
@@ -66,6 +68,7 @@ namespace SoshiLandSilverlight
 
         private void PlayerTurn(Player player)
         {
+            // Check if player is currently in Jail
             // Rolls Dice and Move Piece to Tile
             // Determine what Tile was landed on and give options
 
@@ -74,6 +77,84 @@ namespace SoshiLandSilverlight
         private void PlayerOptions(Player player)
         {
             int currentTile = player.CurrentBoardPosition;
+            TileType currentTileType = Tiles[currentTile].getTileType;
+
+            optionPurchaseOrAuctionProperty = false;
+            optionDevelopProperty = false;
+
+            // Determine Player Options and take any actions required
+            switch (currentTileType)
+            {
+                case TileType.Property:
+                    PropertyTile currentProperty = (PropertyTile)Tiles[currentTile];
+                    // If the property is not owned yet
+                    if (currentProperty.Owner == null)
+                        optionPurchaseOrAuctionProperty = true;
+                        // If the property is owned by another player
+                    else if (currentProperty.Owner != player)
+                    {
+                        // Check if the player has enough money to pay Rent
+                        if (player.getMoney >= currentProperty.Rent)
+                            // Pay rent
+                            player.CurrentPlayerPaysPlayer(currentProperty.Owner, currentProperty.Rent);
+                        else
+                            // Player must decide to mortgage or trade to get money
+                            // Put this in later
+                            ;
+                    }
+                    // Otherwise, player landed on his or her own property, so do nothing
+                    break;
+                case TileType.Utility:
+                    UtilityTile currentUtility = (UtilityTile)Tiles[currentTile];
+                    UtilityTile otherUtility;
+
+                    if (currentTile == 15)
+                        otherUtility = (UtilityTile)Tiles[33];
+                    else
+                        otherUtility = (UtilityTile)Tiles[15]; 
+
+                    // If the property is not owned yet
+                    if (currentUtility.Owner == null)
+                        optionPurchaseOrAuctionProperty = true;
+                        // If the property is owned by another player
+                    else if (currentUtility.Owner != player)
+                    {
+                        // Calculate the amount to pay for Utility Rent
+                        uint utilityRent;
+                        // Check if player owns both utilities
+                        if (currentUtility.Owner == otherUtility.Owner)
+                            utilityRent = (uint)currentDiceRoll * 10;
+                        else
+                            utilityRent = (uint)currentDiceRoll * 4;
+
+                        // Check if the player has enough money to pay Rent
+                        if (player.getMoney >= utilityRent)
+                            // Pay rent
+                            player.CurrentPlayerPaysPlayer(currentUtility.Owner, utilityRent);
+                        else
+                            // Player must decide to mortgage or trade to get money
+                            // Put this in later
+                            ;
+                    }
+                    break;
+                case TileType.Chance:
+                    break;
+                case TileType.CommunityChest:
+                    break;
+                case TileType.FanMeeting:
+                    break;
+                case TileType.Jail:
+                    break;
+                case TileType.ShoppingSpree:
+                    break;
+                case TileType.SpecialLuxuryTax:
+                    break;
+                case TileType.GoToJail:
+                    break;
+                case TileType.Go:
+                    break;
+
+            }
 
             if (Game1.DEBUG)
             {
@@ -349,14 +430,15 @@ namespace SoshiLandSilverlight
             Tiles[5] = new Tile("Special Luxury", TileType.SpecialLuxuryTax);
             Tiles[8] = new Tile("Chance", TileType.Chance);
             Tiles[12] = new Tile("Hello Baby", TileType.Jail);
-            Tiles[15] = new Tile("Soshi Bond", TileType.Utility);
+            Tiles[15] = new UtilityTile("Soshi Bond");
             Tiles[20] = new Tile("Community Chest", TileType.CommunityChest);
             Tiles[24] = new Tile("Fan Meeting", TileType.FanMeeting);
             Tiles[27] = new Tile("Chance", TileType.Chance);
-            Tiles[33] = new Tile("Forever 9", TileType.Utility);
+            Tiles[33] = new UtilityTile("Forever 9");
             Tiles[36] = new Tile("Babysit Kyung San", TileType.GoToJail);
             Tiles[40] = new Tile("Community Chest", TileType.CommunityChest);
             Tiles[45] = new Tile("Shopping Spree", TileType.ShoppingSpree);
+
 
             // Fill in the gaps with Colored Property Tiles
 

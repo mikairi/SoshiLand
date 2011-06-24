@@ -65,6 +65,7 @@ namespace SoshiLandSilverlight
                     spriteBatch.DrawString(spriteFont, MessageQueue[i], new Vector2(0, 30 * i), Color.HotPink);
 
             }
+
             spriteBatch.End();
         }
     }

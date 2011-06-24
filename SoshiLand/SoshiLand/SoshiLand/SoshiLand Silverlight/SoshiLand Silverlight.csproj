@@ -81,6 +81,7 @@
     <Compile Include="Silverlight Application.cs" />
     <Compile Include="SoshilandGame.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="UtilityTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Content\nobile.ttf" />
