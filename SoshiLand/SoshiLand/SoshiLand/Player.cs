@@ -34,6 +34,16 @@ namespace SoshiLand
             Name = n;
         }
 
+        public void BankPaysPlayer(uint amountPaid)
+        {
+
+            if (Game1.DEBUG)
+            {
+                Console.WriteLine("Player \"" + this.getName + "\" receives $" + amountPaid + " from the bank");
+            }
+            addMoney(amountPaid);
+        }
+
         private void addMoney(uint money)
         {
             Money += money;

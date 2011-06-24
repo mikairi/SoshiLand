@@ -188,7 +188,8 @@ namespace SoshiLandSilverlight
             else drawId = Props.None;
 
             if (kbInput.IsKeyDown(Keys.R) && prevKeyboardState.IsKeyUp(Keys.R))
-                testGame.RollDice(testPlayer);
+                
+                ;
             if (kbInput.IsKeyDown(Keys.I) && prevKeyboardState.IsKeyUp(Keys.I))
                 testGame.TESTPLAYERORDER();
 
@@ -255,8 +256,6 @@ namespace SoshiLandSilverlight
             if (DEBUG)
                 debugMessageQueue.PrintMessages(gameTime, spriteBatch);
 
-            
-                
             spriteBatch.End();
 
             base.Draw( gameTime );

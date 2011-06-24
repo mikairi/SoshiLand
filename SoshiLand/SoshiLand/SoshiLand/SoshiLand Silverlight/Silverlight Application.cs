@@ -14,7 +14,7 @@ namespace SoshiLandSilverlight
             FontSource fontSource = new FontSource(Application.GetResourceStream(new Uri("SoshiLandSilverLight;component/Content/nobile.ttf", UriKind.Relative)).Stream);
             FontFamily fontFamily = new FontFamily("Nobile");
 
-            ContentManager.SilverlightFontTranslation("SpriteFont1", new SpriteFontTTF(fontSource, fontFamily, 16));
+            ContentManager.SilverlightFontTranslation("SpriteFont1", new SpriteFontTTF(fontSource, fontFamily, 14));
 
             var game = new Game1();
 			mainPage.Children.Add(game);

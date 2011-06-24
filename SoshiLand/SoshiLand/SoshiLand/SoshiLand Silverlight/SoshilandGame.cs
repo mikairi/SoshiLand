@@ -12,8 +12,9 @@ namespace SoshiLandSilverlight
 {
     class SoshilandGame
     {
-        List<Player> ListOfPlayers;                     // Contains the list of players in the game. This will be in the order from first to last player
-        Tile[] Tiles = new Tile[48];                    // Array of Tiles
+        private List<Player> ListOfPlayers;             // Contains the list of players in the game. This will be in the order from first to last player
+        private Player currentTurnsPlayers;             // Holds the Player of the current turn         
+        private Tile[] Tiles = new Tile[48];            // Array of Tiles
 
         private static Random die = new Random();       // Need to create a static random die generator so it doesn't reuse the same seed over and over
 
@@ -31,8 +32,7 @@ namespace SoshiLandSilverlight
         public SoshilandGame()
         {
             InitializeTiles();                          // Initialize Tiles on the board
-
-            InitializeGame();
+            InitializeGame();                           // Initialize Game
         }
 
         private void InitializeGame()
@@ -49,12 +49,65 @@ namespace SoshiLandSilverlight
             playerArray[2] = player3;
             playerArray[3] = player4;
 
+            // Determine order of players
             DeterminePlayerOrder(playerArray);
+            // Players choose pieces (this can be implemented later)
+
+            // Players are given starting money
+            DistributeStartingMoney();
+            // Place all Pieces on Go
+            PlaceAllPiecesOnGo();
         }
 
         public void TESTPLAYERORDER()
         {
             DeterminePlayerOrder(playerArray);
+        }
+
+        private void PlayerTurn(Player player)
+        {
+            // Rolls Dice and Move Piece to Tile
+            // Determine what Tile was landed on and give options
+
+        }
+
+        private void PlayerOptions(Player player)
+        {
+            int currentTile = player.CurrentBoardPosition;
+
+            if (Game1.DEBUG)
+            {
+
+            }
+        }
+
+        private void DistributeStartingMoney()
+        {
+            if (Game1.DEBUG)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("Distributing Starting Money");
+                Console.WriteLine("Distributing Starting Money");
+            }
+
+            foreach (Player p in ListOfPlayers)
+            {
+                // Starting money is $1500
+                p.BankPaysPlayer(1500);
+            }
+        }
+
+        private void PlaceAllPiecesOnGo()
+        {
+            if (Game1.DEBUG)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("Placing all players on Go");
+                Console.WriteLine("Placing all players on Go");
+            }
+            foreach (Player p in ListOfPlayers)
+            {
+                // Move player to Go
+                MovePlayer(p, 0);
+            }
         }
 
         private void DeterminePlayerOrder(Player[] arrayOfPlayers)
@@ -64,7 +117,11 @@ namespace SoshiLandSilverlight
             // So the order is determined by starting at the player with the highest roll 
             // and moving clockwise around the board
 
-
+            if (Game1.DEBUG)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("Players rolling to determine Order");
+                Console.WriteLine("Players rolling to determine Order");
+            }
 
             int[] playerRolls = new int[arrayOfPlayers.Length];     // An array the size of the number of players to hold their dice rolls
             List<Player> tiedPlayers = new List<Player>();          // List of players that are tied for highest roll
@@ -223,7 +280,7 @@ namespace SoshiLandSilverlight
             return Color.White;
         }
 
-        public void RollDice(Player p)
+        private void RollDice(Player p)
         {
             DoublesRolled = false;
             int dice1Int = die.Next(1, 6);
@@ -258,8 +315,10 @@ namespace SoshiLandSilverlight
 
             // If player passes or lands on Go
             if (newPosition > 47)
+            {
                 newPosition = Math.Abs(newPosition - 48);           // Get absolute value of the difference and move player to that new Tile
-
+                p.BankPaysPlayer(200);                              // Pay player $200 for passing Go
+            }
             // Move player to the new position
             MovePlayer(p, newPosition);
         }
@@ -286,18 +345,18 @@ namespace SoshiLandSilverlight
             xmlReader = XmlReader.Create("PropertyCards.xml");      // Set the XML file to read
 
             // First, reserve spots in array for non-property Tiles
-            Tiles[0] = new Tile("Go");
-            Tiles[5] = new Tile("Special Luxury");
-            Tiles[8] = new Tile("Chance");
-            Tiles[12] = new Tile("Hello Baby");
-            Tiles[15] = new Tile("Soshi Bond");
-            Tiles[20] = new Tile("Community Chest");
-            Tiles[24] = new Tile("Fan Meeting");
-            Tiles[27] = new Tile("Chance");
-            Tiles[33] = new Tile("Forever 9");
-            Tiles[36] = new Tile("Babysit Kyung San");
-            Tiles[40] = new Tile("Community Chest");
-            Tiles[45] = new Tile("Shopping Spree");
+            Tiles[0] = new Tile("Go", TileType.Go);
+            Tiles[5] = new Tile("Special Luxury", TileType.SpecialLuxuryTax);
+            Tiles[8] = new Tile("Chance", TileType.Chance);
+            Tiles[12] = new Tile("Hello Baby", TileType.Jail);
+            Tiles[15] = new Tile("Soshi Bond", TileType.Utility);
+            Tiles[20] = new Tile("Community Chest", TileType.CommunityChest);
+            Tiles[24] = new Tile("Fan Meeting", TileType.FanMeeting);
+            Tiles[27] = new Tile("Chance", TileType.Chance);
+            Tiles[33] = new Tile("Forever 9", TileType.Utility);
+            Tiles[36] = new Tile("Babysit Kyung San", TileType.GoToJail);
+            Tiles[40] = new Tile("Community Chest", TileType.CommunityChest);
+            Tiles[45] = new Tile("Shopping Spree", TileType.ShoppingSpree);
 
             // Fill in the gaps with Colored Property Tiles
 
@@ -403,6 +462,7 @@ namespace SoshiLandSilverlight
                                     counter++;
                                 // Create the Tile
                                 Tiles[counter] = new PropertyTile(
+                                    TileType.Property,
                                     currentTileName,
                                     currentColor,
                                     currentBaseRent,

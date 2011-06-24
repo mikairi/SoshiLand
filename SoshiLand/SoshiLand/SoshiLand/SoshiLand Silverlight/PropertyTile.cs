@@ -23,6 +23,7 @@ namespace SoshiLandSilverlight
 
 
         public PropertyTile(
+            TileType t,
             string n,
             Color c,
             uint bR,
@@ -34,7 +35,7 @@ namespace SoshiLandSilverlight
             uint mV,
             uint hC,
             uint hotelC,
-            uint pP) : base(n)
+            uint pP) : base(n, t)
         {
             // Set all the property values
             // These are meant to be static, so they shouldn't change

@@ -34,6 +34,18 @@ namespace SoshiLandSilverlight
             Name = n;
         }
 
+        public void BankPaysPlayer(uint amountPaid)
+        {
+
+            if (Game1.DEBUG)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("Player \"" + this.getName + "\" receives $" + amountPaid + " from the bank");
+                Console.WriteLine("Player \"" + this.getName + "\" receives $" + amountPaid + " from the bank");
+            }
+            addMoney(amountPaid);
+        }
+        
+
         private void addMoney(uint money)
         {
             Money += money;
