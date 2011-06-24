@@ -10,7 +10,9 @@ namespace SoshiLand
         private string Name;                        // Player's Screen Name
         private uint Money;                         // Player's Total Cash
         private bool Jail = false;                  // boolean for when player is in Jail or not
-        private int currentPositionOnBoard;          // Player's position on the board in the Tiles[] array (index 0)
+        private int currentPositionOnBoard;         // Player's position on the board in the Tiles[] array (index 0)
+
+        private uint actualAmountRemoved;           // If the player must pay another player an amount greater than what they own
 
         public bool inJail
         {
@@ -32,6 +34,36 @@ namespace SoshiLand
         public Player(string n)
         {
             Name = n;
+        }
+
+        public uint getMoney
+        {
+            get { return Money; }
+        }
+
+        public void PlayerPaysBank(uint amountPaid)
+        {
+            if (Game1.DEBUG)
+            {
+                Console.WriteLine("Player \"" + this.getName + "\" pays $" + amountPaid + " to the bank");
+            }
+
+            removeMoney(amountPaid);
+        }
+
+        public void CurrentPlayerPaysPlayer(Player paidPlayer, uint amountPaid)
+        {
+            // This function assumes the Player has sufficient funds to pay.
+            // There is a separate function that will deal with the case where
+            // The player does not have enough funds to pay
+
+            if (Game1.DEBUG)
+            {
+                Console.WriteLine("Player \"" + paidPlayer.getName + "\" receives $" + amountPaid + " from Player \"" + this.getName + "\"");
+            }
+
+            paidPlayer.addMoney(amountPaid);
+            removeMoney(amountPaid);
         }
 
         public void BankPaysPlayer(uint amountPaid)

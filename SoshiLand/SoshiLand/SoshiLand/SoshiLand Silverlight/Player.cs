@@ -79,7 +79,6 @@ namespace SoshiLandSilverlight
             addMoney(amountPaid);
         }
         
-
         private void addMoney(uint money)
         {
             Money += money;

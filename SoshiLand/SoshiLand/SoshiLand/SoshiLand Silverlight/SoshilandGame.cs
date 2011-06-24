@@ -22,6 +22,9 @@ namespace SoshiLandSilverlight
         private int currentDiceRoll;                    // Global dice roll variable for special instances when we need to know (ie. determining player order)
         private int numberOfDoubles;                    // Keep track of the number of doubles rolled
 
+        public static int Houses = 32;                  // Static Global variable for number of houses remaining
+        public static int Hotels = 12;                  // Static Global variable for number of hotels remaining
+
         private bool gameInitialized = false;           // Flag for when the game is officially started
 
         // Player Options during turn
@@ -66,10 +69,26 @@ namespace SoshiLandSilverlight
             DeterminePlayerOrder(playerArray);
         }
 
+        public void startNextPlayerTurn()
+        {
+            int previousPlayersTurn = ListOfPlayers.IndexOf(currentTurnsPlayers);
+            int nextPlayersTurn;
+            // Checks if the player is at the end of the list
+            if (previousPlayersTurn == ListOfPlayers.Count - 1)
+                nextPlayersTurn = 0;
+            else
+                nextPlayersTurn = previousPlayersTurn + 1;
+
+            PlayerTurn(ListOfPlayers.ElementAt(nextPlayersTurn));
+        }
+
         private void PlayerTurn(Player player)
         {
+            currentTurnsPlayers = player;
             // Check if player is currently in Jail
             // Rolls Dice and Move Piece to Tile
+            RollDice(player);
+            MovePlayerDiceRoll(player, currentDiceRoll);
             // Determine what Tile was landed on and give options
 
         }
@@ -94,9 +113,9 @@ namespace SoshiLandSilverlight
                     else if (currentProperty.Owner != player)
                     {
                         // Check if the player has enough money to pay Rent
-                        if (player.getMoney >= currentProperty.Rent)
+                        if (player.getMoney >= currentProperty.getRent)
                             // Pay rent
-                            player.CurrentPlayerPaysPlayer(currentProperty.Owner, currentProperty.Rent);
+                            player.CurrentPlayerPaysPlayer(currentProperty.Owner, currentProperty.getRent);
                         else
                             // Player must decide to mortgage or trade to get money
                             // Put this in later
@@ -364,8 +383,8 @@ namespace SoshiLandSilverlight
         private void RollDice(Player p)
         {
             DoublesRolled = false;
-            int dice1Int = die.Next(1, 6);
-            int dice2Int = die.Next(1, 6);
+            int dice1Int = die.Next(1, 7);
+            int dice2Int = die.Next(1, 7);
             int total = dice1Int + dice2Int;
 
             currentDiceRoll = total;                // Set the global dice roll variable

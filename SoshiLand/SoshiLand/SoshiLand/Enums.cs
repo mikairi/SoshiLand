@@ -52,4 +52,18 @@ namespace SoshiLand
         Chance2,
         SoshiBond
     };
+
+    enum TileType
+    {
+        Go,
+        Property,
+        Chance,
+        CommunityChest,
+        Jail,
+        SpecialLuxuryTax,
+        ShoppingSpree,
+        Utility,
+        FanMeeting,
+        GoToJail
+    };
 }

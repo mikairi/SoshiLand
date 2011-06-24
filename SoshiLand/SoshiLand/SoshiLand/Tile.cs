@@ -10,15 +10,22 @@ namespace SoshiLand
     {
         private string Name;
         private Texture2D texture;
+        private TileType tileType;
+
+        public TileType getTileType
+        {
+            get { return tileType; }
+        }
 
         public string getName
         {
             get { return Name; }
         }
 
-        public Tile(string n)
+        public Tile(string n, TileType t)
         {
             Name = n;
+            tileType = t;
         }
     }
 }

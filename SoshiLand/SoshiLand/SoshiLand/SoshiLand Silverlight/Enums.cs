@@ -65,5 +65,5 @@ namespace SoshiLandSilverlight
         Utility,
         FanMeeting,
         GoToJail
-    }
+    };
 }

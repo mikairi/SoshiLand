@@ -148,6 +148,7 @@
     <Compile Include="PropertyTile.cs" />
     <Compile Include="SoshilandGame.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="UtilityTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
