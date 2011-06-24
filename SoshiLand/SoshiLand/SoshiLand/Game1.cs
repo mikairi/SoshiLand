@@ -21,8 +21,13 @@ namespace SoshiLand
         SpriteBatch spriteBatch;
 
         public static ContentManager Content;
+        public static bool DEBUG = true;                        // For Debugging Purposes
+
+        Player testPlayer;
 
         KeyboardState prevKeyboardState = Keyboard.GetState();
+
+        SoshilandGame testGame;
 
         Rectangle mainFrame;
 
@@ -74,10 +79,8 @@ namespace SoshiLand
         {
             // TODO: Add your initialization logic here
 
-            SoshilandGame testGame = new SoshilandGame();
-
-            ;
-
+            testGame = new SoshilandGame();
+            testPlayer = new Player("Test Player");
             base.Initialize();
 
         }
@@ -175,6 +178,9 @@ namespace SoshiLand
                 else drawId = Props.None;
             }
             else drawId = Props.None;
+
+            if (kbInput.IsKeyDown(Keys.D) && prevKeyboardState.IsKeyUp(Keys.D))
+                testGame.RollDice(testPlayer);
 
             prevKeyboardState = kbInput;
 

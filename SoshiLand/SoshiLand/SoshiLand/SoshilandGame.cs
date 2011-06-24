@@ -6,17 +6,18 @@ using System.Text;
 using Microsoft.Xna.Framework;
 // Required to read XML file
 using System.Xml;
-namespace SoshiLand 
+namespace SoshiLand
 {
     class SoshilandGame
     {
         List<Player> ListOfPlayers;                     // Contains the list of players in the game
         Tile[] Tiles = new Tile[48];                    // Array of Tiles
 
+        private bool DoublesRolled;                     // Flag to indicate doubles were rolled
 
         public SoshilandGame()
         {
-            InitializeTiles();
+            InitializeTiles();                          // Initialize Tiles on the board
         }
 
         private void InitializeGame()
@@ -26,6 +27,8 @@ namespace SoshiLand
 
         private Color getColorFromNumber(int c)
         {
+            // These colors can be specified by RGBA values later.
+            // For now, I put in the standard Colors from the Color class.
             switch (c)
             {
                 case 1:
@@ -48,10 +51,51 @@ namespace SoshiLand
                     return Color.Black;
             }
 
-
             // Invalid color type
             Console.WriteLine("Warning! Could not find color that matches code: " + c);
             return Color.White;
+        }
+
+        public void RollDice(Player p)
+        {
+            // Create two Random Dice
+            Random die = new Random();
+
+            int dice1Int = die.Next(1, 6);
+            int dice2Int = die.Next(1, 6);
+            int total = dice1Int + dice2Int;
+
+            if (dice1Int == dice2Int)
+                DoublesRolled = true;
+
+            if (Game1.DEBUG)
+            {
+                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int);
+                if (DoublesRolled)
+                    Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
+            }
+
+            MovePlayerDiceRoll(p, total);
+        }
+
+        private void MovePlayerDiceRoll(Player p, int roll)
+        {
+            int currentPosition = p.CurrentBoardPosition;
+            int newPosition = currentPosition + roll;
+
+            // If player passes or lands on Go
+            if (newPosition > 47)
+                newPosition = Math.Abs(newPosition - 48);           // Get absolute value of the difference
+
+            MovePlayer(p, newPosition);
+        }
+
+        private void MovePlayer(Player p, int position)
+        {
+            p.CurrentBoardPosition = position;
+
+            if (Game1.DEBUG)
+                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " moves to Tile " + Tiles[position].getName);
         }
 
         private void InitializeTiles()
@@ -61,8 +105,7 @@ namespace SoshiLand
 
             // XML Reading Variables
             XmlReader xmlReader;
-
-            xmlReader = XmlReader.Create("PropertyCards.xml");
+            xmlReader = XmlReader.Create("PropertyCards.xml");      // Set the XML file to read
 
             // First, reserve spots in array for non-property Tiles
             Tiles[0] = new Tile("Go");
@@ -84,7 +127,7 @@ namespace SoshiLand
             Color currentColor = Color.White;      // Keep track of current Color in XML
             string currentTileName = "";           // Keep track of current Tile Name
 
-            string currentMember = "";                  // Name of SNSD member who owns the Property
+            string currentMember = "";             // Name of SNSD member who owns the Property
             uint currentBaseRent = 0;              // Rent
             uint currentHouse1Rent = 0;            // Rent with 1 House
             uint currentHouse2Rent = 0;            // Rent with 2 Houses
@@ -96,16 +139,14 @@ namespace SoshiLand
             uint currentHotelCost = 0;             // Cost for Hotel (+ 4 houses)
             uint currentPropertyPrice = 0;         // Cost to initially purchase property
 
-            int testcounter = 0;                    // Debugging purposes
             int propertyCardInfoCounter = 0;        // This is a counter to ensure that the current property card has read all the required data
 
-            // Note: Current, this function largely assumes that the XML file is structured correctly and complete in data.
+            // Read in XML data for Properties
             while (xmlReader.Read())
             {
                 XmlNodeType nodeType = xmlReader.NodeType;
                 if (nodeType == XmlNodeType.Element)
                 {
-                    testcounter++;
                     switch (xmlReader.Name)
                     {
                         // If the current element is a Color
@@ -179,6 +220,7 @@ namespace SoshiLand
                             // Check if enough data has been pulled
                             if (propertyCardInfoCounter == 11)
                             {
+                                // Skip over pre-made tiles
                                 while (Tiles[counter] != null)
                                     counter++;
                                 // Create the Tile
@@ -206,74 +248,6 @@ namespace SoshiLand
 
                 }
             }
-            /*
-            // Iterate through Colors
-            foreach (XmlNode nodeColor in xmlNode)
-            {   
-                if (nodeColor.Attributes.Count > 0)
-                {
-                    foreach (XmlAttribute xmlAttribute in nodeColor.Attributes)
-                        if (xmlAttribute.Name == "color")
-                            currentColor = getColorFromNumber(Convert.ToInt16(xmlAttribute.Value));         // Get the color based on the number retrieved from XML
-                }
-                // Iterate through Tiles
-                foreach (XmlNode nodeTile in nodeColor)
-                {
-                    if (nodeTile.Attributes.Count > 0)
-                    {
-                        foreach (XmlAttribute xmlAttribute in nodeTile.Attributes)
-                            if (xmlAttribute.Name == "name")
-                                currentTileName = xmlAttribute.Value;                                       // Get the name of the Tile as a string
-                        
-                    }
-                    while (Tiles[counter] != null)
-                        counter++;
-
-                    // Iterate through Tile Members
-                    foreach (XmlNode nodeTileMember in nodeTile)
-                    {
-                        // Assign Property Values
-                        if (nodeTileMember.Name == "Member")
-                            currentMember = nodeTileMember.InnerText;
-                        if (nodeTileMember.Name == "Rent")
-                            currentBaseRent = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "House1Rent")
-                            currentHouse1Rent = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "House2Rent")
-                            currentHouse2Rent = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "House3Rent")
-                            currentHouse3Rent = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "House4Rent")
-                            currentHouse4Rent = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "Hotel")
-                            currentHotelRent = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "MortgageValue")
-                            currentMortgageValue = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "HouseCost")
-                            currentHouseCost = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "HotelCost")
-                            currentHotelCost = Convert.ToUInt16(nodeTileMember.InnerText);
-                        if (nodeTileMember.Name == "PropertyPrice")
-                            currentPropertyPrice = Convert.ToUInt16(nodeTileMember.InnerText);
-                    }
-
-                    // Create the Tile
-                    Tiles[counter] = new PropertyTile(
-                        currentTileName,
-                        currentColor,
-                        currentBaseRent,
-                        currentHouse1Rent,
-                        currentHouse2Rent,
-                        currentHouse3Rent,
-                        currentHouse4Rent,
-                        currentHotelRent,
-                        currentMortgageValue,
-                        currentHouseCost,
-                        currentHotelCost,
-                        currentPropertyPrice);
-                }
-            }
-            */
         }
 
         private string ReadStringFromCurrentNode(XmlReader x, ref int counter)

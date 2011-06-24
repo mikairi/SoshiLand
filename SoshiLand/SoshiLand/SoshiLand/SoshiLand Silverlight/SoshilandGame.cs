@@ -12,11 +12,12 @@ namespace SoshiLandSilverlight
     {
         List<Player> ListOfPlayers;                     // Contains the list of players in the game
         Tile[] Tiles = new Tile[48];                    // Array of Tiles
-
+        
+        private bool DoublesRolled;                     // Flag to indicate doubles were rolled
 
         public SoshilandGame()
         {
-            InitializeTiles();
+            InitializeTiles();                          // Initialize Tiles on the board
         }
 
         private void InitializeGame()
@@ -50,10 +51,51 @@ namespace SoshiLandSilverlight
                     return Color.Black;
             }
 
-
             // Invalid color type
             Console.WriteLine("Warning! Could not find color that matches code: " + c);
             return Color.White;
+        }
+
+        public void RollDice(Player p)
+        {
+            // Create two Random Dice
+            Random die = new Random();
+
+            int dice1Int = die.Next(1, 6);
+            int dice2Int = die.Next(1, 6);
+            int total = dice1Int + dice2Int;
+
+            if (dice1Int == dice2Int)
+                DoublesRolled = true;
+
+            if (Game1.DEBUG)
+            {
+                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int);
+                if (DoublesRolled)
+                    Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
+            }
+
+            MovePlayerDiceRoll(p, total);
+        }
+
+        private void MovePlayerDiceRoll(Player p, int roll)
+        {
+            int currentPosition = p.CurrentBoardPosition;
+            int newPosition = currentPosition + roll;
+
+            // If player passes or lands on Go
+            if (newPosition > 47)
+                newPosition = Math.Abs(newPosition - 48);           // Get absolute value of the difference
+
+            MovePlayer(p, newPosition);
+        }
+
+        private void MovePlayer(Player p, int position)
+        {
+            p.CurrentBoardPosition = position;
+
+            if (Game1.DEBUG)
+                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " moves to Tile " + Tiles[position].getName);
         }
 
         private void InitializeTiles()
@@ -63,8 +105,7 @@ namespace SoshiLandSilverlight
 
             // XML Reading Variables
             XmlReader xmlReader;
-
-            xmlReader = XmlReader.Create("PropertyCards.xml");
+            xmlReader = XmlReader.Create("PropertyCards.xml");      // Set the XML file to read
 
             // First, reserve spots in array for non-property Tiles
             Tiles[0] = new Tile("Go");
