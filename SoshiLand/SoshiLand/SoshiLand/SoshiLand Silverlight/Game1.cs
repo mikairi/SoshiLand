@@ -24,8 +24,10 @@ namespace SoshiLandSilverlight
 
         public static ContentManager Content;
 
+        // For debugging, since Silverlight doesn't seem to allow debugging within the IDE.
         public static bool DEBUG = true;
-        string testString = "I don't know why this is happening";
+        public static string DEBUGMESSAGE = "Initial Debug Message";
+
         KeyboardState prevKeyboardState = Keyboard.GetState();
 
         Rectangle mainFrame;
@@ -241,7 +243,9 @@ namespace SoshiLandSilverlight
                     break;
             }
 
-            spriteBatch.DrawString(spriteFont, "DEBUG WORKING!", new Vector2(0, 0), Color.Indigo);
+
+            if (DEBUG)
+                spriteBatch.DrawString(spriteFont, DEBUGMESSAGE, new Vector2(0, 0), Color.Indigo);
             spriteBatch.End();
 
             base.Draw( gameTime );

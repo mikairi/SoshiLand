@@ -74,6 +74,10 @@ namespace SoshiLand
         {
             // TODO: Add your initialization logic here
 
+            SoshilandGame testGame = new SoshilandGame();
+
+            ;
+
             base.Initialize();
 
         }

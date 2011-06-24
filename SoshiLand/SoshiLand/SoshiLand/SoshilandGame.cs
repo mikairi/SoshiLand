@@ -6,11 +6,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 // Required to read XML file
 using System.Xml;
-namespace SoshiLand
+namespace SoshiLand 
 {
     class SoshilandGame
     {
-
         List<Player> ListOfPlayers;                     // Contains the list of players in the game
         Tile[] Tiles = new Tile[48];                    // Array of Tiles
 
@@ -61,16 +60,12 @@ namespace SoshiLand
             // But it'll only be run once at the start of a game.
 
             // XML Reading Variables
-            XmlDocument xmlDoc;
-            XmlNodeList xmlNode;
+            XmlReader xmlReader;
 
-            xmlDoc = new XmlDocument();
-            xmlDoc.Load("PropertyCards.xml");               // Load Property Cards XML
-
-            xmlNode = xmlDoc.GetElementsByTagName("Color"); // Set the starting Element to scan for
+            xmlReader = XmlReader.Create("PropertyCards.xml");
 
             // First, reserve spots in array for non-property Tiles
-            Tiles[0] = new Tile("Go");                      
+            Tiles[0] = new Tile("Go");
             Tiles[5] = new Tile("Special Luxury");
             Tiles[8] = new Tile("Chance");
             Tiles[12] = new Tile("Hello Baby");
@@ -89,7 +84,7 @@ namespace SoshiLand
             Color currentColor = Color.White;      // Keep track of current Color in XML
             string currentTileName = "";           // Keep track of current Tile Name
 
-            string currentMember;                  // Name of SNSD member who owns the Property
+            string currentMember = "";                  // Name of SNSD member who owns the Property
             uint currentBaseRent = 0;              // Rent
             uint currentHouse1Rent = 0;            // Rent with 1 House
             uint currentHouse2Rent = 0;            // Rent with 2 Houses
@@ -101,6 +96,117 @@ namespace SoshiLand
             uint currentHotelCost = 0;             // Cost for Hotel (+ 4 houses)
             uint currentPropertyPrice = 0;         // Cost to initially purchase property
 
+            int testcounter = 0;                    // Debugging purposes
+            int propertyCardInfoCounter = 0;        // This is a counter to ensure that the current property card has read all the required data
+
+            // Note: Current, this function largely assumes that the XML file is structured correctly and complete in data.
+            while (xmlReader.Read())
+            {
+                XmlNodeType nodeType = xmlReader.NodeType;
+                if (nodeType == XmlNodeType.Element)
+                {
+                    testcounter++;
+                    switch (xmlReader.Name)
+                    {
+                        // If the current element is a Color
+                        case "Color":
+                            // Checks if there is only one attribute
+                            // THIS MUST BE TRUE! Otherwise the XML structure is wrong
+                            if (xmlReader.AttributeCount == 1)
+                            {
+                                try
+                                {
+                                    currentColor = getColorFromNumber(Convert.ToInt16(xmlReader.GetAttribute(0)));
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.Error.WriteLine("Warning: Invalid color value in XML file. " + " ERROR: " + e.Message);
+                                }
+                            }
+                            else
+                                Console.Error.WriteLine("Warning: Color in XML file is missing attribute value");
+                            break;
+                        // If the current element is a Tile
+                        case "Tile":
+                            if (xmlReader.AttributeCount == 1)
+                            {
+                                try
+                                {
+                                    currentTileName = xmlReader.GetAttribute(0);
+                                    propertyCardInfoCounter++;
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.Error.WriteLine("Warning: Invalid string value in XML file. " + " ERROR: " + e.Message);
+                                }
+                            }
+                            else
+                                Console.Error.WriteLine("Warning: Tile in XML file is missing attribute value");
+                            break;
+                        case "Member":
+                            currentMember = ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter);
+                            break;
+                        case "Rent":
+                            currentBaseRent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "House1Rent":
+                            currentHouse1Rent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "House2Rent":
+                            currentHouse2Rent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "House3Rent":
+                            currentHouse3Rent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "House4Rent":
+                            currentHouse4Rent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "Hotel":
+                            currentHotelRent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "Mortgage Value":
+                            currentMortgageValue = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "HouseCost":
+                            currentHouseCost = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "HotelCost":
+                            currentHotelCost = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+                            break;
+                        case "PropertyPrice":
+                            currentPropertyPrice = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
+
+                            // Check if enough data has been pulled
+                            if (propertyCardInfoCounter == 11)
+                            {
+                                while (Tiles[counter] != null)
+                                    counter++;
+                                // Create the Tile
+                                Tiles[counter] = new PropertyTile(
+                                    currentTileName,
+                                    currentColor,
+                                    currentBaseRent,
+                                    currentHouse1Rent,
+                                    currentHouse2Rent,
+                                    currentHouse3Rent,
+                                    currentHouse4Rent,
+                                    currentHotelRent,
+                                    currentMortgageValue,
+                                    currentHouseCost,
+                                    currentHotelCost,
+                                    currentPropertyPrice);
+
+                                // Reset the Card Counter
+                                propertyCardInfoCounter = 0;
+                            }
+                            else
+                                Console.Error.WriteLine("ERROR! Tile is missing data");
+                            break;
+                    }
+
+                }
+            }
+            /*
             // Iterate through Colors
             foreach (XmlNode nodeColor in xmlNode)
             {   
@@ -167,6 +273,23 @@ namespace SoshiLand
                         currentPropertyPrice);
                 }
             }
+            */
+        }
+
+        private string ReadStringFromCurrentNode(XmlReader x, ref int counter)
+        {
+            string tempString = null;
+            try
+            {
+                tempString = x.ReadInnerXml();
+                counter++;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("Warning: Invalid string value in XML file. " + " ERROR: " + e.Message);
+            }
+
+            return tempString;
         }
     }
 }

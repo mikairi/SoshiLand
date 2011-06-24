@@ -32,7 +32,7 @@ So... We'll use a number system for that.
       <Hotel>250</Hotel>
       <MortgageValue>30</MortgageValue>
       <HouseCost>50</HouseCost>
-      <HotelCost>50</HotelCost>         <!-- Note for later: Why does this Hotel cost more than the other Orange ones?-->
+      <HotelCost>50</HotelCost>         
       <PropertyPrice>60</PropertyPrice>
     </Tile>
     <Tile name ="Kuwait National Museum">
