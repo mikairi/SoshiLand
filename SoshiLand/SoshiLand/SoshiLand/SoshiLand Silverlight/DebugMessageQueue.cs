@@ -19,7 +19,7 @@ namespace SoshiLandSilverlight
     {
         private List<string> MessageQueue = new List<string>();
 
-        private double messageInterval = 1000;
+        private double messageInterval = 50;
         private double lastMessageInterval = 0;
         private bool resetGameTime = false;
 

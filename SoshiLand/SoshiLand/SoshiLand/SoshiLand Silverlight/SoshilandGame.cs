@@ -34,6 +34,26 @@ namespace SoshiLandSilverlight
         private bool optionPurchaseOrAuctionUtility = false;
         private bool optionDevelopProperty = false;
         
+        // Phase Flags
+        
+        // 0 = Pre Roll Phase
+        // Player has option to trade, develop or mortgage / unmortgage.
+        // If player is in jail, player has option to Pay to get out of jail, or roll doubles
+        // Phase ends after player chooses to roll dice
+        
+        // 1 = Roll Phase
+        // Player has landed on a Tile.
+        // If tile is a property, Player is forced to purchase or auction
+        // If tile is Chance / Community Chest, Player is forced to follow card instructions immediately
+        // If tile is Taxes, Player is forced to pay immediately (or choose option between 10% or $200 for luxury tax)
+        // If tile is Jail, move piece to jail
+
+        // 2 = Post Roll Phase
+        // Player has option to trade, develop or mortgage / unmortgage.
+        // Phase ends after playing chooses to end his or her turn
+
+        private byte turnPhase = 0;                 
+
         private KeyboardState previousKeyboardInput;    
 
         // TEMPORARY
@@ -48,17 +68,20 @@ namespace SoshiLandSilverlight
         private void InitializeGame()
         {
             // Temporary list of players
-            Player player1 = new Player("Player 1");
-            Player player2 = new Player("Player 2");
-            Player player3 = new Player("Player 3");
-            Player player4 = new Player("Player 4");
+            Player player1 = new Player("Mark");
+            Player player2 = new Player("Wooski");
+            Player player3 = new Player("Yook");
+            Player player4 = new Player("Addy");
+            Player player5 = new Player("Colby");
+            Player player6 = new Player("Skylar");
 
-            playerArray = new Player[4];
+            playerArray = new Player[6];
             playerArray[0] = player1;
             playerArray[1] = player2;
             playerArray[2] = player3;
             playerArray[3] = player4;
-
+            playerArray[4] = player5;
+            playerArray[5] = player6;
             // Determine order of players
             DeterminePlayerOrder(playerArray);
             // Players choose pieces (this can be implemented later)
@@ -67,6 +90,7 @@ namespace SoshiLandSilverlight
             DistributeStartingMoney();
             // Place all Pieces on Go
             PlaceAllPiecesOnGo();
+            startNextPlayerTurn();
         }
 
         public void TESTPLAYERORDER()
@@ -76,6 +100,15 @@ namespace SoshiLandSilverlight
 
         public void startNextPlayerTurn()
         {
+            if (Game1.DEBUG)
+            {
+                if (currentTurnsPlayers != null)
+                {
+                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn ends");
+                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn ends");
+                }
+            }
+
             int previousPlayersTurn = ListOfPlayers.IndexOf(currentTurnsPlayers);
             int nextPlayersTurn;
             // Checks if the player is at the end of the list
@@ -90,12 +123,21 @@ namespace SoshiLandSilverlight
         private void PlayerTurn(Player player)
         {
             currentTurnsPlayers = player;
+            if (Game1.DEBUG)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
+                Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
+            }
+
+            // Set phase to Pre Roll Phase
+            turnPhase = 0;
+
+
+
             // Check if player is currently in Jail
-            // Rolls Dice and Move Piece to Tile
-            RollDice(player);
-            MovePlayerDiceRoll(player, currentDiceRoll);
+            
             // Determine what Tile was landed on and give options
-            PlayerOptions(player);
+            
 
         }
 
@@ -624,40 +666,72 @@ namespace SoshiLandSilverlight
         {
             KeyboardState kbInput = Keyboard.GetState();
 
-            if (optionsCalculated)
+            switch (turnPhase)
             {
-                // Player chooses to purchase property
-                if (kbInput.IsKeyDown(Keys.P) && previousKeyboardInput.IsKeyUp(Keys.P))
-                {
-                    bool successfulPurchase = false;
-                    // Purchase Property
-                    if (optionPurchaseOrAuctionProperty)
-                        successfulPurchase = currentTurnsPlayers.PurchaseProperty((PropertyTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
-                    // Purchase Utility
-                    else if (optionPurchaseOrAuctionUtility)
-                        successfulPurchase = currentTurnsPlayers.PurchaseUtility((UtilityTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
-                        // Player cannot purchase right now
-                    else
+                    // Pre Roll Phase
+                case 0:
+                    // Roll Dice
+                    if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
                     {
+                        // Rolls Dice and Move Piece to Tile
+                        RollDice(currentTurnsPlayers);
+                        MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);
+                        // Calculate options for player
+                        PlayerOptions(currentTurnsPlayers);
 
-                        if (Game1.DEBUG)
+                        // Set next phase
+                        turnPhase = 1;
+                    }
+                    break;
+
+                    // Roll Phase
+                case 1:
+                    if (optionsCalculated)
+                    {
+                        // Player chooses to purchase property
+                        if (kbInput.IsKeyDown(Keys.P) && previousKeyboardInput.IsKeyUp(Keys.P))
                         {
-
+                            bool successfulPurchase = false;
+                            // Purchase Property
+                            if (optionPurchaseOrAuctionProperty)
+                                successfulPurchase = currentTurnsPlayers.PurchaseProperty((PropertyTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
+                            // Purchase Utility
+                            else if (optionPurchaseOrAuctionUtility)
+                                successfulPurchase = currentTurnsPlayers.PurchaseUtility((UtilityTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
+                            // Player cannot purchase right now
+                            else
+                            {
+                                if (Game1.DEBUG)
+                                {
+                                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
+                                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
+                                }
+                            }
+                            // Turn off option to purchase if successful purchase has been made
+                            if (successfulPurchase)
+                            {
+                                // Set flags for purchase/auction off
+                                optionPurchaseOrAuctionUtility = false;
+                                optionPurchaseOrAuctionProperty = false;
+                                // Set the next phase
+                                turnPhase = 2;
+                            }
                         }
                     }
-                    // Turn off option to purchase if successful purchase has been made
-                    if (successfulPurchase)
-                    {
-                        optionPurchaseOrAuctionUtility = false;
-                        optionPurchaseOrAuctionProperty = false;
-                    }
-                }
-            }
+                    break;
+                    // Post Roll Phase
 
-            if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
-                startNextPlayerTurn();
-            if (kbInput.IsKeyDown(Keys.I) && previousKeyboardInput.IsKeyUp(Keys.I))
-                TESTPLAYERORDER();
+                case 2:
+                    // Player chooses to end turn
+                    if (kbInput.IsKeyDown(Keys.E) && previousKeyboardInput.IsKeyUp(Keys.E))
+                    {
+                        // Start next player's turn
+                        startNextPlayerTurn();
+                        // Set phase back to 0 for next player
+                        turnPhase = 0;
+                    }
+                    break;
+            }
 
             previousKeyboardInput = kbInput;
         }
