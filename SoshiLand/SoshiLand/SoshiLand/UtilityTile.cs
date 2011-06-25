@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SoshiLandSilverlight
+namespace SoshiLand
 {
     class UtilityTile : Tile
     {
@@ -16,11 +16,6 @@ namespace SoshiLandSilverlight
         {
             set { owner = value; }
             get { return owner; }
-        }
-
-        public uint getPropertyPrice
-        {
-            get { return propertyPrice; }
         }
 
         public UtilityTile(string name) : base(name, TileType.Utility)

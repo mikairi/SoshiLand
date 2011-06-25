@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 // Required to read XML file
 using System.Xml;
 
@@ -26,10 +27,14 @@ namespace SoshiLandSilverlight
         public static int Hotels = 12;                  // Static Global variable for number of hotels remaining
 
         private bool gameInitialized = false;           // Flag for when the game is officially started
+        private bool optionsCalculated = false;         // Flag for when player options are ready to prompt
 
         // Player Options during turn
         private bool optionPurchaseOrAuctionProperty = false;
+        private bool optionPurchaseOrAuctionUtility = false;
         private bool optionDevelopProperty = false;
+        
+        private KeyboardState previousKeyboardInput;    
 
         // TEMPORARY
         Player[] playerArray;
@@ -90,6 +95,7 @@ namespace SoshiLandSilverlight
             RollDice(player);
             MovePlayerDiceRoll(player, currentDiceRoll);
             // Determine what Tile was landed on and give options
+            PlayerOptions(player);
 
         }
 
@@ -134,7 +140,7 @@ namespace SoshiLandSilverlight
 
                     // If the property is not owned yet
                     if (currentUtility.Owner == null)
-                        optionPurchaseOrAuctionProperty = true;
+                        optionPurchaseOrAuctionUtility = true;
                         // If the property is owned by another player
                     else if (currentUtility.Owner != player)
                     {
@@ -175,9 +181,18 @@ namespace SoshiLandSilverlight
 
             }
 
+            optionsCalculated = true;
+
             if (Game1.DEBUG)
             {
+                string optionsMessage = "Options Available: Trade,";
+                if (optionDevelopProperty)
+                    optionsMessage = optionsMessage + " Develop,";
+                if (optionPurchaseOrAuctionProperty)
+                    optionsMessage = optionsMessage + " Purchase/Auction";
 
+                Game1.debugMessageQueue.addMessageToQueue(optionsMessage);
+                Console.WriteLine(optionsMessage);
             }
         }
 
@@ -603,6 +618,48 @@ namespace SoshiLandSilverlight
             }
 
             return tempString;
+        }
+
+        public void PlayerInputUpdate()
+        {
+            KeyboardState kbInput = Keyboard.GetState();
+
+            if (optionsCalculated)
+            {
+                // Player chooses to purchase property
+                if (kbInput.IsKeyDown(Keys.P) && previousKeyboardInput.IsKeyUp(Keys.P))
+                {
+                    bool successfulPurchase = false;
+                    // Purchase Property
+                    if (optionPurchaseOrAuctionProperty)
+                        successfulPurchase = currentTurnsPlayers.PurchaseProperty((PropertyTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
+                    // Purchase Utility
+                    else if (optionPurchaseOrAuctionUtility)
+                        successfulPurchase = currentTurnsPlayers.PurchaseUtility((UtilityTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
+                        // Player cannot purchase right now
+                    else
+                    {
+
+                        if (Game1.DEBUG)
+                        {
+
+                        }
+                    }
+                    // Turn off option to purchase if successful purchase has been made
+                    if (successfulPurchase)
+                    {
+                        optionPurchaseOrAuctionUtility = false;
+                        optionPurchaseOrAuctionProperty = false;
+                    }
+                }
+            }
+
+            if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
+                startNextPlayerTurn();
+            if (kbInput.IsKeyDown(Keys.I) && previousKeyboardInput.IsKeyUp(Keys.I))
+                TESTPLAYERORDER();
+
+            previousKeyboardInput = kbInput;
         }
     }
 }
