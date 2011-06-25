@@ -93,11 +93,6 @@ namespace SoshiLandSilverlight
             startNextPlayerTurn();
         }
 
-        public void TESTPLAYERORDER()
-        {
-            DeterminePlayerOrder(playerArray);
-        }
-
         public void startNextPlayerTurn()
         {
             if (Game1.DEBUG)
@@ -123,6 +118,7 @@ namespace SoshiLandSilverlight
         private void PlayerTurn(Player player)
         {
             currentTurnsPlayers = player;
+            
             if (Game1.DEBUG)
             {
                 Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
@@ -171,6 +167,7 @@ namespace SoshiLandSilverlight
                     }
                     // Otherwise, player landed on his or her own property, so do nothing
                     break;
+
                 case TileType.Utility:
                     UtilityTile currentUtility = (UtilityTile)Tiles[currentTile];
                     UtilityTile otherUtility;
@@ -204,6 +201,7 @@ namespace SoshiLandSilverlight
                             ;
                     }
                     break;
+
                 case TileType.Chance:
                     break;
                 case TileType.CommunityChest:
@@ -217,6 +215,7 @@ namespace SoshiLandSilverlight
                 case TileType.SpecialLuxuryTax:
                     break;
                 case TileType.GoToJail:
+                    MovePlayerToJail(player);
                     break;
                 case TileType.Go:
                     break;
@@ -447,8 +446,16 @@ namespace SoshiLandSilverlight
             currentDiceRoll = total;                // Set the global dice roll variable
 
             if (dice1Int == dice2Int)
+            {
                 DoublesRolled = true;
-
+                // Check if it's the third consecutive double roll
+                if (numberOfDoubles == 3)
+                    // Move player to jail
+                    MovePlayerToJail(p);
+                else
+                    // Increment number of doubles
+                    numberOfDoubles++;
+            }
             if (Game1.DEBUG)
             {
                 Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
@@ -490,6 +497,21 @@ namespace SoshiLandSilverlight
                 Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
                 Console.WriteLine("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
             }
+        }
+
+        private void MovePlayerToJail(Player p)
+        {
+            if (Game1.DEBUG)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " goes to jail!");
+                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " goes to jail!");
+            }
+            // Set jail flag for player
+            p.inJail = true;
+            MovePlayer(p, 12);
+
+            // Set phase to Post Roll Phase
+            turnPhase = 2;
         }
 
         private void InitializeTiles()
@@ -706,6 +728,9 @@ namespace SoshiLandSilverlight
                                     Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
                                     Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
                                 }
+                                
+                                // Go to next phase
+                                turnPhase = 2;
                             }
                             // Turn off option to purchase if successful purchase has been made
                             if (successfulPurchase)
@@ -725,10 +750,27 @@ namespace SoshiLandSilverlight
                     // Player chooses to end turn
                     if (kbInput.IsKeyDown(Keys.E) && previousKeyboardInput.IsKeyUp(Keys.E))
                     {
-                        // Start next player's turn
-                        startNextPlayerTurn();
-                        // Set phase back to 0 for next player
-                        turnPhase = 0;
+                        // Check if doubles has been rolled
+                        if (DoublesRolled)
+                        {
+                            // Go back to phase 0 for current player
+                            turnPhase = 0;
+
+                            if (Game1.DEBUG)
+                            {
+                                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " gets to roll again!");
+                                Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " gets to roll again!");
+                            }
+                        }
+                        else
+                        {
+                            // Start next player's turn
+                            startNextPlayerTurn();
+                            // Set phase back to 0 for next player
+                            turnPhase = 0;
+                            optionsCalculated = false;
+
+                        }
                     }
                     break;
             }
