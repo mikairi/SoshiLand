@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 // Required to read XML file
 using System.Xml;
 
@@ -26,10 +27,36 @@ namespace SoshiLand
         public static int Hotels = 12;                  // Static Global variable for number of hotels remaining
 
         private bool gameInitialized = false;           // Flag for when the game is officially started
+        private bool optionsCalculated = false;         // Flag for when player options are ready to prompt
+
+        private bool displayJailMessageOnce = true;    // Flag to display message only once
 
         // Player Options during turn
         private bool optionPurchaseOrAuctionProperty = false;
+        private bool optionPurchaseOrAuctionUtility = false;
         private bool optionDevelopProperty = false;
+
+        // Phase Flags
+
+        // 0 = Pre Roll Phase
+        // Player has option to trade, develop or mortgage / unmortgage.
+        // If player is in jail, player has option to Pay to get out of jail, or roll doubles
+        // Phase ends after player chooses to roll dice
+
+        // 1 = Roll Phase
+        // Player has landed on a Tile.
+        // If tile is a property, Player is forced to purchase or auction
+        // If tile is Chance / Community Chest, Player is forced to follow card instructions immediately
+        // If tile is Taxes, Player is forced to pay immediately (or choose option between 10% or $200 for luxury tax)
+        // If tile is Jail, move piece to jail
+
+        // 2 = Post Roll Phase
+        // Player has option to trade, develop or mortgage / unmortgage.
+        // Phase ends after playing chooses to end his or her turn
+
+        private byte turnPhase = 0;
+
+        private KeyboardState previousKeyboardInput;
 
         // TEMPORARY
         Player[] playerArray;
@@ -43,17 +70,20 @@ namespace SoshiLand
         private void InitializeGame()
         {
             // Temporary list of players
-            Player player1 = new Player("Player 1");
-            Player player2 = new Player("Player 2");
-            Player player3 = new Player("Player 3");
-            Player player4 = new Player("Player 4");
+            Player player1 = new Player("Mark");
+            Player player2 = new Player("Wooski");
+            Player player3 = new Player("Yook");
+            Player player4 = new Player("Addy");
+            Player player5 = new Player("Colby");
+            Player player6 = new Player("Skylar");
 
-            playerArray = new Player[4];
+            playerArray = new Player[6];
             playerArray[0] = player1;
             playerArray[1] = player2;
             playerArray[2] = player3;
             playerArray[3] = player4;
-
+            playerArray[4] = player5;
+            playerArray[5] = player6;
             // Determine order of players
             DeterminePlayerOrder(playerArray);
             // Players choose pieces (this can be implemented later)
@@ -62,15 +92,19 @@ namespace SoshiLand
             DistributeStartingMoney();
             // Place all Pieces on Go
             PlaceAllPiecesOnGo();
-        }
-
-        public void TESTPLAYERORDER()
-        {
-            DeterminePlayerOrder(playerArray);
+            startNextPlayerTurn();
         }
 
         public void startNextPlayerTurn()
         {
+            if (Game1.DEBUG)
+            {
+                if (currentTurnsPlayers != null)
+                {
+                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn ends");
+                }
+            }
+
             int previousPlayersTurn = ListOfPlayers.IndexOf(currentTurnsPlayers);
             int nextPlayersTurn;
             // Checks if the player is at the end of the list
@@ -85,11 +119,19 @@ namespace SoshiLand
         private void PlayerTurn(Player player)
         {
             currentTurnsPlayers = player;
+
+            if (Game1.DEBUG)
+            {
+                Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
+            }
+
+            // Set phase to Pre Roll Phase
+            turnPhase = 0;
+
             // Check if player is currently in Jail
-            // Rolls Dice and Move Piece to Tile
-            RollDice(player);
-            MovePlayerDiceRoll(player, currentDiceRoll);
+
             // Determine what Tile was landed on and give options
+
 
         }
 
@@ -123,6 +165,7 @@ namespace SoshiLand
                     }
                     // Otherwise, player landed on his or her own property, so do nothing
                     break;
+
                 case TileType.Utility:
                     UtilityTile currentUtility = (UtilityTile)Tiles[currentTile];
                     UtilityTile otherUtility;
@@ -134,7 +177,7 @@ namespace SoshiLand
 
                     // If the property is not owned yet
                     if (currentUtility.Owner == null)
-                        optionPurchaseOrAuctionProperty = true;
+                        optionPurchaseOrAuctionUtility = true;
                     // If the property is owned by another player
                     else if (currentUtility.Owner != player)
                     {
@@ -156,6 +199,7 @@ namespace SoshiLand
                             ;
                     }
                     break;
+
                 case TileType.Chance:
                     break;
                 case TileType.CommunityChest:
@@ -169,15 +213,24 @@ namespace SoshiLand
                 case TileType.SpecialLuxuryTax:
                     break;
                 case TileType.GoToJail:
+                    MovePlayerToJail(player);
                     break;
                 case TileType.Go:
                     break;
 
             }
 
+            optionsCalculated = true;
+
             if (Game1.DEBUG)
             {
+                string optionsMessage = "Options Available: Trade,";
+                if (optionDevelopProperty)
+                    optionsMessage = optionsMessage + " Develop,";
+                if (optionPurchaseOrAuctionProperty || optionPurchaseOrAuctionUtility)
+                    optionsMessage = optionsMessage + " Purchase/Auction";
 
+                Console.WriteLine(optionsMessage);
             }
         }
 
@@ -206,6 +259,7 @@ namespace SoshiLand
                 // Move player to Go
                 MovePlayer(p, 0);
             }
+            gameInitialized = true;
         }
 
         private void DeterminePlayerOrder(Player[] arrayOfPlayers)
@@ -376,14 +430,24 @@ namespace SoshiLand
         private void RollDice(Player p)
         {
             DoublesRolled = false;
-            int dice1Int = die.Next(1, 7);
-            int dice2Int = die.Next(1, 7);
+            int dice1Int = die.Next(1, 6);
+            int dice2Int = die.Next(1, 6);
+
             int total = dice1Int + dice2Int;
 
             currentDiceRoll = total;                // Set the global dice roll variable
 
-            if (dice1Int == dice2Int)
+            if (dice1Int == dice2Int && gameInitialized)
+            {
                 DoublesRolled = true;
+                // Check if it's the third consecutive double roll
+                if (numberOfDoubles == 3)
+                    // Move player to jail
+                    MovePlayerToJail(p);
+                else
+                    // Increment number of doubles
+                    numberOfDoubles++;
+            }
 
             if (Game1.DEBUG)
             {
@@ -423,6 +487,20 @@ namespace SoshiLand
             {
                 Console.WriteLine("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
             }
+        }
+
+        private void MovePlayerToJail(Player p)
+        {
+            if (Game1.DEBUG)
+            {
+                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " goes to jail!");
+            }
+            // Set jail flag for player
+            p.inJail = true;
+            MovePlayer(p, 12);
+
+            // Set phase to Post Roll Phase
+            turnPhase = 2;
         }
 
         private void InitializeTiles()
@@ -593,6 +671,166 @@ namespace SoshiLand
             }
 
             return tempString;
+        }
+
+        public void PlayerInputUpdate()
+        {
+            KeyboardState kbInput = Keyboard.GetState();
+
+            switch (turnPhase)
+            {
+                // Pre Roll Phase
+                case 0:
+                    // Check if player is in jail
+                    if (currentTurnsPlayers.inJail)
+                    {
+                        if (Game1.DEBUG && displayJailMessageOnce)
+                        {
+                            Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " is currently in jail");
+                            Console.WriteLine("Press T to pay $50 to get out of jail, or R to try and roll doubles");
+                            displayJailMessageOnce = false;
+                        }
+
+                        // Player decides to roll for doubles
+                        if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
+                        {
+                            // Roll Dice
+                            RollDice(currentTurnsPlayers);
+
+                            // Only move if doubles were rolled or if player has been in jail for the third turn
+                            if (DoublesRolled || currentTurnsPlayers.turnsInJail == 2)
+                            {
+                                if (currentTurnsPlayers.turnsInJail == 2)
+                                {
+                                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must pay $50 to get out of jail on third turn.");
+
+                                    // Pay bank fine
+                                    currentTurnsPlayers.PlayerPaysBank(50);
+                                    // Set player out of jail
+                                    currentTurnsPlayers.inJail = false;
+                                    // Set turns in jail back to zero
+                                    currentTurnsPlayers.turnsInJail = 0;
+                                }
+
+                                MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);
+                                // Calculate options for player
+                                PlayerOptions(currentTurnsPlayers);
+
+                                // Turn off doubles rolled flag because player is not supposed to take another turn after getting out of jail
+                                DoublesRolled = false;
+
+                                turnPhase = 1;
+                            }
+                            else
+                            {
+                                if (Game1.DEBUG)
+                                {
+                                    Console.WriteLine("You failed to roll doubles and stay in jail.");
+                                }
+
+                                currentTurnsPlayers.turnsInJail++;
+                                turnPhase = 2;
+                            }
+                        }
+
+                        // If player chooses to pay to get out of jail
+                        if (kbInput.IsKeyDown(Keys.T) && previousKeyboardInput.IsKeyUp(Keys.T))
+                        {
+                            Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $50 to escape from Babysitting Kyungsan");
+
+                            // Pay bank fine
+                            currentTurnsPlayers.PlayerPaysBank(50);
+                            // Set turns in jail back to zero
+                            currentTurnsPlayers.turnsInJail = 0;
+                            currentTurnsPlayers.inJail = false;
+                        }
+
+                    }
+                    else
+                    {
+                        // Roll Dice
+                        if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
+                        {
+                            // Rolls Dice and Move Piece to Tile
+                            RollDice(currentTurnsPlayers);
+                            // Calculate options for player
+                            PlayerOptions(currentTurnsPlayers);
+
+                            // Set next phase
+                            turnPhase = 1;
+                        }
+                    }
+                    break;
+
+                // Roll Phase
+                case 1:
+                    if (optionsCalculated)
+                    {
+                        // Player chooses to purchase property
+                        if (kbInput.IsKeyDown(Keys.P) && previousKeyboardInput.IsKeyUp(Keys.P))
+                        {
+                            bool successfulPurchase = false;
+                            // Purchase Property
+                            if (optionPurchaseOrAuctionProperty)
+                                successfulPurchase = currentTurnsPlayers.PurchaseProperty((PropertyTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
+                            // Purchase Utility
+                            else if (optionPurchaseOrAuctionUtility)
+                                successfulPurchase = currentTurnsPlayers.PurchaseUtility((UtilityTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
+                            // Player cannot purchase right now
+                            else
+                            {
+                                if (Game1.DEBUG)
+                                {
+                                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
+                                }
+
+                                // Go to next phase
+                                turnPhase = 2;
+                            }
+                            // Turn off option to purchase if successful purchase has been made
+                            if (successfulPurchase)
+                            {
+                                // Set flags for purchase/auction off
+                                optionPurchaseOrAuctionUtility = false;
+                                optionPurchaseOrAuctionProperty = false;
+                                // Set the next phase
+                                turnPhase = 2;
+                            }
+                        }
+                    }
+                    break;
+                // Post Roll Phase
+
+                case 2:
+                    // Player chooses to end turn
+                    if (kbInput.IsKeyDown(Keys.E) && previousKeyboardInput.IsKeyUp(Keys.E))
+                    {
+                        // Check if doubles has been rolled
+                        if (DoublesRolled && !currentTurnsPlayers.inJail)
+                        {
+                            // Go back to phase 0 for current player
+                            turnPhase = 0;
+
+                            if (Game1.DEBUG)
+                            {
+                                Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " gets to roll again!");
+                            }
+                        }
+                        else
+                        {
+                            // Start next player's turn
+                            startNextPlayerTurn();
+                            // Set phase back to 0 for next player
+                            turnPhase = 0;
+                            optionsCalculated = false;
+                            // set number of doubles back to zero
+                            numberOfDoubles = 0;
+                        }
+                    }
+                    break;
+            }
+
+            previousKeyboardInput = kbInput;
         }
     }
 }

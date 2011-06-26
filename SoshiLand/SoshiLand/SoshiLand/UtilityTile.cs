@@ -18,7 +18,13 @@ namespace SoshiLand
             get { return owner; }
         }
 
-        public UtilityTile(string name) : base(name, TileType.Utility)
+        public uint getPropertyPrice
+        {
+            get { return propertyPrice; }
+        }
+
+        public UtilityTile(string name)
+            : base(name, TileType.Utility)
         {
 
         }

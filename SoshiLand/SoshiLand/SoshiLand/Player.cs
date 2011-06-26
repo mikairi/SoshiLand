@@ -10,6 +10,7 @@ namespace SoshiLand
         private string Name;                        // Player's Screen Name
         private uint Money;                         // Player's Total Cash
         private bool Jail = false;                  // boolean for when player is in Jail or not
+        private int numberOfTurnsInJail = 0;                // Keep track of how many turns Player has been in jail
         private int currentPositionOnBoard;         // Player's position on the board in the Tiles[] array (index 0)
 
         private uint actualAmountRemoved;           // If the player must pay another player an amount greater than what they own
@@ -18,6 +19,12 @@ namespace SoshiLand
         {
             set { Jail = true; }
             get { return Jail; }
+        }
+
+        public int turnsInJail
+        {
+            set { numberOfTurnsInJail = value; }
+            get { return numberOfTurnsInJail; }
         }
 
         public int CurrentBoardPosition
@@ -39,6 +46,52 @@ namespace SoshiLand
         public uint getMoney
         {
             get { return Money; }
+        }
+
+        public bool PurchaseProperty(PropertyTile property)
+        {
+            if (Money >= property.getPropertyPrice)
+            {
+                if (Game1.DEBUG)
+                {
+                    Console.WriteLine("Player \"" + this.getName + "\" purchased \"" + property.getName + "\" for $" + property.getPropertyPrice);
+                }
+                removeMoney(property.getPropertyPrice);
+                property.Owner = this;
+
+                return true;
+            }
+            else
+            {
+                if (Game1.DEBUG)
+                {
+                    Console.WriteLine("Player \"" + this.getName + "\" does not have enough to purchase \"" + property.getName + "\"");
+                }
+                return false;
+            }
+        }
+
+        public bool PurchaseUtility(UtilityTile utility)
+        {
+            if (Money >= utility.getPropertyPrice)
+            {
+                if (Game1.DEBUG)
+                {
+                    Console.WriteLine("Player \"" + this.getName + "\" purchased \"" + utility.getName + "\" for $" + utility.getPropertyPrice);
+                }
+                removeMoney(utility.getPropertyPrice);
+                utility.Owner = this;
+
+                return true;
+            }
+            else
+            {
+                if (Game1.DEBUG)
+                {
+                    Console.WriteLine("Player \"" + this.getName + "\" does not have enough to purchase \"" + utility.getName + "\"");
+                }
+                return false;
+            }
         }
 
         public void PlayerPaysBank(uint amountPaid)
@@ -87,8 +140,15 @@ namespace SoshiLand
             // Since money is a uint, must be positive
             if (!(m > Money))
                 Money -= m;
+
+
             // Otherwise, the player is required to sell / trade / mortgage 
             // Need to put an else here later.
+
+            if (Game1.DEBUG)
+            {
+                Console.WriteLine("Player \"" + this.getName + "\" has $" + Money + " remaining");
+            }
         }
     }
 }
