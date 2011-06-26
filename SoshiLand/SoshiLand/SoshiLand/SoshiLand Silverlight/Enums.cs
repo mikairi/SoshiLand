@@ -53,7 +53,7 @@ namespace SoshiLandSilverlight
         SoshiBond
     };
 
-    enum TileType
+    public enum TileType
     {
         Go,
         Property,

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SoshiLandSilverlight
 {
-    class Tile
+    public class Tile
     {
         private string Name;
         private Texture2D texture;
