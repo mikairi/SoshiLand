@@ -238,7 +238,6 @@ namespace SoshiLandSilverlight
                 case TileType.Go:
                     turnPhase = 2;
                     break;
-
             }
 
             optionsCalculated = true;

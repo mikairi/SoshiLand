@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ChanceCards>
+  <ChanceCard>
+    <Description>Have a sold out concert, collect $200.</Description>
+    <MoneyAdded>200</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Get out of babysitting Kyungsan by calling in a daily dad.</Description>
+    <MoneyAdded>0</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>0</PerPlayer>
+    <Special>freeJail</Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Top the KBS Music Bank K-chart for the 9th week in the row, collect $50.</Description>
+    <MoneyAdded>50</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Win Golden Disk Awards: Disk Daesang, collect $100.</Description>
+    <MoneyAdded>100</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Win Melon Music Awards: Artist of the Year, collect $100.</Description>
+    <MoneyAdded>100</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Win Seoul Music Awards: Daesang Award, collect $100.</Description>
+    <MoneyAdded>100</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Break another all-high record on KBS Music Bank K-chart, collect $50.</Description>
+    <MoneyAdded>50</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Win the triple crown mutizen on SBS Inkigayo, collect $50.</Description>
+    <MoneyAdded>50</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Get invited to MC for various music shows, collect $50.</Description>
+    <MoneyAdded>50</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Secure the lead female role in an upcoming drama, collect $75.</Description>
+    <MoneyAdded>75</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Get voted Best Mom on Hello Baby, collect $10 from each player.</Description>
+    <MoneyAdded>10</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>true</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Advance to Soshi Dorm, collect $200.</Description>
+    <MoneyAdded>200</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Advance to Seohyun’s Blue House (Seoul, South Korea).</Description>
+    <MoneyAdded>0</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>47</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Get asked to sing an OST song for an upcoming drama, collect $75.</Description>
+    <MoneyAdded>75</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>SNSD has been chosen as spokesperson for an upcoming cultural exhibit, collect $50.</Description>
+    <MoneyAdded>50</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>It’s Lunar New Year, collect $10 from each player.</Description>
+    <MoneyAdded>10</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>true</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>It’s your birthday, collect $10 from each player.</Description>
+    <MoneyAdded>10</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>true</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Get a CF offer from Intel, collect $100.</Description>
+    <MoneyAdded>100</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>International fan meeting comes true and you attend. Advance to Fan Meeting.</Description>
+    <MoneyAdded>0</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>24</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+  <ChanceCard>
+    <Description>Get elected as the next President, collect $200.</Description>
+    <MoneyAdded>200</MoneyAdded>
+    <MoneySubtracted>0</MoneySubtracted>
+    <PositionModifier>0</PositionModifier>
+    <PositionMover>0</PositionMover>
+    <PerPlayer>false</PerPlayer>
+    <Special></Special>
+  </ChanceCard>
+</ChanceCards>

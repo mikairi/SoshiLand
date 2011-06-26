@@ -158,6 +158,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="ChanceCards.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SoshiLandContent\SoshiLandContent.contentproj">
