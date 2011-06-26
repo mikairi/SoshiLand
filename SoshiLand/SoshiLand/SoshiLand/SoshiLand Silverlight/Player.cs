@@ -10,10 +10,16 @@ namespace SoshiLandSilverlight
         private string Name;                        // Player's Screen Name
         private uint Money;                         // Player's Total Cash
         private bool Jail = false;                  // boolean for when player is in Jail or not
-        private int numberOfTurnsInJail = 0;                // Keep track of how many turns Player has been in jail
+        private int numberOfTurnsInJail = 0;        // Keep track of how many turns Player has been in jail
         private int currentPositionOnBoard;         // Player's position on the board in the Tiles[] array (index 0)
 
         private uint actualAmountRemoved;           // If the player must pay another player an amount greater than what they own
+        private uint netWorth;                      // Player's net worth (Money + Buildings + printed prices of Mortgaged and Unmortgaged properties
+
+        public uint getNetWorth
+        {
+            get { return netWorth; }
+        }
 
         public bool inJail
         {

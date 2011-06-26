@@ -829,7 +829,6 @@ namespace SoshiLand
                     }
                     break;
             }
-
             previousKeyboardInput = kbInput;
         }
     }

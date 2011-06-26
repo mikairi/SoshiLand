@@ -35,7 +35,12 @@ namespace SoshiLandSilverlight
         private bool optionPurchaseOrAuctionProperty = false;
         private bool optionPurchaseOrAuctionUtility = false;
         private bool optionDevelopProperty = false;
-        
+        private bool optionPromptMortgageOrTrade = false;
+        private bool optionPromptLuxuryTax = false;
+        private bool optionShoppingSpree = false;
+
+        private bool taxesMustPayTenPercent = false;
+        private bool taxesMustPayTwoHundred = false;
         // Phase Flags
         
         // 0 = Pre Roll Phase
@@ -108,6 +113,7 @@ namespace SoshiLandSilverlight
 
             int previousPlayersTurn = ListOfPlayers.IndexOf(currentTurnsPlayers);
             int nextPlayersTurn;
+
             // Checks if the player is at the end of the list
             if (previousPlayersTurn == ListOfPlayers.Count - 1)
                 nextPlayersTurn = 0;
@@ -150,21 +156,20 @@ namespace SoshiLandSilverlight
             {
                 case TileType.Property:
                     PropertyTile currentProperty = (PropertyTile)Tiles[currentTile];
-                    // If the property is not owned yet
-                    if (currentProperty.Owner == null)
+
+                    if (currentProperty.Owner == null)                  // If the property is not owned yet
                         optionPurchaseOrAuctionProperty = true;
-                        // If the property is owned by another player
-                    else if (currentProperty.Owner != player)
+                    else if (currentProperty.Owner != player)           // If the property is owned by another player
                     {
-                        // Check if the player has enough money to pay Rent
-                        if (player.getMoney >= currentProperty.getRent)
-                            // Pay rent
-                            player.CurrentPlayerPaysPlayer(currentProperty.Owner, currentProperty.getRent);
+                        if (player.getMoney >= currentProperty.getRent) // Check if the player has enough money to pay Rent
+                        {
+                            player.CurrentPlayerPaysPlayer(currentProperty.Owner, currentProperty.getRent);     // Pay rent
+                            turnPhase = 2;          // Go to next phase
+                        }
                         else
-                            // Player must decide to mortgage or trade to get money
-                            // Put this in later
-                            ;
+                            optionPromptMortgageOrTrade = true;         // Player must decide to mortgage or trade to get money
                     }
+
                     // Otherwise, player landed on his or her own property, so do nothing
                     break;
 
@@ -175,30 +180,28 @@ namespace SoshiLandSilverlight
                     if (currentTile == 15)
                         otherUtility = (UtilityTile)Tiles[33];
                     else
-                        otherUtility = (UtilityTile)Tiles[15]; 
+                        otherUtility = (UtilityTile)Tiles[15];
 
-                    // If the property is not owned yet
-                    if (currentUtility.Owner == null)
+                    if (currentUtility.Owner == null)               // If the property is not owned yet
                         optionPurchaseOrAuctionUtility = true;
-                        // If the property is owned by another player
-                    else if (currentUtility.Owner != player)
+
+                    else if (currentUtility.Owner != player)        // If the property is owned by another player            
                     {
-                        // Calculate the amount to pay for Utility Rent
-                        uint utilityRent;
-                        // Check if player owns both utilities
-                        if (currentUtility.Owner == otherUtility.Owner)
+                        uint utilityRent;                           // Calculate the amount to pay for Utility Rent
+
+                        if (currentUtility.Owner == otherUtility.Owner)     // Check if player owns both utilities
                             utilityRent = (uint)currentDiceRoll * 10;
                         else
                             utilityRent = (uint)currentDiceRoll * 4;
 
-                        // Check if the player has enough money to pay Rent
-                        if (player.getMoney >= utilityRent)
-                            // Pay rent
-                            player.CurrentPlayerPaysPlayer(currentUtility.Owner, utilityRent);
+
+                        if (player.getMoney >= utilityRent)                 // Check if the player has enough money to pay Rent
+                        {
+                            player.CurrentPlayerPaysPlayer(currentUtility.Owner, utilityRent);  // Pay rent
+                            turnPhase = 2;              // Go to next phase
+                        }
                         else
-                            // Player must decide to mortgage or trade to get money
-                            // Put this in later
-                            ;
+                            optionPromptMortgageOrTrade = true;             // Player must decide to mortgage or trade to get money
                     }
                     break;
 
@@ -207,17 +210,33 @@ namespace SoshiLandSilverlight
                 case TileType.CommunityChest:
                     break;
                 case TileType.FanMeeting:
+                    turnPhase = 2;              // Nothing happens, so go to last phase
                     break;
                 case TileType.Jail:
+                    turnPhase = 2;              // Nothing happens, so go to last phase
                     break;
                 case TileType.ShoppingSpree:
+                    if (currentTurnsPlayers.getMoney >= 75)     // Check if player has enough money to pay tax
+                        currentTurnsPlayers.PlayerPaysBank(75); // Pay Bank taxes
+                        // Player does not have enough money
+                    else
+                    {
+                        optionShoppingSpree = true;             // Set flag so game remembers that player has to pay
+                        optionPromptMortgageOrTrade = true;     // Set flag to prompt player to get more money somehow
+                    }
                     break;
                 case TileType.SpecialLuxuryTax:
+                        Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
+                        Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
+                        Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
+                        Console.WriteLine("Press K to pay 10% of net worth, or L to pay $200");
+                        optionPromptLuxuryTax = true;
                     break;
                 case TileType.GoToJail:
                     MovePlayerToJail(player);
                     break;
                 case TileType.Go:
+                    turnPhase = 2;
                     break;
 
             }
@@ -693,7 +712,7 @@ namespace SoshiLandSilverlight
 
             switch (turnPhase)
             {
-                    // Pre Roll Phase
+                // Pre Roll Phase
                 case 0:
                     // Check if player is in jail
                     if (currentTurnsPlayers.inJail)
@@ -721,22 +740,18 @@ namespace SoshiLandSilverlight
                                     Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must pay $50 to get out of jail on third turn.");
                                     Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must pay $50 to get out of jail on third turn.");
 
-                                    // Pay bank fine
-                                    currentTurnsPlayers.PlayerPaysBank(50);
-                                    // Set player out of jail
-                                    currentTurnsPlayers.inJail = false;
-                                    // Set turns in jail back to zero
-                                    currentTurnsPlayers.turnsInJail = 0;
+                                    currentTurnsPlayers.PlayerPaysBank(50);             // Pay bank fine
+                                    currentTurnsPlayers.inJail = false;                 // Set player out of jail
+                                    currentTurnsPlayers.turnsInJail = 0;                // Set turns in jail back to zero
                                 }
 
-                                MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);
-                                // Calculate options for player
-                                PlayerOptions(currentTurnsPlayers);
-                                
-                                // Turn off doubles rolled flag because player is not supposed to take another turn after getting out of jail
-                                DoublesRolled = false;
+                                MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);   // Move player piece
+                                PlayerOptions(currentTurnsPlayers);                         // Calculate options for player
 
-                                turnPhase = 1;
+
+                                DoublesRolled = false;  // Turn off doubles rolled flag because player is not supposed to take another turn after getting out of jail
+
+                                turnPhase = 1;          // Set the next phase
                             }
                             else
                             {
@@ -757,11 +772,9 @@ namespace SoshiLandSilverlight
                             Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $50 to escape from Babysitting Kyungsan");
                             Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $50 to escape from Babysitting Kyungsan");
 
-                            // Pay bank fine
-                            currentTurnsPlayers.PlayerPaysBank(50);
-                            // Set turns in jail back to zero
-                            currentTurnsPlayers.turnsInJail = 0;
-                            currentTurnsPlayers.inJail = false;
+                            currentTurnsPlayers.PlayerPaysBank(50);     // Pay bank fine
+                            currentTurnsPlayers.turnsInJail = 0;        // Set turns in jail back to zero
+                            currentTurnsPlayers.inJail = false;         // Set player to be out of Jail
                         }
 
                     }
@@ -770,13 +783,10 @@ namespace SoshiLandSilverlight
                         // Roll Dice
                         if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
                         {
-                            // Rolls Dice and Move Piece to Tile
-                            RollDice(currentTurnsPlayers);
-                            // Calculate options for player
-                            PlayerOptions(currentTurnsPlayers);
-
-                            // Set next phase
-                            turnPhase = 1;
+                            RollDice(currentTurnsPlayers);              // Rolls Dice and Move Piece to Tile
+                            turnPhase = 1;                              // Set next phase
+                            PlayerOptions(currentTurnsPlayers);         // Calculate options for player
+                            
                         }
                     }
                     break;
@@ -803,9 +813,6 @@ namespace SoshiLandSilverlight
                                     Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
                                     Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
                                 }
-                                
-                                // Go to next phase
-                                turnPhase = 2;
                             }
                             // Turn off option to purchase if successful purchase has been made
                             if (successfulPurchase)
@@ -817,6 +824,47 @@ namespace SoshiLandSilverlight
                                 turnPhase = 2;
                             }
                         }
+
+                        // Player chooses to Auction
+
+                        if (optionPromptLuxuryTax)
+                        {
+                            bool successfulTaxPayment = false;
+                            // Player chooses to pay 10% (Luxury Tax)
+                            if (kbInput.IsKeyDown(Keys.K) && previousKeyboardInput.IsKeyUp(Keys.K) && !taxesMustPayTwoHundred)
+                            {
+                                successfulTaxPayment = PayTenPercentWorthToBank(currentTurnsPlayers);       // Pay 10% to bank
+                                if (successfulTaxPayment)
+                                {
+                                    turnPhase = 2;
+                                    optionPromptLuxuryTax = false;                                          // Turn off the tax flag
+                                }
+                                else
+                                {
+                                    taxesMustPayTenPercent = true;              // Turn flag for paying 10%
+                                    optionPromptMortgageOrTrade = true;         // Player is forced to mortgage
+                                }
+                            }
+                            // Player chooses to pay $200 (Luxury Tax)
+                            else if (kbInput.IsKeyDown(Keys.L) && previousKeyboardInput.IsKeyUp(Keys.L) && !taxesMustPayTenPercent)
+                            {
+                                if (currentTurnsPlayers.getMoney >= 200)            // Check if player has enough money
+                                {
+                                    currentTurnsPlayers.PlayerPaysBank(200);        // Pay $200 to bank
+                                    optionPromptLuxuryTax = false;                  // Turn off the tax flag
+                                    turnPhase = 2;                                  // Go to next phase
+                                }
+                                else
+                                {
+                                    taxesMustPayTwoHundred = true;                  // Turn flag on for paying $200
+                                    optionPromptMortgageOrTrade = true;             // Player is forced to mortgage
+                                }
+                            }
+                        }
+
+                        // Player chooses to mortgage
+
+                        // Player chooses to trade
                     }
                     break;
                     // Post Roll Phase
@@ -844,6 +892,8 @@ namespace SoshiLandSilverlight
                             // Set phase back to 0 for next player
                             turnPhase = 0;
                             optionsCalculated = false;
+                            taxesMustPayTenPercent = false;
+                            taxesMustPayTwoHundred = false;
                             // set number of doubles back to zero
                             numberOfDoubles = 0;
                         }
@@ -852,6 +902,37 @@ namespace SoshiLandSilverlight
             }
 
             previousKeyboardInput = kbInput;
+        }
+
+        private bool PayTenPercentWorthToBank(Player player)
+        {
+            uint tenPercent = (uint)Math.Round(player.getNetWorth * 0.10);  // Calculate 10% of Player's money
+
+            if (player.getMoney >= tenPercent)              // Check if player has enough money to pay 10%
+            {
+                currentTurnsPlayers.PlayerPaysBank(tenPercent);                 // Player pays bank 10%
+
+                if (Game1.DEBUG)
+                {
+                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
+                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
+                }
+
+                return true;
+            }
+            else
+            {
+                if (Game1.DEBUG)
+                {
+                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
+                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
+                }
+
+                return false;
+            }
+
+
+                
         }
     }
 }
