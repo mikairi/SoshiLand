@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChanceCards.xml" />
+    <Content Include="CommunityChestCards.xml" />
     <Content Include="Content\assets\chance1.jpg" />
     <Resource Include="Content\SpriteFont1-exenfont.png" />
     <Content Include="PropertyCards.xml" />
