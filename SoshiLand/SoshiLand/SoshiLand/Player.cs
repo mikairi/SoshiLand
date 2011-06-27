@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SoshiLand
 {
-    class Player
+    public class Player
     {
         private string Name;                        // Player's Screen Name
         private uint Money;                         // Player's Total Cash

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SoshiLand
 {
-    class UtilityTile : Tile
+    public class UtilityTile : Tile
     {
         private uint propertyPrice = 150;       // Cost to initially purchase property. Default is 150
         private uint mortgageValue = 75;        // Mortgage Value

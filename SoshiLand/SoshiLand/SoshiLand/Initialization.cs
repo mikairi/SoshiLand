@@ -7,11 +7,20 @@ using System.Xml;
 
 namespace SoshiLand
 {
-    public static class Initialization
+    public class Initialization
     {
+        public void DistributeStartingMoney(List<Player> listOfPlayers)
+        {
+            Game1.debugMessageQueue.addMessageToQueue("Distributing Starting Money");
 
+            foreach (Player p in listOfPlayers)
+            {
+                // Starting money is $1500
+                p.BankPaysPlayer(1500);
+            }
+        }
 
-        public static void InitializeTiles(Tile[] tiles)
+        public void InitializeTiles(Tile[] tiles)
         {
             // This probably isn't the most efficient way of creating the Tiles,
             // But it'll only be run once at the start of a game.
@@ -165,7 +174,7 @@ namespace SoshiLand
             }
         }
 
-        public static void InitializeCards(List<Card> chanceCards, List<Card> communityChestCards)
+        public void InitializeCards(List<Card> chanceCards, List<Card> communityChestCards)
         {
             // XML Reading Variables
             XmlReader xmlReader;
@@ -309,7 +318,144 @@ namespace SoshiLand
             }
         }
 
-        private static Color getColorFromNumber(int c)
+        public void DeterminePlayerOrder(Player[] arrayOfPlayers, ref List<Player> ListOfPlayers)
+        {
+            // Note!
+            // arrayOfPlayers is the order the players are sitting in around the board.
+            // So the order is determined by starting at the player with the highest roll 
+            // and moving clockwise around the board
+
+            Game1.debugMessageQueue.addMessageToQueue("Players rolling to determine Order");
+
+            int[] playerRolls = new int[arrayOfPlayers.Length];     // An array the size of the number of players to hold their dice rolls
+            List<Player> tiedPlayers = new List<Player>();          // List of players that are tied for highest roll
+
+            int currentHighestPlayer = 0;                           // Current player index in arrayOfPlayers with the highest roll
+
+            // Have each player roll a pair of dice and store the result in the playerRolls array
+            for (int i = 0; i < arrayOfPlayers.Length; i++)
+            {
+                SoshiLandGameFunctions.RollDice(arrayOfPlayers[i]);
+                playerRolls[i] = SoshilandGame.currentDiceRoll;
+
+                // If the current highest player's roll is less than the new player's roll
+                // Replace that player with the new player with the highest roll
+                if (playerRolls[currentHighestPlayer] < playerRolls[i] && i != currentHighestPlayer)
+                {
+                    // Set the new Highest Player roll
+                    currentHighestPlayer = i;
+                    // Clear the list of tied players
+                    tiedPlayers.Clear();
+                }
+                else if (playerRolls[currentHighestPlayer] == playerRolls[i] && i != currentHighestPlayer)
+                {
+                    // Only add the current highest player if the list is empty
+                    // That player would've already been added to the list
+                    if (tiedPlayers.Count == 0)
+                        tiedPlayers.Add(arrayOfPlayers[currentHighestPlayer]);
+                    // Add the new player to the list of tied players
+                    tiedPlayers.Add(arrayOfPlayers[i]);
+                }
+
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
+            }
+
+            // Initialize the list of players
+            ListOfPlayers = new List<Player>();
+
+            // Check if there is a tie with highest rolls
+            if (tiedPlayers.Count > 0)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("There's a tie!");
+                // New list to store second round of tied players
+                List<Player> secondRoundOfTied = new List<Player>();
+                // Keep rolling until no more tied players
+                while (secondRoundOfTied.Count != 1)
+                {
+                    int currentHighestRoll = 0;
+
+                    // Roll the dice for each player
+                    foreach (Player p in tiedPlayers)
+                    {
+
+                        SoshiLandGameFunctions.RollDice(p);                                                    // Roll the dice for the player
+                        // If the new roll is higher than the current highest roll
+                        if (SoshilandGame.currentDiceRoll > currentHighestRoll)
+                        {
+                            // Clear the list since everyone who may have been in the list is lower 
+                            secondRoundOfTied.Clear();
+
+                            // Set the new highest roll
+                            currentHighestRoll = SoshilandGame.currentDiceRoll;
+                            secondRoundOfTied.Add(p);
+                        }
+                        // If there's another tie, just add it to the new array without clearing it
+                        else if (SoshilandGame.currentDiceRoll == currentHighestRoll)
+                        {
+                            secondRoundOfTied.Add(p);
+                        }
+                        // Otherwise, the player rolled less and is removed
+                    }
+
+                    // If there are still tied players, transfer them into the old List and clear the new List
+                    if (secondRoundOfTied.Count > 1)
+                    {
+                        // Clear the players that did not roll high enough
+                        tiedPlayers.Clear();
+                        foreach (Player p in secondRoundOfTied)
+                        {
+                            tiedPlayers.Add(p);
+                        }
+                        secondRoundOfTied.Clear();
+                    }
+                }
+
+                // Should be one clear winner now
+                ListOfPlayers.Add(secondRoundOfTied[0]);
+            }
+
+            if (ListOfPlayers.Count == 0)
+                ListOfPlayers.Add(arrayOfPlayers[currentHighestPlayer]);
+
+            int firstPlayer = 0;
+            // Search for the first player in the player array
+            while (arrayOfPlayers[firstPlayer] != ListOfPlayers[0])
+                firstPlayer++;
+
+            // Populate the players in clockwise order
+            for (int a = firstPlayer + 1; a < arrayOfPlayers.Length; a++)
+                ListOfPlayers.Add(arrayOfPlayers[a]);
+            if (firstPlayer != 0)
+            {
+                for (int b = 0; b < firstPlayer; b++)
+                    ListOfPlayers.Add(arrayOfPlayers[b]);
+            }
+
+
+            if (Game1.DEBUG)
+            {
+                Game1.debugMessageQueue.addMessageToQueue("Player Order Determined! ");
+                for (int i = 1; i < ListOfPlayers.Count + 1; i++)
+                    Game1.debugMessageQueue.addMessageToQueue(i + ": " + ListOfPlayers[i - 1].getName);
+
+
+            }
+        }
+
+
+        public void PlaceAllPiecesOnGo(List<Player> listOfPlayers)
+        {
+            Game1.debugMessageQueue.addMessageToQueue("Placing all players on Go");
+
+            foreach (Player p in listOfPlayers)
+            {
+                // Move player to Go
+                SoshiLandGameFunctions.MovePlayer(p, 0);
+            }
+            SoshilandGame.gameInitialized = true;
+        }
+
+        private Color getColorFromNumber(int c)
         {
             // These colors can be specified by RGBA values later.
             // For now, I put in the standard Colors from the Color class.
@@ -340,7 +486,7 @@ namespace SoshiLand
             return Color.White;
         }
 
-        private static string ReadStringFromCurrentNode(XmlReader x, ref int counter)
+        private string ReadStringFromCurrentNode(XmlReader x, ref int counter)
         {
             string tempString = null;
             try

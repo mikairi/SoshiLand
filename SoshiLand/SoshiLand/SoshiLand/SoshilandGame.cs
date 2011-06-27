@@ -14,25 +14,25 @@ namespace SoshiLand
     class SoshilandGame
     {
         private List<Player> ListOfPlayers;             // Contains the list of players in the game. This will be in the order from first to last player
-        private Player currentTurnsPlayers;             // Holds the Player of the current turn         
-        private Tile[] Tiles = new Tile[48];            // Array of Tiles
+        public static Player currentTurnsPlayers;             // Holds the Player of the current turn         
+        public static Tile[] Tiles = new Tile[48];            // Array of Tiles
 
         private List<Card> ChanceCards = new List<Card>();          // Chance Cards Deck
         private List<Card> CommunityChestCards = new List<Card>();  // Community Chest Deck
 
-        private static Random die = new Random();       // Need to create a static random die generator so it doesn't reuse the same seed over and over
+        public static Random die = new Random();        // Need to create a static random die generator so it doesn't reuse the same seed over and over
 
-        private bool DoublesRolled;                     // Flag to indicate doubles were rolled
-        private int currentDiceRoll;                    // Global dice roll variable for special instances when we need to know (ie. determining player order)
-        private int numberOfDoubles;                    // Keep track of the number of doubles rolled
+        public static bool DoublesRolled;               // Flag to indicate doubles were rolled
+        public static int currentDiceRoll;              // Global dice roll variable for special instances when we need to know (ie. determining player order)
+        public static int numberOfDoubles;              // Keep track of the number of doubles rolled
 
         public static int Houses = 32;                  // Static Global variable for number of houses remaining
         public static int Hotels = 12;                  // Static Global variable for number of hotels remaining
 
-        private bool gameInitialized = false;           // Flag for when the game is officially started
+        public static bool gameInitialized = false;     // Flag for when the game is officially started
         private bool optionsCalculated = false;         // Flag for when player options are ready to prompt
 
-        private bool displayJailMessageOnce = true;    // Flag to display message only once
+        private bool displayJailMessageOnce = true;     // Flag to display message only once
 
         // Player Options during turn
         private bool optionPurchaseOrAuctionProperty = false;
@@ -45,12 +45,12 @@ namespace SoshiLand
         private bool taxesMustPayTenPercent = false;
         private bool taxesMustPayTwoHundred = false;
         // Phase Flags
-
+        
         // 0 = Pre Roll Phase
         // Player has option to trade, develop or mortgage / unmortgage.
         // If player is in jail, player has option to Pay to get out of jail, or roll doubles
         // Phase ends after player chooses to roll dice
-
+        
         // 1 = Roll Phase
         // Player has landed on a Tile.
         // If tile is a property, Player is forced to purchase or auction
@@ -62,23 +62,20 @@ namespace SoshiLand
         // Player has option to trade, develop or mortgage / unmortgage.
         // Phase ends after playing chooses to end his or her turn
 
-        private byte turnPhase = 0;
+        public static byte turnPhase = 0;                 
 
-        private KeyboardState previousKeyboardInput;
+        private KeyboardState previousKeyboardInput;    
 
         // TEMPORARY
         Player[] playerArray;
 
         public SoshilandGame()
         {
-            Initialization.InitializeTiles(Tiles);      // Initialize Tiles on the board
-            Initialization.InitializeCards(
-                ChanceCards, CommunityChestCards);   // Initialize Chance and Community Chest cards
-            InitializeGame();                           // Initialize Game
-        }
+            Initialization gameInitialization = new Initialization();
 
-        private void InitializeGame()
-        {
+            gameInitialization.InitializeTiles(Tiles);      // Initialize Tiles on the board
+            gameInitialization.InitializeCards(ChanceCards, CommunityChestCards);   // Initialize Chance and Community Chest cards
+
             // Temporary list of players
             Player player1 = new Player("Mark");
             Player player2 = new Player("Wooski");
@@ -96,48 +93,14 @@ namespace SoshiLand
             playerArray[4] = player5;
             playerArray[5] = player6;
             playerArray[6] = player7;
-            // Determine order of players
-            DeterminePlayerOrder(playerArray);
+
+            gameInitialization.DeterminePlayerOrder(playerArray, ref ListOfPlayers);        // Determine order of players
             // Players choose pieces (this can be implemented later)
 
-            // Players are given starting money
-            DistributeStartingMoney();
-            // Place all Pieces on Go
-            PlaceAllPiecesOnGo();
-            startNextPlayerTurn();
-        }
 
-        public void startNextPlayerTurn()
-        {
-            if (currentTurnsPlayers != null)
-                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn ends");
-
-            int previousPlayersTurn = ListOfPlayers.IndexOf(currentTurnsPlayers);
-            int nextPlayersTurn;
-
-            // Checks if the player is at the end of the list
-            if (previousPlayersTurn == ListOfPlayers.Count - 1)
-                nextPlayersTurn = 0;
-            else
-                nextPlayersTurn = previousPlayersTurn + 1;
-
-            PlayerTurn(ListOfPlayers.ElementAt(nextPlayersTurn));
-        }
-
-        private void PlayerTurn(Player player)
-        {
-            currentTurnsPlayers = player;
-
-            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
-
-            // Set phase to Pre Roll Phase
-            turnPhase = 0;
-
-            // Check if player is currently in Jail
-
-            // Determine what Tile was landed on and give options
-
-
+            gameInitialization.DistributeStartingMoney(ListOfPlayers);                      // Players are given starting money
+            gameInitialization.PlaceAllPiecesOnGo(ListOfPlayers);                           // Place all Pieces on Go
+            SoshiLandGameFunctions.startNextPlayerTurn(ListOfPlayers);                      // Start first player's turn
         }
 
         private void PlayerOptions(Player player)
@@ -215,7 +178,7 @@ namespace SoshiLand
                 case TileType.ShoppingSpree:
                     if (currentTurnsPlayers.getMoney >= 75)     // Check if player has enough money to pay tax
                         currentTurnsPlayers.PlayerPaysBank(75); // Pay Bank taxes
-                    // Player does not have enough money
+                        // Player does not have enough money
                     else
                     {
                         optionShoppingSpree = true;             // Set flag so game remembers that player has to pay
@@ -223,12 +186,12 @@ namespace SoshiLand
                     }
                     break;
                 case TileType.SpecialLuxuryTax:
-                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
-                    Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
-                    optionPromptLuxuryTax = true;
+                        Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
+                        Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
+                        optionPromptLuxuryTax = true;
                     break;
                 case TileType.GoToJail:
-                    MovePlayerToJail(player);
+                    SoshiLandGameFunctions.MovePlayerToJail(player);
                     break;
                 case TileType.Go:
                     turnPhase = 2;
@@ -248,218 +211,7 @@ namespace SoshiLand
                 Game1.debugMessageQueue.addMessageToQueue(optionsMessage);
             }
         }
-
-        private void DistributeStartingMoney()
-        {
-            Game1.debugMessageQueue.addMessageToQueue("Distributing Starting Money");
-
-            foreach (Player p in ListOfPlayers)
-            {
-                // Starting money is $1500
-                p.BankPaysPlayer(1500);
-            }
-        }
-
-        private void PlaceAllPiecesOnGo()
-        {
-            Game1.debugMessageQueue.addMessageToQueue("Placing all players on Go");
-
-            foreach (Player p in ListOfPlayers)
-            {
-                // Move player to Go
-                MovePlayer(p, 0);
-            }
-            gameInitialized = true;
-        }
-
-        private void DeterminePlayerOrder(Player[] arrayOfPlayers)
-        {
-            // Note!
-            // arrayOfPlayers is the order the players are sitting in around the board.
-            // So the order is determined by starting at the player with the highest roll 
-            // and moving clockwise around the board
-
-            Game1.debugMessageQueue.addMessageToQueue("Players rolling to determine Order");
-
-            int[] playerRolls = new int[arrayOfPlayers.Length];     // An array the size of the number of players to hold their dice rolls
-            List<Player> tiedPlayers = new List<Player>();          // List of players that are tied for highest roll
-
-            int currentHighestPlayer = 0;                           // Current player index in arrayOfPlayers with the highest roll
-
-            // Have each player roll a pair of dice and store the result in the playerRolls array
-            for (int i = 0; i < arrayOfPlayers.Length; i++)
-            {
-                RollDice(arrayOfPlayers[i]);
-                playerRolls[i] = currentDiceRoll;
-
-                // If the current highest player's roll is less than the new player's roll
-                // Replace that player with the new player with the highest roll
-                if (playerRolls[currentHighestPlayer] < playerRolls[i] && i != currentHighestPlayer)
-                {
-                    // Set the new Highest Player roll
-                    currentHighestPlayer = i;
-                    // Clear the list of tied players
-                    tiedPlayers.Clear();
-                }
-                else if (playerRolls[currentHighestPlayer] == playerRolls[i] && i != currentHighestPlayer)
-                {
-                    // Only add the current highest player if the list is empty
-                    // That player would've already been added to the list
-                    if (tiedPlayers.Count == 0)
-                        tiedPlayers.Add(arrayOfPlayers[currentHighestPlayer]);
-                    // Add the new player to the list of tied players
-                    tiedPlayers.Add(arrayOfPlayers[i]);
-                }
-
-                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
-            }
-
-            // Initialize the list of players
-            ListOfPlayers = new List<Player>();
-
-            // Check if there is a tie with highest rolls
-            if (tiedPlayers.Count > 0)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("There's a tie!");
-                // New list to store second round of tied players
-                List<Player> secondRoundOfTied = new List<Player>();
-                // Keep rolling until no more tied players
-                while (secondRoundOfTied.Count != 1)
-                {
-                    int currentHighestRoll = 0;
-
-                    // Roll the dice for each player
-                    foreach (Player p in tiedPlayers)
-                    {
-
-                        RollDice(p);                                                    // Roll the dice for the player
-                        // If the new roll is higher than the current highest roll
-                        if (currentDiceRoll > currentHighestRoll)
-                        {
-                            // Clear the list since everyone who may have been in the list is lower 
-                            secondRoundOfTied.Clear();
-
-                            // Set the new highest roll
-                            currentHighestRoll = currentDiceRoll;
-                            secondRoundOfTied.Add(p);
-                        }
-                        // If there's another tie, just add it to the new array without clearing it
-                        else if (currentDiceRoll == currentHighestRoll)
-                        {
-                            secondRoundOfTied.Add(p);
-                        }
-                        // Otherwise, the player rolled less and is removed
-                    }
-
-                    // If there are still tied players, transfer them into the old List and clear the new List
-                    if (secondRoundOfTied.Count > 1)
-                    {
-                        // Clear the players that did not roll high enough
-                        tiedPlayers.Clear();
-                        foreach (Player p in secondRoundOfTied)
-                        {
-                            tiedPlayers.Add(p);
-                        }
-                        secondRoundOfTied.Clear();
-                    }
-                }
-
-                // Should be one clear winner now
-                ListOfPlayers.Add(secondRoundOfTied[0]);
-            }
-
-            if (ListOfPlayers.Count == 0)
-                ListOfPlayers.Add(arrayOfPlayers[currentHighestPlayer]);
-
-            int firstPlayer = 0;
-            // Search for the first player in the player array
-            while (arrayOfPlayers[firstPlayer] != ListOfPlayers[0])
-                firstPlayer++;
-
-            // Populate the players in clockwise order
-            for (int a = firstPlayer + 1; a < arrayOfPlayers.Length; a++)
-                ListOfPlayers.Add(arrayOfPlayers[a]);
-            if (firstPlayer != 0)
-            {
-                for (int b = 0; b < firstPlayer; b++)
-                    ListOfPlayers.Add(arrayOfPlayers[b]);
-            }
-
-
-            if (Game1.DEBUG)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("Player Order Determined! ");
-                for (int i = 1; i < ListOfPlayers.Count + 1; i++)
-                    Game1.debugMessageQueue.addMessageToQueue(i + ": " + ListOfPlayers[i - 1].getName);
-
-
-            }
-        }
-
-        private void RollDice(Player p)
-        {
-            DoublesRolled = false;
-            int dice1Int = die.Next(1, 6);
-            int dice2Int = die.Next(1, 6);
-
-            int total = dice1Int + dice2Int;
-
-            currentDiceRoll = total;                // Set the global dice roll variable
-
-            if (dice1Int == dice2Int && gameInitialized)
-            {
-                DoublesRolled = true;
-                // Check if it's the third consecutive double roll
-                if (numberOfDoubles == 2)
-                    // Move player to jail
-                    MovePlayerToJail(p);
-                else
-                    // Increment number of doubles
-                    numberOfDoubles++;
-            }
-
-            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
-            if (DoublesRolled)
-                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
-
-            // Only move if the player is not in jail
-            if ((!p.inJail) && gameInitialized)
-                MovePlayerDiceRoll(p, total);
-        }
-
-        private void MovePlayerDiceRoll(Player p, int roll)
-        {
-            int currentPosition = p.CurrentBoardPosition;
-            int newPosition = currentPosition + roll;
-
-            // If player passes or lands on Go
-            if (newPosition > 47)
-            {
-                newPosition = Math.Abs(newPosition - 48);           // Get absolute value of the difference and move player to that new Tile
-                p.BankPaysPlayer(200);                              // Pay player $200 for passing Go
-            }
-            // Move player to the new position
-            MovePlayer(p, newPosition);
-        }
-
-        private void MovePlayer(Player p, int position)
-        {
-            // Update the player's current position to the new position
-            p.CurrentBoardPosition = position;
-            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
-        }
-
-        private void MovePlayerToJail(Player p)
-        {
-            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " goes to jail!");
-            // Set jail flag for player
-            p.inJail = true;
-            MovePlayer(p, 12);
-
-            // Set phase to Post Roll Phase
-            turnPhase = 2;
-        }
-
+        
         public void PlayerInputUpdate()
         {
             KeyboardState kbInput = Keyboard.GetState();
@@ -482,7 +234,7 @@ namespace SoshiLand
                         if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
                         {
                             // Roll Dice
-                            RollDice(currentTurnsPlayers);
+                            SoshiLandGameFunctions.RollDice(currentTurnsPlayers);
 
                             // Only move if doubles were rolled or if player has been in jail for the third turn
                             if (DoublesRolled || currentTurnsPlayers.turnsInJail == 2)
@@ -496,7 +248,7 @@ namespace SoshiLand
                                     currentTurnsPlayers.turnsInJail = 0;                // Set turns in jail back to zero
                                 }
 
-                                MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);   // Move player piece
+                                SoshiLandGameFunctions.MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);   // Move player piece
                                 PlayerOptions(currentTurnsPlayers);                         // Calculate options for player
 
 
@@ -529,15 +281,15 @@ namespace SoshiLand
                         // Roll Dice
                         if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
                         {
-                            RollDice(currentTurnsPlayers);              // Rolls Dice and Move Piece to Tile
+                            SoshiLandGameFunctions.RollDice(currentTurnsPlayers);              // Rolls Dice and Move Piece to Tile
                             turnPhase = 1;                              // Set next phase
                             PlayerOptions(currentTurnsPlayers);         // Calculate options for player
-
+                            
                         }
                     }
                     break;
 
-                // Roll Phase
+                    // Roll Phase
                 case 1:
                     if (optionsCalculated)
                     {
@@ -555,7 +307,7 @@ namespace SoshiLand
                             else
                                 Game1.debugMessageQueue.addMessageToQueue(
                                     "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
-
+                            
                             // Turn off option to purchase if successful purchase has been made
                             if (successfulPurchase)
                             {
@@ -609,7 +361,7 @@ namespace SoshiLand
                         // Player chooses to trade
                     }
                     break;
-                // Post Roll Phase
+                    // Post Roll Phase
 
                 case 2:
                     // Player chooses to end turn
@@ -625,7 +377,7 @@ namespace SoshiLand
                         else
                         {
                             // Start next player's turn
-                            startNextPlayerTurn();
+                            SoshiLandGameFunctions.startNextPlayerTurn(ListOfPlayers);
                             // Set phase back to 0 for next player
                             turnPhase = 0;
                             optionsCalculated = false;

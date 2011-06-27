@@ -82,6 +82,7 @@
     <Compile Include="PropertyTile.cs" />
     <Compile Include="Silverlight Application.cs" />
     <Compile Include="SoshilandGame.cs" />
+    <Compile Include="SoshiLandGameFunctions.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="UtilityTile.cs" />
   </ItemGroup>

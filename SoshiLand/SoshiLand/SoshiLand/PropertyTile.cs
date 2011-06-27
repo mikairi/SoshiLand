@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace SoshiLand
 {
-    class PropertyTile : Tile
+    public class PropertyTile : Tile
     {
         private Player owner = null;               // Owner of the property
 

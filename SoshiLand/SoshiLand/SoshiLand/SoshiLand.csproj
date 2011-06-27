@@ -150,6 +150,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="PropertyTile.cs" />
     <Compile Include="SoshilandGame.cs" />
+    <Compile Include="SoshiLandGameFunctions.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="UtilityTile.cs" />
   </ItemGroup>
