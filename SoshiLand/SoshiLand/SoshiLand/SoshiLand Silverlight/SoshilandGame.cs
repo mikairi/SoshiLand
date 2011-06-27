@@ -17,6 +17,9 @@ namespace SoshiLandSilverlight
         private Player currentTurnsPlayers;             // Holds the Player of the current turn         
         private Tile[] Tiles = new Tile[48];            // Array of Tiles
 
+        private List<Card> ChanceCards = new List<Card>();          // Chance Cards Deck
+        private List<Card> CommunityChestCards = new List<Card>();  // Community Chest Deck
+
         private static Random die = new Random();       // Need to create a static random die generator so it doesn't reuse the same seed over and over
 
         private bool DoublesRolled;                     // Flag to indicate doubles were rolled
@@ -69,6 +72,7 @@ namespace SoshiLandSilverlight
         public SoshilandGame()
         {
             Initialization.InitializeTiles(Tiles);      // Initialize Tiles on the board
+            Initialization.InitializeCards(ChanceCards, CommunityChestCards);   // Initialize Chance and Community Chest cards
             InitializeGame();                           // Initialize Game
         }
 

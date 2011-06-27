@@ -17,6 +17,9 @@ namespace SoshiLand
         private Player currentTurnsPlayers;             // Holds the Player of the current turn         
         private Tile[] Tiles = new Tile[48];            // Array of Tiles
 
+        private List<Card> ChanceCards = new List<Card>();          // Chance Cards Deck
+        private List<Card> CommunityChestCards = new List<Card>();  // Community Chest Deck
+
         private static Random die = new Random();       // Need to create a static random die generator so it doesn't reuse the same seed over and over
 
         private bool DoublesRolled;                     // Flag to indicate doubles were rolled
@@ -35,7 +38,12 @@ namespace SoshiLand
         private bool optionPurchaseOrAuctionProperty = false;
         private bool optionPurchaseOrAuctionUtility = false;
         private bool optionDevelopProperty = false;
+        private bool optionPromptMortgageOrTrade = false;
+        private bool optionPromptLuxuryTax = false;
+        private bool optionShoppingSpree = false;
 
+        private bool taxesMustPayTenPercent = false;
+        private bool taxesMustPayTwoHundred = false;
         // Phase Flags
 
         // 0 = Pre Roll Phase
@@ -63,7 +71,8 @@ namespace SoshiLand
 
         public SoshilandGame()
         {
-            InitializeTiles();                          // Initialize Tiles on the board
+            Initialization.InitializeTiles(Tiles);      // Initialize Tiles on the board
+            Initialization.InitializeCards(ChanceCards, CommunityChestCards);   // Initialize Chance and Community Chest cards
             InitializeGame();                           // Initialize Game
         }
 
@@ -97,16 +106,12 @@ namespace SoshiLand
 
         public void startNextPlayerTurn()
         {
-            if (Game1.DEBUG)
-            {
-                if (currentTurnsPlayers != null)
-                {
-                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn ends");
-                }
-            }
+            if (currentTurnsPlayers != null)
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn ends");
 
             int previousPlayersTurn = ListOfPlayers.IndexOf(currentTurnsPlayers);
             int nextPlayersTurn;
+
             // Checks if the player is at the end of the list
             if (previousPlayersTurn == ListOfPlayers.Count - 1)
                 nextPlayersTurn = 0;
@@ -120,10 +125,7 @@ namespace SoshiLand
         {
             currentTurnsPlayers = player;
 
-            if (Game1.DEBUG)
-            {
-                Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
 
             // Set phase to Pre Roll Phase
             turnPhase = 0;
@@ -148,21 +150,20 @@ namespace SoshiLand
             {
                 case TileType.Property:
                     PropertyTile currentProperty = (PropertyTile)Tiles[currentTile];
-                    // If the property is not owned yet
-                    if (currentProperty.Owner == null)
+
+                    if (currentProperty.Owner == null)                  // If the property is not owned yet
                         optionPurchaseOrAuctionProperty = true;
-                    // If the property is owned by another player
-                    else if (currentProperty.Owner != player)
+                    else if (currentProperty.Owner != player && !currentProperty.MortgageStatus)    // If the property is owned by another player and not mortgaged
                     {
-                        // Check if the player has enough money to pay Rent
-                        if (player.getMoney >= currentProperty.getRent)
-                            // Pay rent
-                            player.CurrentPlayerPaysPlayer(currentProperty.Owner, currentProperty.getRent);
+                        if (player.getMoney >= currentProperty.getRent) // Check if the player has enough money to pay Rent
+                        {
+                            player.CurrentPlayerPaysPlayer(currentProperty.Owner, currentProperty.getRent);     // Pay rent
+                            turnPhase = 2;          // Go to next phase
+                        }
                         else
-                            // Player must decide to mortgage or trade to get money
-                            // Put this in later
-                            ;
+                            optionPromptMortgageOrTrade = true;         // Player must decide to mortgage or trade to get money
                     }
+
                     // Otherwise, player landed on his or her own property, so do nothing
                     break;
 
@@ -175,28 +176,26 @@ namespace SoshiLand
                     else
                         otherUtility = (UtilityTile)Tiles[15];
 
-                    // If the property is not owned yet
-                    if (currentUtility.Owner == null)
+                    if (currentUtility.Owner == null)               // If the property is not owned yet
                         optionPurchaseOrAuctionUtility = true;
-                    // If the property is owned by another player
-                    else if (currentUtility.Owner != player)
+
+                    else if (currentUtility.Owner != player && !currentUtility.MortgageStatus)        // If the property is owned by another player            
                     {
-                        // Calculate the amount to pay for Utility Rent
-                        uint utilityRent;
-                        // Check if player owns both utilities
-                        if (currentUtility.Owner == otherUtility.Owner)
+                        uint utilityRent;                           // Calculate the amount to pay for Utility Rent
+
+                        if (currentUtility.Owner == otherUtility.Owner)     // Check if player owns both utilities
                             utilityRent = (uint)currentDiceRoll * 10;
                         else
                             utilityRent = (uint)currentDiceRoll * 4;
 
-                        // Check if the player has enough money to pay Rent
-                        if (player.getMoney >= utilityRent)
-                            // Pay rent
-                            player.CurrentPlayerPaysPlayer(currentUtility.Owner, utilityRent);
+
+                        if (player.getMoney >= utilityRent)                 // Check if the player has enough money to pay Rent
+                        {
+                            player.CurrentPlayerPaysPlayer(currentUtility.Owner, utilityRent);  // Pay rent
+                            turnPhase = 2;              // Go to next phase
+                        }
                         else
-                            // Player must decide to mortgage or trade to get money
-                            // Put this in later
-                            ;
+                            optionPromptMortgageOrTrade = true;             // Player must decide to mortgage or trade to get money
                     }
                     break;
 
@@ -205,19 +204,32 @@ namespace SoshiLand
                 case TileType.CommunityChest:
                     break;
                 case TileType.FanMeeting:
+                    turnPhase = 2;              // Nothing happens, so go to last phase
                     break;
                 case TileType.Jail:
+                    turnPhase = 2;              // Nothing happens, so go to last phase
                     break;
                 case TileType.ShoppingSpree:
+                    if (currentTurnsPlayers.getMoney >= 75)     // Check if player has enough money to pay tax
+                        currentTurnsPlayers.PlayerPaysBank(75); // Pay Bank taxes
+                    // Player does not have enough money
+                    else
+                    {
+                        optionShoppingSpree = true;             // Set flag so game remembers that player has to pay
+                        optionPromptMortgageOrTrade = true;     // Set flag to prompt player to get more money somehow
+                    }
                     break;
                 case TileType.SpecialLuxuryTax:
+                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
+                    Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
+                    optionPromptLuxuryTax = true;
                     break;
                 case TileType.GoToJail:
                     MovePlayerToJail(player);
                     break;
                 case TileType.Go:
+                    turnPhase = 2;
                     break;
-
             }
 
             optionsCalculated = true;
@@ -230,16 +242,13 @@ namespace SoshiLand
                 if (optionPurchaseOrAuctionProperty || optionPurchaseOrAuctionUtility)
                     optionsMessage = optionsMessage + " Purchase/Auction";
 
-                Console.WriteLine(optionsMessage);
+                Game1.debugMessageQueue.addMessageToQueue(optionsMessage);
             }
         }
 
         private void DistributeStartingMoney()
         {
-            if (Game1.DEBUG)
-            {
-                Console.WriteLine("Distributing Starting Money");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Distributing Starting Money");
 
             foreach (Player p in ListOfPlayers)
             {
@@ -250,10 +259,8 @@ namespace SoshiLand
 
         private void PlaceAllPiecesOnGo()
         {
-            if (Game1.DEBUG)
-            {
-                Console.WriteLine("Placing all players on Go");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Placing all players on Go");
+
             foreach (Player p in ListOfPlayers)
             {
                 // Move player to Go
@@ -269,10 +276,7 @@ namespace SoshiLand
             // So the order is determined by starting at the player with the highest roll 
             // and moving clockwise around the board
 
-            if (Game1.DEBUG)
-            {
-                Console.WriteLine("Players rolling to determine Order");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Players rolling to determine Order");
 
             int[] playerRolls = new int[arrayOfPlayers.Length];     // An array the size of the number of players to hold their dice rolls
             List<Player> tiedPlayers = new List<Player>();          // List of players that are tied for highest roll
@@ -304,10 +308,7 @@ namespace SoshiLand
                     tiedPlayers.Add(arrayOfPlayers[i]);
                 }
 
-                if (Game1.DEBUG)
-                {
-                    Console.WriteLine("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
-                }
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
             }
 
             // Initialize the list of players
@@ -316,10 +317,7 @@ namespace SoshiLand
             // Check if there is a tie with highest rolls
             if (tiedPlayers.Count > 0)
             {
-                if (Game1.DEBUG)
-                {
-                    Console.WriteLine("There's a tie!");
-                }
+                Game1.debugMessageQueue.addMessageToQueue("There's a tie!");
                 // New list to store second round of tied players
                 List<Player> secondRoundOfTied = new List<Player>();
                 // Keep rolling until no more tied players
@@ -387,44 +385,12 @@ namespace SoshiLand
 
             if (Game1.DEBUG)
             {
-                Console.WriteLine("Player Order Determined! ");
+                Game1.debugMessageQueue.addMessageToQueue("Player Order Determined! ");
                 for (int i = 1; i < ListOfPlayers.Count + 1; i++)
-                {
-                    Console.WriteLine(i + ": " + ListOfPlayers[i - 1].getName);
-                }
+                    Game1.debugMessageQueue.addMessageToQueue(i + ": " + ListOfPlayers[i - 1].getName);
+
 
             }
-        }
-
-        private Color getColorFromNumber(int c)
-        {
-            // These colors can be specified by RGBA values later.
-            // For now, I put in the standard Colors from the Color class.
-            switch (c)
-            {
-                case 1:
-                    return Color.Orange;
-                case 2:
-                    return Color.Blue;
-                case 3:
-                    return Color.DarkBlue;
-                case 4:
-                    return Color.Purple;
-                case 5:
-                    return Color.Green;
-                case 6:
-                    return Color.Red;
-                case 7:
-                    return Color.LightBlue;
-                case 8:
-                    return Color.Yellow;
-                case 9:
-                    return Color.Black;
-            }
-
-            // Invalid color type
-            Console.WriteLine("Warning! Could not find color that matches code: " + c);
-            return Color.White;
         }
 
         private void RollDice(Player p)
@@ -441,7 +407,7 @@ namespace SoshiLand
             {
                 DoublesRolled = true;
                 // Check if it's the third consecutive double roll
-                if (numberOfDoubles == 3)
+                if (numberOfDoubles == 2)
                     // Move player to jail
                     MovePlayerToJail(p);
                 else
@@ -449,17 +415,12 @@ namespace SoshiLand
                     numberOfDoubles++;
             }
 
-            if (Game1.DEBUG)
-            {
-                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
-                if (DoublesRolled)
-                {
-                    Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
-                }
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
+            if (DoublesRolled)
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
 
-            // Only move if the player is not in jail, or if doubles were rolled (getting the player out of jail)
-            if ((!p.inJail || DoublesRolled) && gameInitialized)
+            // Only move if the player is not in jail
+            if ((!p.inJail) && gameInitialized)
                 MovePlayerDiceRoll(p, total);
         }
 
@@ -482,195 +443,18 @@ namespace SoshiLand
         {
             // Update the player's current position to the new position
             p.CurrentBoardPosition = position;
-
-            if (Game1.DEBUG)
-            {
-                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
         }
 
         private void MovePlayerToJail(Player p)
         {
-            if (Game1.DEBUG)
-            {
-                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " goes to jail!");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " goes to jail!");
             // Set jail flag for player
             p.inJail = true;
             MovePlayer(p, 12);
 
             // Set phase to Post Roll Phase
             turnPhase = 2;
-        }
-
-        private void InitializeTiles()
-        {
-            // This probably isn't the most efficient way of creating the Tiles,
-            // But it'll only be run once at the start of a game.
-
-            // XML Reading Variables
-            XmlReader xmlReader;
-            xmlReader = XmlReader.Create("PropertyCards.xml");      // Set the XML file to read
-
-            // First, reserve spots in array for non-property Tiles
-            Tiles[0] = new Tile("Go", TileType.Go);
-            Tiles[5] = new Tile("Special Luxury", TileType.SpecialLuxuryTax);
-            Tiles[8] = new Tile("Chance", TileType.Chance);
-            Tiles[12] = new Tile("Hello Baby", TileType.Jail);
-            Tiles[15] = new UtilityTile("Soshi Bond");
-            Tiles[20] = new Tile("Community Chest", TileType.CommunityChest);
-            Tiles[24] = new Tile("Fan Meeting", TileType.FanMeeting);
-            Tiles[27] = new Tile("Chance", TileType.Chance);
-            Tiles[33] = new UtilityTile("Forever 9");
-            Tiles[36] = new Tile("Babysit Kyung San", TileType.GoToJail);
-            Tiles[40] = new Tile("Community Chest", TileType.CommunityChest);
-            Tiles[45] = new Tile("Shopping Spree", TileType.ShoppingSpree);
-
-
-            // Fill in the gaps with Colored Property Tiles
-
-            int counter = 0;                       // Keep track of current location in array
-            Color currentColor = Color.White;      // Keep track of current Color in XML
-            string currentTileName = "";           // Keep track of current Tile Name
-
-            string currentMember = "";             // Name of SNSD member who owns the Property
-            uint currentBaseRent = 0;              // Rent
-            uint currentHouse1Rent = 0;            // Rent with 1 House
-            uint currentHouse2Rent = 0;            // Rent with 2 Houses
-            uint currentHouse3Rent = 0;            // Rent with 3 Houses
-            uint currentHouse4Rent = 0;            // Rent with 4 Houses
-            uint currentHotelRent = 0;             // Rent with Hotel
-            uint currentMortgageValue = 0;         // Mortgage Value
-            uint currentHouseCost = 0;             // Cost for each house
-            uint currentHotelCost = 0;             // Cost for Hotel (+ 4 houses)
-            uint currentPropertyPrice = 0;         // Cost to initially purchase property
-
-            int propertyCardInfoCounter = 0;        // This is a counter to ensure that the current property card has read all the required data
-
-            // Read in XML data for Properties
-            while (xmlReader.Read())
-            {
-                XmlNodeType nodeType = xmlReader.NodeType;
-                if (nodeType == XmlNodeType.Element)
-                {
-                    switch (xmlReader.Name)
-                    {
-                        // If the current element is a Color
-                        case "Color":
-                            // Checks if there is only one attribute
-                            // THIS MUST BE TRUE! Otherwise the XML structure is wrong
-                            if (xmlReader.AttributeCount == 1)
-                            {
-                                try
-                                {
-                                    currentColor = getColorFromNumber(Convert.ToInt16(xmlReader.GetAttribute(0)));
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.Error.WriteLine("Warning: Invalid color value in XML file. " + " ERROR: " + e.Message);
-                                }
-                            }
-                            else
-                                Console.Error.WriteLine("Warning: Color in XML file is missing attribute value");
-                            break;
-                        // If the current element is a Tile
-                        case "Tile":
-                            if (xmlReader.AttributeCount == 1)
-                            {
-                                try
-                                {
-                                    currentTileName = xmlReader.GetAttribute(0);
-                                    propertyCardInfoCounter++;
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.Error.WriteLine("Warning: Invalid string value in XML file. " + " ERROR: " + e.Message);
-                                }
-                            }
-                            else
-                                Console.Error.WriteLine("Warning: Tile in XML file is missing attribute value");
-                            break;
-                        case "Member":
-                            currentMember = ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter);
-                            break;
-                        case "Rent":
-                            currentBaseRent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "House1Rent":
-                            currentHouse1Rent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "House2Rent":
-                            currentHouse2Rent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "House3Rent":
-                            currentHouse3Rent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "House4Rent":
-                            currentHouse4Rent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "Hotel":
-                            currentHotelRent = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "Mortgage Value":
-                            currentMortgageValue = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "HouseCost":
-                            currentHouseCost = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "HotelCost":
-                            currentHotelCost = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-                            break;
-                        case "PropertyPrice":
-                            currentPropertyPrice = Convert.ToUInt16(ReadStringFromCurrentNode(xmlReader, ref propertyCardInfoCounter));
-
-                            // Check if enough data has been pulled
-                            if (propertyCardInfoCounter == 11)
-                            {
-                                // Skip over pre-made tiles
-                                while (Tiles[counter] != null)
-                                    counter++;
-                                // Create the Tile
-                                Tiles[counter] = new PropertyTile(
-                                    TileType.Property,
-                                    currentTileName,
-                                    currentColor,
-                                    currentBaseRent,
-                                    currentHouse1Rent,
-                                    currentHouse2Rent,
-                                    currentHouse3Rent,
-                                    currentHouse4Rent,
-                                    currentHotelRent,
-                                    currentMortgageValue,
-                                    currentHouseCost,
-                                    currentHotelCost,
-                                    currentPropertyPrice);
-
-                                // Reset the Card Counter
-                                propertyCardInfoCounter = 0;
-                            }
-                            else
-                                Console.Error.WriteLine("ERROR! Tile is missing data");
-                            break;
-                    }
-
-                }
-            }
-        }
-
-        private string ReadStringFromCurrentNode(XmlReader x, ref int counter)
-        {
-            string tempString = null;
-            try
-            {
-                tempString = x.ReadInnerXml();
-                counter++;
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine("Warning: Invalid string value in XML file. " + " ERROR: " + e.Message);
-            }
-
-            return tempString;
         }
 
         public void PlayerInputUpdate()
@@ -686,8 +470,8 @@ namespace SoshiLand
                     {
                         if (Game1.DEBUG && displayJailMessageOnce)
                         {
-                            Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " is currently in jail");
-                            Console.WriteLine("Press T to pay $50 to get out of jail, or R to try and roll doubles");
+                            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " is currently in jail");
+                            Game1.debugMessageQueue.addMessageToQueue("Press T to pay $50 to get out of jail, or R to try and roll doubles");
                             displayJailMessageOnce = false;
                         }
 
@@ -702,31 +486,24 @@ namespace SoshiLand
                             {
                                 if (currentTurnsPlayers.turnsInJail == 2)
                                 {
-                                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must pay $50 to get out of jail on third turn.");
+                                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must pay $50 to get out of jail on third turn.");
 
-                                    // Pay bank fine
-                                    currentTurnsPlayers.PlayerPaysBank(50);
-                                    // Set player out of jail
-                                    currentTurnsPlayers.inJail = false;
-                                    // Set turns in jail back to zero
-                                    currentTurnsPlayers.turnsInJail = 0;
+                                    currentTurnsPlayers.PlayerPaysBank(50);             // Pay bank fine
+                                    currentTurnsPlayers.inJail = false;                 // Set player out of jail
+                                    currentTurnsPlayers.turnsInJail = 0;                // Set turns in jail back to zero
                                 }
 
-                                MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);
-                                // Calculate options for player
-                                PlayerOptions(currentTurnsPlayers);
+                                MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);   // Move player piece
+                                PlayerOptions(currentTurnsPlayers);                         // Calculate options for player
 
-                                // Turn off doubles rolled flag because player is not supposed to take another turn after getting out of jail
-                                DoublesRolled = false;
 
-                                turnPhase = 1;
+                                DoublesRolled = false;  // Turn off doubles rolled flag because player is not supposed to take another turn after getting out of jail
+
+                                turnPhase = 1;          // Set the next phase
                             }
                             else
                             {
-                                if (Game1.DEBUG)
-                                {
-                                    Console.WriteLine("You failed to roll doubles and stay in jail.");
-                                }
+                                Game1.debugMessageQueue.addMessageToQueue("You failed to roll doubles and stay in jail.");
 
                                 currentTurnsPlayers.turnsInJail++;
                                 turnPhase = 2;
@@ -736,13 +513,11 @@ namespace SoshiLand
                         // If player chooses to pay to get out of jail
                         if (kbInput.IsKeyDown(Keys.T) && previousKeyboardInput.IsKeyUp(Keys.T))
                         {
-                            Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $50 to escape from Babysitting Kyungsan");
+                            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $50 to escape from Babysitting Kyungsan");
 
-                            // Pay bank fine
-                            currentTurnsPlayers.PlayerPaysBank(50);
-                            // Set turns in jail back to zero
-                            currentTurnsPlayers.turnsInJail = 0;
-                            currentTurnsPlayers.inJail = false;
+                            currentTurnsPlayers.PlayerPaysBank(50);     // Pay bank fine
+                            currentTurnsPlayers.turnsInJail = 0;        // Set turns in jail back to zero
+                            currentTurnsPlayers.inJail = false;         // Set player to be out of Jail
                         }
 
                     }
@@ -751,13 +526,10 @@ namespace SoshiLand
                         // Roll Dice
                         if (kbInput.IsKeyDown(Keys.R) && previousKeyboardInput.IsKeyUp(Keys.R))
                         {
-                            // Rolls Dice and Move Piece to Tile
-                            RollDice(currentTurnsPlayers);
-                            // Calculate options for player
-                            PlayerOptions(currentTurnsPlayers);
+                            RollDice(currentTurnsPlayers);              // Rolls Dice and Move Piece to Tile
+                            turnPhase = 1;                              // Set next phase
+                            PlayerOptions(currentTurnsPlayers);         // Calculate options for player
 
-                            // Set next phase
-                            turnPhase = 1;
                         }
                     }
                     break;
@@ -778,15 +550,9 @@ namespace SoshiLand
                                 successfulPurchase = currentTurnsPlayers.PurchaseUtility((UtilityTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
                             // Player cannot purchase right now
                             else
-                            {
-                                if (Game1.DEBUG)
-                                {
-                                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
-                                }
+                                Game1.debugMessageQueue.addMessageToQueue(
+                                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
 
-                                // Go to next phase
-                                turnPhase = 2;
-                            }
                             // Turn off option to purchase if successful purchase has been made
                             if (successfulPurchase)
                             {
@@ -797,6 +563,47 @@ namespace SoshiLand
                                 turnPhase = 2;
                             }
                         }
+
+                        // Player chooses to Auction
+
+                        if (optionPromptLuxuryTax)
+                        {
+                            bool successfulTaxPayment = false;
+                            // Player chooses to pay 10% (Luxury Tax)
+                            if (kbInput.IsKeyDown(Keys.K) && previousKeyboardInput.IsKeyUp(Keys.K) && !taxesMustPayTwoHundred)
+                            {
+                                successfulTaxPayment = PayTenPercentWorthToBank(currentTurnsPlayers);       // Pay 10% to bank
+                                if (successfulTaxPayment)
+                                {
+                                    turnPhase = 2;
+                                    optionPromptLuxuryTax = false;                                          // Turn off the tax flag
+                                }
+                                else
+                                {
+                                    taxesMustPayTenPercent = true;              // Turn flag for paying 10%
+                                    optionPromptMortgageOrTrade = true;         // Player is forced to mortgage
+                                }
+                            }
+                            // Player chooses to pay $200 (Luxury Tax)
+                            else if (kbInput.IsKeyDown(Keys.L) && previousKeyboardInput.IsKeyUp(Keys.L) && !taxesMustPayTenPercent)
+                            {
+                                if (currentTurnsPlayers.getMoney >= 200)            // Check if player has enough money
+                                {
+                                    currentTurnsPlayers.PlayerPaysBank(200);        // Pay $200 to bank
+                                    optionPromptLuxuryTax = false;                  // Turn off the tax flag
+                                    turnPhase = 2;                                  // Go to next phase
+                                }
+                                else
+                                {
+                                    taxesMustPayTwoHundred = true;                  // Turn flag on for paying $200
+                                    optionPromptMortgageOrTrade = true;             // Player is forced to mortgage
+                                }
+                            }
+                        }
+
+                        // Player chooses to mortgage
+
+                        // Player chooses to trade
                     }
                     break;
                 // Post Roll Phase
@@ -810,11 +617,7 @@ namespace SoshiLand
                         {
                             // Go back to phase 0 for current player
                             turnPhase = 0;
-
-                            if (Game1.DEBUG)
-                            {
-                                Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " gets to roll again!");
-                            }
+                            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " gets to roll again!");
                         }
                         else
                         {
@@ -823,13 +626,35 @@ namespace SoshiLand
                             // Set phase back to 0 for next player
                             turnPhase = 0;
                             optionsCalculated = false;
+                            taxesMustPayTenPercent = false;
+                            taxesMustPayTwoHundred = false;
                             // set number of doubles back to zero
                             numberOfDoubles = 0;
                         }
                     }
                     break;
             }
+
             previousKeyboardInput = kbInput;
+        }
+
+        private bool PayTenPercentWorthToBank(Player player)
+        {
+            uint tenPercent = (uint)Math.Round(player.getNetWorth * 0.10);  // Calculate 10% of Player's money
+
+            if (player.getMoney >= tenPercent)              // Check if player has enough money to pay 10%
+            {
+                currentTurnsPlayers.PlayerPaysBank(tenPercent);                 // Player pays bank 10%
+                Game1.debugMessageQueue.addMessageToQueue(
+                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
+                return true;
+            }
+            else
+            {
+                Game1.debugMessageQueue.addMessageToQueue(
+                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
+                return false;
+            }
         }
     }
 }

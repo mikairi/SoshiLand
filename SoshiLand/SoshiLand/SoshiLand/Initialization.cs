@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 using System.Xml;
 
-namespace SoshiLandSilverlight
+namespace SoshiLand
 {
     public static class Initialization
     {

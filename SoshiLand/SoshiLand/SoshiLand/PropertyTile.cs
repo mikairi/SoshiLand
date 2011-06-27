@@ -25,7 +25,23 @@ namespace SoshiLand
         private uint currentRentCost = 0;   // Current Rent Cost
         private uint numberOfHouses = 0;    // Number of Houses current on property. For simplicity, this will be 5 for hotel.
         private bool monopoly = false;      // Flag for whether this property is part of a monopoly
+        private bool mortgaged = false;     // Flag for whether this property is mortgaged
 
+        public uint getNumberOfHouses
+        {
+            get { return numberOfHouses; }
+        }
+
+        public uint getMortgageValue
+        {
+            get { return mortgageValue; }
+        }
+
+        public bool MortgageStatus
+        {
+            set { mortgaged = value; }
+            get { return mortgaged; }
+        }
 
         public uint getPropertyPrice
         {
@@ -87,12 +103,9 @@ namespace SoshiLand
             // Checks if the player has enough money to buy a house
             if (houseCost > owner.getMoney && numberOfHouses < 4)
             {
-                if (Game1.DEBUG)
-                {
-                    Console.WriteLine("Player \"" + this.getName + "\" purchases a house for " + houseCost);
-                }
+                Game1.debugMessageQueue.addMessageToQueue("Player \"" + this.getName + "\" purchases a house for " + houseCost);
 
-                owner.PlayerPaysBank(houseCost);
+                owner.PlayerPurchasesHouse(houseCost);
                 numberOfHouses++;
 
                 updateRentCost();
@@ -111,10 +124,7 @@ namespace SoshiLand
             // Checks if the player has enough money to buy a house
             if (hotelCost > owner.getMoney && numberOfHouses == 4)
             {
-                if (Game1.DEBUG)
-                {
-                    Console.WriteLine("Player \"" + this.getName + "\" purchases a hotel for " + hotelCost);
-                }
+                Game1.debugMessageQueue.addMessageToQueue("Player \"" + this.getName + "\" purchases a hotel for " + hotelCost);
 
                 owner.PlayerPaysBank(hotelCost);
                 numberOfHouses++;
@@ -173,10 +183,7 @@ namespace SoshiLand
                     break;
             }
 
-            if (Game1.DEBUG)
-            {
-                Console.WriteLine("New Rent cost: " + currentRentCost);
-            }
+            Game1.debugMessageQueue.addMessageToQueue("New Rent cost: " + currentRentCost);
 
         }
 

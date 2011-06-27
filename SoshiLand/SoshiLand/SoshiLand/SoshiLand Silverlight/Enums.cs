@@ -66,4 +66,11 @@ namespace SoshiLandSilverlight
         FanMeeting,
         GoToJail
     };
+
+    enum SpecialCardType
+    {
+        None,
+        GetOutOfJailFreeCard,
+        GoToJailCard,
+    };
 }

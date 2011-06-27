@@ -21,13 +21,17 @@ namespace SoshiLand
         SpriteBatch spriteBatch;
 
         public static ContentManager Content;
-        public static bool DEBUG = true;                        // For Debugging Purposes
 
-        Player testPlayer;
+        // For debugging, since Silverlight doesn't seem to allow debugging within the IDE.
+        public static bool DEBUG = true;
+        public static string DEBUGMESSAGE = "Initial Debug Message";
+        public static DebugMessageQueue debugMessageQueue;
+
+        // Test
+        SoshilandGame testGame;
+        Player testPlayer = new Player("Test Player");
 
         KeyboardState prevKeyboardState = Keyboard.GetState();
-
-        SoshilandGame testGame;
 
         Rectangle mainFrame;
 
@@ -79,8 +83,10 @@ namespace SoshiLand
         {
             // TODO: Add your initialization logic here
 
+            debugMessageQueue = new DebugMessageQueue();
+
             testGame = new SoshilandGame();
-            testPlayer = new Player("Test Player");
+
             base.Initialize();
 
         }
@@ -194,9 +200,12 @@ namespace SoshiLand
         {
             GraphicsDevice.Clear(Color.White);
 
+
             spriteBatch.Begin();
 
+
             spriteBatch.Draw(background, mainFrame, Color.White);
+
 
             // Draw a property card based on the current drawId
             switch (drawId)
@@ -238,9 +247,20 @@ namespace SoshiLand
                     break;
             }
 
+            if (DEBUG)
+            {
+                debugMessageQueue.PrintMessages(gameTime, spriteBatch);
+
+                // Post player standings on right side
+
+
+            }
+
+
             spriteBatch.End();
 
             base.Draw(gameTime);
+
         }
 
         // Return a Vector2 indicating the position to draw a property card (or a sprite in general).

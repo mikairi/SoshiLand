@@ -53,7 +53,7 @@ namespace SoshiLand
         SoshiBond
     };
 
-    enum TileType
+    public enum TileType
     {
         Go,
         Property,
@@ -65,5 +65,12 @@ namespace SoshiLand
         Utility,
         FanMeeting,
         GoToJail
+    };
+
+    enum SpecialCardType
+    {
+        None,
+        GetOutOfJailFreeCard,
+        GoToJailCard,
     };
 }
