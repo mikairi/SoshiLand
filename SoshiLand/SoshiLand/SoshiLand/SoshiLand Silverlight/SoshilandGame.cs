@@ -85,14 +85,17 @@ namespace SoshiLandSilverlight
             Player player4 = new Player("Addy");
             Player player5 = new Player("Colby");
             Player player6 = new Player("Skylar");
+            Player player7 = new Player("Mako");
 
-            playerArray = new Player[6];
+            playerArray = new Player[7];
             playerArray[0] = player1;
             playerArray[1] = player2;
             playerArray[2] = player3;
             playerArray[3] = player4;
             playerArray[4] = player5;
             playerArray[5] = player6;
+            playerArray[6] = player7;
+
             // Determine order of players
             DeterminePlayerOrder(playerArray);
             // Players choose pieces (this can be implemented later)
