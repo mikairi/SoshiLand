@@ -35,7 +35,11 @@ namespace SoshiLandSilverlight
 
         public void addMessageToQueue(string message)
         {
-            MessageQueue.Add(message);
+            if (Game1.DEBUG)
+            {
+                MessageQueue.Add(message);
+                Console.WriteLine(message);
+            }
         }
 
         public void PrintMessages(GameTime gameTime, SpriteBatch spriteBatch)

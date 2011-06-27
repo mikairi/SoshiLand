@@ -102,14 +102,8 @@ namespace SoshiLandSilverlight
 
         public void startNextPlayerTurn()
         {
-            if (Game1.DEBUG)
-            {
-                if (currentTurnsPlayers != null)
-                {
+            if (currentTurnsPlayers != null)
                     Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn ends");
-                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn ends");
-                }
-            }
 
             int previousPlayersTurn = ListOfPlayers.IndexOf(currentTurnsPlayers);
             int nextPlayersTurn;
@@ -127,11 +121,7 @@ namespace SoshiLandSilverlight
         {
             currentTurnsPlayers = player;
             
-            if (Game1.DEBUG)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
-                Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"'s " + " turn begins");
 
             // Set phase to Pre Roll Phase
             turnPhase = 0;
@@ -159,7 +149,7 @@ namespace SoshiLandSilverlight
 
                     if (currentProperty.Owner == null)                  // If the property is not owned yet
                         optionPurchaseOrAuctionProperty = true;
-                    else if (currentProperty.Owner != player)           // If the property is owned by another player
+                    else if (currentProperty.Owner != player && !currentProperty.MortgageStatus)    // If the property is owned by another player and not mortgaged
                     {
                         if (player.getMoney >= currentProperty.getRent) // Check if the player has enough money to pay Rent
                         {
@@ -185,7 +175,7 @@ namespace SoshiLandSilverlight
                     if (currentUtility.Owner == null)               // If the property is not owned yet
                         optionPurchaseOrAuctionUtility = true;
 
-                    else if (currentUtility.Owner != player)        // If the property is owned by another player            
+                    else if (currentUtility.Owner != player && !currentUtility.MortgageStatus)        // If the property is owned by another player            
                     {
                         uint utilityRent;                           // Calculate the amount to pay for Utility Rent
 
@@ -227,9 +217,7 @@ namespace SoshiLandSilverlight
                     break;
                 case TileType.SpecialLuxuryTax:
                         Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
-                        Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
                         Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
-                        Console.WriteLine("Press K to pay 10% of net worth, or L to pay $200");
                         optionPromptLuxuryTax = true;
                     break;
                 case TileType.GoToJail:
@@ -251,17 +239,12 @@ namespace SoshiLandSilverlight
                     optionsMessage = optionsMessage + " Purchase/Auction";
 
                 Game1.debugMessageQueue.addMessageToQueue(optionsMessage);
-                Console.WriteLine(optionsMessage);
             }
         }
 
         private void DistributeStartingMoney()
         {
-            if (Game1.DEBUG)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("Distributing Starting Money");
-                Console.WriteLine("Distributing Starting Money");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Distributing Starting Money");
 
             foreach (Player p in ListOfPlayers)
             {
@@ -272,11 +255,8 @@ namespace SoshiLandSilverlight
 
         private void PlaceAllPiecesOnGo()
         {
-            if (Game1.DEBUG)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("Placing all players on Go");
-                Console.WriteLine("Placing all players on Go");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Placing all players on Go");
+
             foreach (Player p in ListOfPlayers)
             {
                 // Move player to Go
@@ -292,11 +272,7 @@ namespace SoshiLandSilverlight
             // So the order is determined by starting at the player with the highest roll 
             // and moving clockwise around the board
 
-            if (Game1.DEBUG)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("Players rolling to determine Order");
-                Console.WriteLine("Players rolling to determine Order");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Players rolling to determine Order");
 
             int[] playerRolls = new int[arrayOfPlayers.Length];     // An array the size of the number of players to hold their dice rolls
             List<Player> tiedPlayers = new List<Player>();          // List of players that are tied for highest roll
@@ -327,12 +303,8 @@ namespace SoshiLandSilverlight
                     // Add the new player to the list of tied players
                     tiedPlayers.Add(arrayOfPlayers[i]);
                 }
-
-                if (Game1.DEBUG)
-                {
-                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
-                    Console.WriteLine("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
-                }
+                
+                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + arrayOfPlayers[currentHighestPlayer].getName + "\"" + " is the current highest roller with: " + playerRolls[currentHighestPlayer]);
             }
 
             // Initialize the list of players
@@ -341,11 +313,7 @@ namespace SoshiLandSilverlight
             // Check if there is a tie with highest rolls
             if (tiedPlayers.Count > 0)
             {
-                if (Game1.DEBUG)
-                {
-                    Game1.debugMessageQueue.addMessageToQueue("There's a tie!");
-                    Console.WriteLine("There's a tie!");
-                }
+                Game1.debugMessageQueue.addMessageToQueue("There's a tie!");
                 // New list to store second round of tied players
                 List<Player> secondRoundOfTied = new List<Player>();
                 // Keep rolling until no more tied players
@@ -414,12 +382,9 @@ namespace SoshiLandSilverlight
             if (Game1.DEBUG)
             {
                 Game1.debugMessageQueue.addMessageToQueue("Player Order Determined! ");
-                Console.WriteLine("Player Order Determined! ");
                 for (int i = 1; i < ListOfPlayers.Count + 1; i++)
-                {
                     Game1.debugMessageQueue.addMessageToQueue(i + ": " + ListOfPlayers[i - 1].getName);
-                    Console.WriteLine(i + ": " + ListOfPlayers[i - 1].getName);
-                }
+ 
 
             }
         }
@@ -446,16 +411,9 @@ namespace SoshiLandSilverlight
                     numberOfDoubles++;
             }
             
-            if (Game1.DEBUG)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
-                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
-                if (DoublesRolled)
-                {
+            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolls dice: " + dice1Int + " and " + dice2Int + ". Total: " + total);
+            if (DoublesRolled)
                     Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
-                    Console.WriteLine("Player " + "\"" + p.getName + "\"" + " rolled doubles!");
-                }
-            }
             
             // Only move if the player is not in jail
             if ((!p.inJail) && gameInitialized)
@@ -481,21 +439,12 @@ namespace SoshiLandSilverlight
         {
             // Update the player's current position to the new position
             p.CurrentBoardPosition = position;
-
-            if (Game1.DEBUG)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
-                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " moves to Tile \"" + Tiles[position].getName + "\"");
         }
 
         private void MovePlayerToJail(Player p)
         {
-            if (Game1.DEBUG)
-            {
-                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " goes to jail!");
-                Console.WriteLine("Player " + "\"" + p.getName + "\"" + " goes to jail!");
-            }
+            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + p.getName + "\"" + " goes to jail!");
             // Set jail flag for player
             p.inJail = true;
             MovePlayer(p, 12);
@@ -518,9 +467,7 @@ namespace SoshiLandSilverlight
                         if (Game1.DEBUG && displayJailMessageOnce)
                         {
                             Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " is currently in jail");
-                            Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " is currently in jail");
                             Game1.debugMessageQueue.addMessageToQueue("Press T to pay $50 to get out of jail, or R to try and roll doubles");
-                            Console.WriteLine("Press T to pay $50 to get out of jail, or R to try and roll doubles");
                             displayJailMessageOnce = false;
                         }
 
@@ -536,7 +483,6 @@ namespace SoshiLandSilverlight
                                 if (currentTurnsPlayers.turnsInJail == 2)
                                 {
                                     Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must pay $50 to get out of jail on third turn.");
-                                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must pay $50 to get out of jail on third turn.");
 
                                     currentTurnsPlayers.PlayerPaysBank(50);             // Pay bank fine
                                     currentTurnsPlayers.inJail = false;                 // Set player out of jail
@@ -553,11 +499,7 @@ namespace SoshiLandSilverlight
                             }
                             else
                             {
-                                if (Game1.DEBUG)
-                                {
-                                    Game1.debugMessageQueue.addMessageToQueue("You failed to roll doubles and stay in jail.");
-                                    Console.WriteLine("You failed to roll doubles and stay in jail.");
-                                }
+                                Game1.debugMessageQueue.addMessageToQueue("You failed to roll doubles and stay in jail.");
 
                                 currentTurnsPlayers.turnsInJail++;
                                 turnPhase = 2;
@@ -568,7 +510,6 @@ namespace SoshiLandSilverlight
                         if (kbInput.IsKeyDown(Keys.T) && previousKeyboardInput.IsKeyUp(Keys.T))
                         {
                             Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $50 to escape from Babysitting Kyungsan");
-                            Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $50 to escape from Babysitting Kyungsan");
 
                             currentTurnsPlayers.PlayerPaysBank(50);     // Pay bank fine
                             currentTurnsPlayers.turnsInJail = 0;        // Set turns in jail back to zero
@@ -605,13 +546,9 @@ namespace SoshiLandSilverlight
                                 successfulPurchase = currentTurnsPlayers.PurchaseUtility((UtilityTile)Tiles[currentTurnsPlayers.CurrentBoardPosition]);
                             // Player cannot purchase right now
                             else
-                            {
-                                if (Game1.DEBUG)
-                                {
-                                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
-                                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
-                                }
-                            }
+                                Game1.debugMessageQueue.addMessageToQueue(
+                                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
+                            
                             // Turn off option to purchase if successful purchase has been made
                             if (successfulPurchase)
                             {
@@ -676,12 +613,7 @@ namespace SoshiLandSilverlight
                         {
                             // Go back to phase 0 for current player
                             turnPhase = 0;
-
-                            if (Game1.DEBUG)
-                            {
-                                Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " gets to roll again!");
-                                Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " gets to roll again!");
-                            }
+                            Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " gets to roll again!");
                         }
                         else
                         {
@@ -709,28 +641,16 @@ namespace SoshiLandSilverlight
             if (player.getMoney >= tenPercent)              // Check if player has enough money to pay 10%
             {
                 currentTurnsPlayers.PlayerPaysBank(tenPercent);                 // Player pays bank 10%
-
-                if (Game1.DEBUG)
-                {
-                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
-                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
-                }
-
+                Game1.debugMessageQueue.addMessageToQueue(
+                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
                 return true;
             }
             else
             {
-                if (Game1.DEBUG)
-                {
-                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
-                    Console.WriteLine("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
-                }
-
+                Game1.debugMessageQueue.addMessageToQueue(
+                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
                 return false;
             }
-
-
-                
         }
     }
 }

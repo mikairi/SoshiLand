@@ -8,6 +8,8 @@ namespace SoshiLandSilverlight
 {
     public static class Initialization
     {
+
+
         public static void InitializeTiles(Tile[] tiles)
         {
             // This probably isn't the most efficient way of creating the Tiles,

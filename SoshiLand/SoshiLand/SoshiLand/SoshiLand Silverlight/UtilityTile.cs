@@ -12,6 +12,14 @@ namespace SoshiLandSilverlight
 
         private Player owner;                   // Owner of property
 
+        private bool mortgaged = false;         // Flag for whether this Utility is mortgaged
+
+        public bool MortgageStatus
+        {
+            set { mortgaged = value; }
+            get { return mortgaged; }
+        }
+
         public Player Owner
         {
             set { owner = value; }
