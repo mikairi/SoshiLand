@@ -22,6 +22,11 @@ namespace SoshiLandSilverlight
         // Special cards (namely Jail related cards, but if we decide to add other special cards later, this'll be easier to implement with this enum
         private SpecialCardType specialCardType = SpecialCardType.None;
 
+        public SpecialCardType getSpecialCardType
+        {
+            get { return specialCardType; }
+        }
+
         public int getMoveModifier
         {
             get { return moveModifier; }

@@ -39,7 +39,10 @@ namespace SoshiLandSilverlight
             Card cardToDraw = Deck[0];          // Take the card on the top of the deck
 
             Deck.RemoveAt(0);                   // Remove it from the deck
-            Deck.Add(cardToDraw);               // Add it back to the deck, but now on the bottom of the deck
+            if (cardToDraw.getSpecialCardType != SpecialCardType.GetOutOfJailFreeCard)          // Check if the card drawn is not a get out of jail free card
+                Deck.Add(cardToDraw);               // Add it back to the deck, but now on the bottom of the deck
+
+            // Note: if the card is a get out of jail free card, then the player keeps the card and the card does NOT get placed on the bottom of the deck
 
             return cardToDraw;                  // Return the card on the top of the deck
         }
