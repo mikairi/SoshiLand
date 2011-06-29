@@ -27,7 +27,7 @@ namespace SoshiLandSilverlight
 
             // XML Reading Variables
             XmlReader xmlReader;
-            xmlReader = XmlReader.Create("PropertyCards.xml");      // Set the XML file to read
+            xmlReader = XmlReader.Create("GameData/PropertyCards.xml");      // Set the XML file to read
 
             // First, reserve spots in array for non-property Tiles
             tiles[0] = new Tile("Go", TileType.Go);
@@ -174,11 +174,11 @@ namespace SoshiLandSilverlight
             }
         }
 
-        public void InitializeCards(List<Card> chanceCards, List<Card> communityChestCards)
+        public void InitializeCards(DeckOfCards chanceCards, DeckOfCards communityChestCards)
         {
             // XML Reading Variables
             XmlReader xmlReader;
-            xmlReader = XmlReader.Create("ChanceCards.xml");      // Set the XML file to read Chance Cards
+            xmlReader = XmlReader.Create("GameData/ChanceCards.xml");      // Set the XML file to read Chance Cards
 
             string currentDescription = "";
             uint currentMoneyAdded = 0;
@@ -230,7 +230,7 @@ namespace SoshiLandSilverlight
                             if (chanceCardInfoCounter == 7)
                             {
                                 // Create the Card and add it to the list of Chance Cards
-                                chanceCards.Add(
+                                chanceCards.AddCard(
                                     new Card(
                                         currentDescription,
                                         currentPositionModifier,
@@ -254,7 +254,7 @@ namespace SoshiLandSilverlight
             int communityChestCardInfoCounter = 0;
 
             xmlReader.Close();
-            xmlReader = XmlReader.Create("CommunityChestCards.xml");        // Set the XML reader to read Community Chest Cards XML
+            xmlReader = XmlReader.Create("GameData/CommunityChestCards.xml");        // Set the XML reader to read Community Chest Cards XML
 
             // Read in XML data for Community Chest Cards
             while (xmlReader.Read())
@@ -296,7 +296,7 @@ namespace SoshiLandSilverlight
                             if (communityChestCardInfoCounter == 7)
                             {
                                 // Create the Card and add it to the list of Chance Cards
-                                communityChestCards.Add(
+                                communityChestCards.AddCard(
                                     new Card(
                                         currentDescription,
                                         currentPositionModifier,
@@ -316,6 +316,10 @@ namespace SoshiLandSilverlight
                     
                 }
             }
+
+            // Shuffle both decks of cards
+            chanceCards.ShuffleDeck();
+            communityChestCards.ShuffleDeck();
         }
 
         public void DeterminePlayerOrder(Player[] arrayOfPlayers, ref List<Player> ListOfPlayers)

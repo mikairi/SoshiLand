@@ -92,5 +92,24 @@ namespace SoshiLandSilverlight
             if ((!p.inJail) && SoshilandGame.gameInitialized)
                 SoshiLandGameFunctions.MovePlayerDiceRoll(p, total);
         }
+
+        public static bool PayTenPercentWorthToBank(Player player)
+        {
+            uint tenPercent = (uint)Math.Round(player.getNetWorth * 0.10);  // Calculate 10% of Player's money
+
+            if (player.getMoney >= tenPercent)              // Check if player has enough money to pay 10%
+            {
+                SoshilandGame.currentTurnsPlayers.PlayerPaysBank(tenPercent);                 // Player pays bank 10%
+                Game1.debugMessageQueue.addMessageToQueue(
+                    "Player " + "\"" + SoshilandGame.currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
+                return true;
+            }
+            else
+            {
+                Game1.debugMessageQueue.addMessageToQueue(
+                    "Player " + "\"" + SoshilandGame.currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
+                return false;
+            }
+        }
     }
 }

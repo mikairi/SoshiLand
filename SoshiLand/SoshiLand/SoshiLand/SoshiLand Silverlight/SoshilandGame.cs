@@ -17,8 +17,8 @@ namespace SoshiLandSilverlight
         public static Player currentTurnsPlayers;             // Holds the Player of the current turn         
         public static Tile[] Tiles = new Tile[48];            // Array of Tiles
 
-        private List<Card> ChanceCards = new List<Card>();          // Chance Cards Deck
-        private List<Card> CommunityChestCards = new List<Card>();  // Community Chest Deck
+        private DeckOfCards ChanceCards = new DeckOfCards();          // Chance Cards Deck
+        private DeckOfCards CommunityChestCards = new DeckOfCards();  // Community Chest Deck
 
         public static Random die = new Random();        // Need to create a static random die generator so it doesn't reuse the same seed over and over
 
@@ -327,7 +327,7 @@ namespace SoshiLandSilverlight
                             // Player chooses to pay 10% (Luxury Tax)
                             if (kbInput.IsKeyDown(Keys.K) && previousKeyboardInput.IsKeyUp(Keys.K) && !taxesMustPayTwoHundred)
                             {
-                                successfulTaxPayment = PayTenPercentWorthToBank(currentTurnsPlayers);       // Pay 10% to bank
+                                successfulTaxPayment = SoshiLandGameFunctions.PayTenPercentWorthToBank(currentTurnsPlayers);       // Pay 10% to bank
                                 if (successfulTaxPayment)
                                 {
                                     turnPhase = 2;
@@ -393,23 +393,6 @@ namespace SoshiLandSilverlight
             previousKeyboardInput = kbInput;
         }
 
-        private bool PayTenPercentWorthToBank(Player player)
-        {
-            uint tenPercent = (uint)Math.Round(player.getNetWorth * 0.10);  // Calculate 10% of Player's money
-
-            if (player.getMoney >= tenPercent)              // Check if player has enough money to pay 10%
-            {
-                currentTurnsPlayers.PlayerPaysBank(tenPercent);                 // Player pays bank 10%
-                Game1.debugMessageQueue.addMessageToQueue(
-                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
-                return true;
-            }
-            else
-            {
-                Game1.debugMessageQueue.addMessageToQueue(
-                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
-                return false;
-            }
-        }
+        
     }
 }
