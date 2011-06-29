@@ -166,8 +166,10 @@ namespace SoshiLandSilverlight
                     break;
 
                 case TileType.Chance:
+                    Card drawnChanceCard = ChanceCards.drawCard();                              // Draw the Chance card
                     break;
                 case TileType.CommunityChest:
+                    Card drawnCommunityChestCard = CommunityChestCards.drawCard();              // Draw the Community Chest card
                     break;
                 case TileType.FanMeeting:
                     turnPhase = 2;              // Nothing happens, so go to last phase

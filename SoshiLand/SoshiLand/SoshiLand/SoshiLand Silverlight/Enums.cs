@@ -67,7 +67,7 @@ namespace SoshiLandSilverlight
         GoToJail
     };
 
-    enum SpecialCardType
+    public enum SpecialCardType
     {
         None,
         GetOutOfJailFreeCard,
