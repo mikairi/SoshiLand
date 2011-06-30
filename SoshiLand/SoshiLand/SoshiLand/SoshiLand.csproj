@@ -169,6 +169,7 @@
     <Content Include="GameData\CommunityChestCards.xml">
       <SubType>
       </SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
