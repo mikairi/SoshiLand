@@ -68,12 +68,6 @@ namespace SoshiLand
             int dice1Int = SoshilandGame.die.Next(1, 6);
             int dice2Int = SoshilandGame.die.Next(1, 6);
 
-            if (SoshilandGame.gameInitialized)
-            {
-                dice1Int = 1;
-                dice2Int = 1;
-            }
-
             int total = dice1Int + dice2Int;
 
             SoshilandGame.currentDiceRoll = total;                // Set the global dice roll variable
