@@ -51,16 +51,16 @@ namespace SoshiLandSilverlight
             string currentTileName = "";           // Keep track of current Tile Name
 
             string currentMember = "";             // Name of SNSD member who owns the Property
-            uint currentBaseRent = 0;              // Rent
-            uint currentHouse1Rent = 0;            // Rent with 1 House
-            uint currentHouse2Rent = 0;            // Rent with 2 Houses
-            uint currentHouse3Rent = 0;            // Rent with 3 Houses
-            uint currentHouse4Rent = 0;            // Rent with 4 Houses
-            uint currentHotelRent = 0;             // Rent with Hotel
-            uint currentMortgageValue = 0;         // Mortgage Value
-            uint currentHouseCost = 0;             // Cost for each house
-            uint currentHotelCost = 0;             // Cost for Hotel (+ 4 houses)
-            uint currentPropertyPrice = 0;         // Cost to initially purchase property
+            int currentBaseRent = 0;              // Rent
+            int currentHouse1Rent = 0;            // Rent with 1 House
+            int currentHouse2Rent = 0;            // Rent with 2 Houses
+            int currentHouse3Rent = 0;            // Rent with 3 Houses
+            int currentHouse4Rent = 0;            // Rent with 4 Houses
+            int currentHotelRent = 0;             // Rent with Hotel
+            int currentMortgageValue = 0;         // Mortgage Value
+            int currentHouseCost = 0;             // Cost for each house
+            int currentHotelCost = 0;             // Cost for Hotel (+ 4 houses)
+            int currentPropertyPrice = 0;         // Cost to initially purchase property
 
             int propertyCardInfoCounter = 0;        // This is a counter to ensure that the current property card has read all the required data
 
@@ -181,8 +181,8 @@ namespace SoshiLandSilverlight
             xmlReader = XmlReader.Create("GameData/ChanceCards.xml");      // Set the XML file to read Chance Cards
 
             string currentDescription = "";
-            uint currentMoneyAdded = 0;
-            uint currentMoneySubtracted = 0;
+            int currentMoneyAdded = 0;
+            int currentMoneySubtracted = 0;
             int currentPositionModifier = 0;
             int currentPositionMover = 0;
             bool currentPerPlayer = false;

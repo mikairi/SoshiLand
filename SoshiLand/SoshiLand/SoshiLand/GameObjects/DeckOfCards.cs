@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-namespace SoshiLandSilverlight
+namespace SoshiLand
 {
     public class DeckOfCards
     {
@@ -44,16 +44,14 @@ namespace SoshiLandSilverlight
 
             // Note: if the card is a get out of jail free card, then the player keeps the card and the card does NOT get placed on the bottom of the deck
 
-            Game1.debugMessageQueue.addMessageToQueue("Player \"" + SoshilandGame.currentTurnsPlayers.getName + "\" draws a Card: \"" + cardToDraw.getDescription + "\"");
-
             return cardToDraw;                  // Return the card on the top of the deck
         }
 
         public void ShuffleDeck()
         {
             Game1.debugMessageQueue.addMessageToQueue("Shuffled Deck");
-
             var shuffled = Deck.OrderBy(a => Guid.NewGuid());       // Shuffles the deck by a random GUID assigned to each card
+
             Deck = shuffled.ToList<Card>();                         // Construct the new shuffled deck
         }
     }

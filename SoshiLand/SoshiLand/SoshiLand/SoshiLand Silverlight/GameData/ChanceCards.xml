@@ -170,7 +170,7 @@
     <PositionModifier>0</PositionModifier>
     <PositionMover>24</PositionMover>
     <PerPlayer>false</PerPlayer>
-    <Special></Special>
+    <Special>canPassGo</Special>
   </ChanceCard>
   <ChanceCard>
     <Description>Get elected as the next President, collect $200.</Description>

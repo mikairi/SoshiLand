@@ -68,6 +68,12 @@ namespace SoshiLand
             int dice1Int = SoshilandGame.die.Next(1, 6);
             int dice2Int = SoshilandGame.die.Next(1, 6);
 
+            if (SoshilandGame.gameInitialized)
+            {
+                dice1Int = 1;
+                dice2Int = 1;
+            }
+
             int total = dice1Int + dice2Int;
 
             SoshilandGame.currentDiceRoll = total;                // Set the global dice roll variable
@@ -92,5 +98,89 @@ namespace SoshiLand
             if ((!p.inJail) && SoshilandGame.gameInitialized)
                 SoshiLandGameFunctions.MovePlayerDiceRoll(p, total);
         }
+
+        public static bool PayTenPercentWorthToBank(Player player)
+        {
+            int tenPercent = (int)Math.Round(player.getNetWorth * 0.10);  // Calculate 10% of Player's money
+
+            if (player.getMoney >= tenPercent)              // Check if player has enough money to pay 10%
+            {
+                SoshilandGame.currentTurnsPlayers.PlayerPaysBank(tenPercent);                 // Player pays bank 10%
+                Game1.debugMessageQueue.addMessageToQueue(
+                    "Player " + "\"" + SoshilandGame.currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
+                return true;
+            }
+            else
+            {
+                Game1.debugMessageQueue.addMessageToQueue(
+                    "Player " + "\"" + SoshilandGame.currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
+                return false;
+            }
+        }
+
+        public static void FollowCardInstructions(Card card, Player player, List<Player> listOfPlayers)
+        {
+            if (card.getMoneyModifier != 0)             // Check if we need to do anything money related
+            {
+                bool negative = false;                  // Temporary bool to check if the money modifier is negative
+                if (card.getMoneyModifier < 0)
+                    negative = true;                    // Set negative flag
+
+                switch (card.getPerPlayer)              // Check if the card affects all players
+                {
+                    case true:                          // Case when card affects all players
+                        switch (negative)               // Check if we're removing money
+                        {
+                            case true:                  // Case when we're removing money from current player (current player pays all other players)
+                                foreach (Player p in listOfPlayers)
+                                    if (player != p)    // Player cannot pay him/herself
+                                        player.CurrentPlayerPaysPlayer(p, Math.Abs(card.getMoneyModifier));     // Pay each player the amount
+                                break;
+                            case false:                 // Case when player pays the bank
+                                foreach (Player p in listOfPlayers)
+                                    if (player != p)    // Player cannot be paid by him/herself
+                                        p.CurrentPlayerPaysPlayer(player, Math.Abs(card.getMoneyModifier));     // Each player pays the current player the amount
+                                break;
+                        }
+                        break;
+                    case false:                         // Case when card does not affect all players
+                        switch (negative)               // Check if we're removing money
+                        {
+                            case true:                  // Case when we're removing money
+                                player.PlayerPaysBank(Math.Abs(card.getMoneyModifier));         // Player pays bank
+                                break;
+                            case false:                 // Case when we're adding money
+                                player.BankPaysPlayer(Math.Abs(card.getMoneyModifier));         // Bank pays player
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            if (card.getMoveModifier != 0)              // Check if we need to do a move modification
+            {
+                // Note: since there are no cards that do this yet, going to skip this for now
+            }
+
+            if (card.getMovePosition != 0)              // Check if we need to do a position movement
+            {
+                if (card.getSpecialCardType == SpecialCardType.CanPassGo)   // Check if the card actually moves around the board
+                {
+                    if (player.CurrentBoardPosition > card.getMovePosition && player.CurrentBoardPosition <= 47)    // Check if the player will pass Go from his or her current location
+                        player.BankPaysPlayer(200);         // Pay 200 since player will pass Go
+
+
+                }
+                MovePlayer(player, card.getMovePosition);
+            }
+
+            if (card.getSpecialCardType == SpecialCardType.GetOutOfJailFreeCard)
+            {
+                player.FreeJailCards += 1;          // Give player a get out of jail free card
+                Game1.debugMessageQueue.addMessageToQueue("Player \"" + player.getName + "\" gets a Get Out of Jail Free Card");
+            }
+
+        }
+
     }
 }

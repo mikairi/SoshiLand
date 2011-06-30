@@ -22,6 +22,16 @@ namespace SoshiLand
         // Special cards (namely Jail related cards, but if we decide to add other special cards later, this'll be easier to implement with this enum
         private SpecialCardType specialCardType = SpecialCardType.None;
 
+        public bool getPerPlayer
+        {
+            get { return perPlayer; }
+        }
+
+        public SpecialCardType getSpecialCardType
+        {
+            get { return specialCardType; }
+        }
+
         public int getMoveModifier
         {
             get { return moveModifier; }
@@ -41,8 +51,8 @@ namespace SoshiLand
             string cardDescription,
             int cardMoveModifier,
             int cardMovePosition,
-            uint cardMoneyAdded,
-            uint cardMoneySubtracted,
+            int cardMoneyAdded,
+            int cardMoneySubtracted,
             bool cardPerPlayer,
             string cardSpecial)
         {
@@ -61,10 +71,20 @@ namespace SoshiLand
             // Check if the card has a special attribute
             if (cardSpecial != "")
             {
-                if (cardSpecial == "freeJail")
-                    specialCardType = SpecialCardType.GetOutOfJailFreeCard;
-                if (cardSpecial == "goToJail")
-                    specialCardType = SpecialCardType.GoToJailCard;
+
+                // Set the special attribute
+                switch (cardSpecial)
+                {
+                    case "freeJail":
+                        specialCardType = SpecialCardType.GetOutOfJailFreeCard;
+                        break;
+                    case "goToJail":
+                        specialCardType = SpecialCardType.GoToJailCard;
+                        break;
+                    case "canPassGo":
+                        specialCardType = SpecialCardType.CanPassGo;
+                        break;
+                }
             }
         }
 

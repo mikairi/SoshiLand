@@ -14,6 +14,6 @@ Content\assets\main_screen_wide.xnb
 Content\SpriteFont1.xnb
 SpriteFont1-exenfont.png
 SpriteFont1-exenfont@2x.png
-PropertyCards.xml
-ChanceCards.xml
-CommunityChestCards.xml
+GameData\PropertyCards.xml
+GameData\ChanceCards.xml
+GameData\CommunityChestCards.xml

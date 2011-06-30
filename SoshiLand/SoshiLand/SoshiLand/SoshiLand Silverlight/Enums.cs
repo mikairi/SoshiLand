@@ -72,5 +72,6 @@ namespace SoshiLandSilverlight
         None,
         GetOutOfJailFreeCard,
         GoToJailCard,
+        CanPassGo
     };
 }

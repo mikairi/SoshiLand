@@ -7,8 +7,8 @@ namespace SoshiLand
 {
     public class UtilityTile : Tile
     {
-        private uint propertyPrice = 150;       // Cost to initially purchase property. Default is 150
-        private uint mortgageValue = 75;        // Mortgage Value
+        private int propertyPrice = 150;       // Cost to initially purchase property. Default is 150
+        private int mortgageValue = 75;        // Mortgage Value
 
         private Player owner;                   // Owner of property
 
@@ -26,13 +26,12 @@ namespace SoshiLand
             get { return owner; }
         }
 
-        public uint getPropertyPrice
+        public int getPropertyPrice
         {
             get { return propertyPrice; }
         }
 
-        public UtilityTile(string name)
-            : base(name, TileType.Utility)
+        public UtilityTile(string name) : base(name, TileType.Utility)
         {
 
         }

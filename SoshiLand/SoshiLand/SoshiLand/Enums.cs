@@ -67,10 +67,11 @@ namespace SoshiLand
         GoToJail
     };
 
-    enum SpecialCardType
+    public enum SpecialCardType
     {
         None,
         GetOutOfJailFreeCard,
         GoToJailCard,
+        CanPassGo
     };
 }

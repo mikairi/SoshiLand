@@ -17,8 +17,8 @@ namespace SoshiLand
         public static Player currentTurnsPlayers;             // Holds the Player of the current turn         
         public static Tile[] Tiles = new Tile[48];            // Array of Tiles
 
-        private List<Card> ChanceCards = new List<Card>();          // Chance Cards Deck
-        private List<Card> CommunityChestCards = new List<Card>();  // Community Chest Deck
+        private DeckOfCards ChanceCards = new DeckOfCards();          // Chance Cards Deck
+        private DeckOfCards CommunityChestCards = new DeckOfCards();  // Community Chest Deck
 
         public static Random die = new Random();        // Need to create a static random die generator so it doesn't reuse the same seed over and over
 
@@ -45,12 +45,12 @@ namespace SoshiLand
         private bool taxesMustPayTenPercent = false;
         private bool taxesMustPayTwoHundred = false;
         // Phase Flags
-        
+
         // 0 = Pre Roll Phase
         // Player has option to trade, develop or mortgage / unmortgage.
         // If player is in jail, player has option to Pay to get out of jail, or roll doubles
         // Phase ends after player chooses to roll dice
-        
+
         // 1 = Roll Phase
         // Player has landed on a Tile.
         // If tile is a property, Player is forced to purchase or auction
@@ -62,9 +62,9 @@ namespace SoshiLand
         // Player has option to trade, develop or mortgage / unmortgage.
         // Phase ends after playing chooses to end his or her turn
 
-        public static byte turnPhase = 0;                 
+        public static byte turnPhase = 0;
 
-        private KeyboardState previousKeyboardInput;    
+        private KeyboardState previousKeyboardInput;
 
         // TEMPORARY
         Player[] playerArray;
@@ -147,12 +147,12 @@ namespace SoshiLand
 
                     else if (currentUtility.Owner != player && !currentUtility.MortgageStatus)        // If the property is owned by another player            
                     {
-                        uint utilityRent;                           // Calculate the amount to pay for Utility Rent
+                        int utilityRent;                           // Calculate the amount to pay for Utility Rent
 
                         if (currentUtility.Owner == otherUtility.Owner)     // Check if player owns both utilities
-                            utilityRent = (uint)currentDiceRoll * 10;
+                            utilityRent = (int)currentDiceRoll * 10;
                         else
-                            utilityRent = (uint)currentDiceRoll * 4;
+                            utilityRent = (int)currentDiceRoll * 4;
 
 
                         if (player.getMoney >= utilityRent)                 // Check if the player has enough money to pay Rent
@@ -166,8 +166,14 @@ namespace SoshiLand
                     break;
 
                 case TileType.Chance:
+                    Card drawnChanceCard = ChanceCards.drawCard();                              // Draw the Chance card
+                    SoshiLandGameFunctions.FollowCardInstructions(drawnChanceCard, player, ListOfPlayers);
+                    turnPhase = 2;
                     break;
                 case TileType.CommunityChest:
+                    Card drawnCommunityChestCard = CommunityChestCards.drawCard();              // Draw the Community Chest card
+                    SoshiLandGameFunctions.FollowCardInstructions(drawnCommunityChestCard, player, ListOfPlayers);
+                    turnPhase = 2;
                     break;
                 case TileType.FanMeeting:
                     turnPhase = 2;              // Nothing happens, so go to last phase
@@ -176,19 +182,13 @@ namespace SoshiLand
                     turnPhase = 2;              // Nothing happens, so go to last phase
                     break;
                 case TileType.ShoppingSpree:
-                    if (currentTurnsPlayers.getMoney >= 75)     // Check if player has enough money to pay tax
-                        currentTurnsPlayers.PlayerPaysBank(75); // Pay Bank taxes
-                        // Player does not have enough money
-                    else
-                    {
-                        optionShoppingSpree = true;             // Set flag so game remembers that player has to pay
-                        optionPromptMortgageOrTrade = true;     // Set flag to prompt player to get more money somehow
-                    }
+                    currentTurnsPlayers.PlayerPaysBank(75); // Pay Bank taxes
+                    turnPhase = 2;
                     break;
                 case TileType.SpecialLuxuryTax:
-                        Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
-                        Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
-                        optionPromptLuxuryTax = true;
+                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
+                    Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
+                    optionPromptLuxuryTax = true;
                     break;
                 case TileType.GoToJail:
                     SoshiLandGameFunctions.MovePlayerToJail(player);
@@ -211,7 +211,7 @@ namespace SoshiLand
                 Game1.debugMessageQueue.addMessageToQueue(optionsMessage);
             }
         }
-        
+
         public void PlayerInputUpdate()
         {
             KeyboardState kbInput = Keyboard.GetState();
@@ -242,11 +242,12 @@ namespace SoshiLand
                                 if (currentTurnsPlayers.turnsInJail == 2)
                                 {
                                     Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must pay $50 to get out of jail on third turn.");
-
                                     currentTurnsPlayers.PlayerPaysBank(50);             // Pay bank fine
-                                    currentTurnsPlayers.inJail = false;                 // Set player out of jail
-                                    currentTurnsPlayers.turnsInJail = 0;                // Set turns in jail back to zero
                                 }
+
+                                currentTurnsPlayers.inJail = false;                 // Set player out of jail
+                                Game1.debugMessageQueue.addMessageToQueue("Player is no longer in jail!");
+                                currentTurnsPlayers.turnsInJail = 0;                // Set turns in jail back to zero
 
                                 SoshiLandGameFunctions.MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);   // Move player piece
                                 PlayerOptions(currentTurnsPlayers);                         // Calculate options for player
@@ -255,6 +256,7 @@ namespace SoshiLand
                                 DoublesRolled = false;  // Turn off doubles rolled flag because player is not supposed to take another turn after getting out of jail
 
                                 turnPhase = 1;          // Set the next phase
+                                break;
                             }
                             else
                             {
@@ -262,6 +264,7 @@ namespace SoshiLand
 
                                 currentTurnsPlayers.turnsInJail++;
                                 turnPhase = 2;
+                                break;
                             }
                         }
 
@@ -273,6 +276,13 @@ namespace SoshiLand
                             currentTurnsPlayers.PlayerPaysBank(50);     // Pay bank fine
                             currentTurnsPlayers.turnsInJail = 0;        // Set turns in jail back to zero
                             currentTurnsPlayers.inJail = false;         // Set player to be out of Jail
+                            Game1.debugMessageQueue.addMessageToQueue("Player is no longer in jail!");
+
+                            SoshiLandGameFunctions.RollDice(currentTurnsPlayers);              // Rolls Dice and Move Piece to Tile
+                            turnPhase = 1;                              // Set next phase
+                            PlayerOptions(currentTurnsPlayers);         // Calculate options for player
+
+                            break;
                         }
 
                     }
@@ -284,12 +294,12 @@ namespace SoshiLand
                             SoshiLandGameFunctions.RollDice(currentTurnsPlayers);              // Rolls Dice and Move Piece to Tile
                             turnPhase = 1;                              // Set next phase
                             PlayerOptions(currentTurnsPlayers);         // Calculate options for player
-                            
+
                         }
                     }
                     break;
 
-                    // Roll Phase
+                // Roll Phase
                 case 1:
                     if (optionsCalculated)
                     {
@@ -307,7 +317,7 @@ namespace SoshiLand
                             else
                                 Game1.debugMessageQueue.addMessageToQueue(
                                     "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
-                            
+
                             // Turn off option to purchase if successful purchase has been made
                             if (successfulPurchase)
                             {
@@ -327,7 +337,7 @@ namespace SoshiLand
                             // Player chooses to pay 10% (Luxury Tax)
                             if (kbInput.IsKeyDown(Keys.K) && previousKeyboardInput.IsKeyUp(Keys.K) && !taxesMustPayTwoHundred)
                             {
-                                successfulTaxPayment = PayTenPercentWorthToBank(currentTurnsPlayers);       // Pay 10% to bank
+                                successfulTaxPayment = SoshiLandGameFunctions.PayTenPercentWorthToBank(currentTurnsPlayers);       // Pay 10% to bank
                                 if (successfulTaxPayment)
                                 {
                                     turnPhase = 2;
@@ -361,7 +371,7 @@ namespace SoshiLand
                         // Player chooses to trade
                     }
                     break;
-                    // Post Roll Phase
+                // Post Roll Phase
 
                 case 2:
                     // Player chooses to end turn
@@ -383,6 +393,7 @@ namespace SoshiLand
                             optionsCalculated = false;
                             taxesMustPayTenPercent = false;
                             taxesMustPayTwoHundred = false;
+                            displayJailMessageOnce = true;
                             // set number of doubles back to zero
                             numberOfDoubles = 0;
                         }
@@ -393,23 +404,6 @@ namespace SoshiLand
             previousKeyboardInput = kbInput;
         }
 
-        private bool PayTenPercentWorthToBank(Player player)
-        {
-            uint tenPercent = (uint)Math.Round(player.getNetWorth * 0.10);  // Calculate 10% of Player's money
 
-            if (player.getMoney >= tenPercent)              // Check if player has enough money to pay 10%
-            {
-                currentTurnsPlayers.PlayerPaysBank(tenPercent);                 // Player pays bank 10%
-                Game1.debugMessageQueue.addMessageToQueue(
-                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " pays $" + tenPercent + " in taxes");
-                return true;
-            }
-            else
-            {
-                Game1.debugMessageQueue.addMessageToQueue(
-                    "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " needs to pay $" + tenPercent + " but does not have enough money");
-                return false;
-            }
-        }
     }
 }

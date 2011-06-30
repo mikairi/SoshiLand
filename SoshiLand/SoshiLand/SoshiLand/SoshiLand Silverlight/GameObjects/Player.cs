@@ -8,15 +8,22 @@ namespace SoshiLandSilverlight
     public class Player
     {
         private string Name;                        // Player's Screen Name
-        private uint Money;                         // Player's Total Cash
+        private int Money;                          // Player's Total Cash
         private bool Jail = false;                  // boolean for when player is in Jail or not
         private int numberOfTurnsInJail = 0;        // Keep track of how many turns Player has been in jail
         private int currentPositionOnBoard;         // Player's position on the board in the Tiles[] array (index 0)
+        private byte numberOfFreeJailCards = 0;     // Number of Get Out of Jail Free cards player has
 
-        private uint actualAmountRemoved;           // If the player must pay another player an amount greater than what they own
-        private uint netWorth;                      // Player's net worth (Money + Buildings + printed prices of Mortgaged and Unmortgaged properties
+        private int actualAmountRemoved;           // If the player must pay another player an amount greater than what they own
+        private int netWorth;                      // Player's net worth (Money + Buildings + printed prices of Mortgaged and Unmortgaged properties
 
-        public uint getNetWorth
+        public byte FreeJailCards
+        {
+            set { numberOfFreeJailCards = value; }
+            get { return numberOfFreeJailCards; }
+        }
+
+        public int getNetWorth
         {
             get { return netWorth; }
         }
@@ -49,7 +56,7 @@ namespace SoshiLandSilverlight
             Name = n;
         }
 
-        public uint getMoney
+        public int getMoney
         {
             get { return Money; }
         }
@@ -113,7 +120,7 @@ namespace SoshiLandSilverlight
         public bool UnmortgageProperty(PropertyTile property)
         {
             // Calculate unmortgage value (110% of mortgage price
-            uint newPrice = (uint)Math.Round(property.getMortgageValue * 1.1);
+            int newPrice = (int)Math.Round(property.getMortgageValue * 1.1);
 
             if (Money >= newPrice)                  // Check if player has enough money to unmortgage
             {
@@ -129,19 +136,19 @@ namespace SoshiLandSilverlight
             }
         }
 
-        public void PlayerPurchasesHouse(uint amountPaid)
+        public void PlayerPurchasesHouse(int amountPaid)
         {
             netWorth += amountPaid;
             PlayerPaysBank(amountPaid);
         }
 
-        public void PlayerPaysBank(uint amountPaid)
+        public void PlayerPaysBank(int amountPaid)
         {
             Game1.debugMessageQueue.addMessageToQueue("Player \"" + this.getName + "\" pays $" + amountPaid + " to the bank");
             removeMoney(amountPaid);
         }
 
-        public void CurrentPlayerPaysPlayer(Player paidPlayer, uint amountPaid)
+        public void CurrentPlayerPaysPlayer(Player paidPlayer, int amountPaid)
         {
             // This function assumes the Player has sufficient funds to pay.
             // There is a separate function that will deal with the case where
@@ -153,31 +160,23 @@ namespace SoshiLandSilverlight
             removeMoney(amountPaid);
         }
 
-        public void BankPaysPlayer(uint amountPaid)
+        public void BankPaysPlayer(int amountPaid)
         {
             Game1.debugMessageQueue.addMessageToQueue("Player \"" + this.getName + "\" receives $" + amountPaid + " from the bank");
             addMoney(amountPaid);
         }
         
-        private void addMoney(uint money)
+        private void addMoney(int money)
         {
             Money += money;
             netWorth += money;
         }
 
-        private void removeMoney(uint m)
+        private void removeMoney(int m)
         {
-            // Check if the amount to remove is greater than the Player's total money
-            // Since money is a uint, must be positive
-            if (!(m > Money))
-            {
-                Money -= m;
-                netWorth -= m;
-            }
+            Money -= m;
+            netWorth -= m;
 
-
-            // Otherwise, the player is required to sell / trade / mortgage 
-            // Need to put an else here later.
             Game1.debugMessageQueue.addMessageToQueue("Player \"" + this.getName + "\" has $" + Money + " remaining");
         }
     }

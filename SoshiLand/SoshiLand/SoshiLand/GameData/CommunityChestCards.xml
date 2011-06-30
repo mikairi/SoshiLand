@@ -67,7 +67,7 @@
   <CommunityChestCard>
     <Description>Give your latest album to your sunbaes, pay $50.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>50</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
@@ -76,7 +76,7 @@
   <CommunityChestCard>
     <Description>Parents’ Day (formerly Mother’s Day) is coming up and you buy a car for you parents, pay a deposit of $100.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>100</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
@@ -85,7 +85,7 @@
   <CommunityChestCard>
     <Description>Arrived late to a recording, pay $100.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>100</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
@@ -94,7 +94,7 @@
   <CommunityChestCard>
     <Description>SM Town Paris is over and you go out to buy souvenirs for your family and friends, pay $100.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>100</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
@@ -103,7 +103,7 @@
   <CommunityChestCard>
     <Description>Spend your vacation with your family, pay $50.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>50</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
