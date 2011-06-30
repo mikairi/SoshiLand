@@ -72,5 +72,16 @@ namespace SoshiLandSilverlight
 
             spriteBatch.End();
         }
+
+        public void PrintLeaderboard(List<Player> listOfPlayers, SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < listOfPlayers.Count; i++)
+            {
+                spriteBatch.DrawString(spriteFont, listOfPlayers[i].getName + " Cash: #" + listOfPlayers[i].getMoney + ". Total Worth: $" + listOfPlayers[i].getNetWorth,
+                    new Vector2(1000, 30*i), Color.DeepPink);
+
+            }
+        }
+
     }
 }

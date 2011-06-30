@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 // Required to read XML file
 using System.Xml;
 
@@ -13,7 +14,7 @@ namespace SoshiLandSilverlight
 {
     class SoshilandGame
     {
-        private List<Player> ListOfPlayers;             // Contains the list of players in the game. This will be in the order from first to last player
+        public static List<Player> ListOfPlayers;                  // Contains the list of players in the game. This will be in the order from first to last player
         public static Player currentTurnsPlayers;             // Holds the Player of the current turn         
         public static Tile[] Tiles = new Tile[48];            // Array of Tiles
 
