@@ -10,6 +10,10 @@ using Microsoft.Xna.Framework.Media;
 
 using System.Text.RegularExpressions;
 
+// For Network
+using System.Net;
+using System.Xml;
+
 namespace SoshiLand
 {
     /// <summary>
@@ -60,6 +64,8 @@ namespace SoshiLand
 
         // An integer that determines which property card to show. 0 means no card is selected.
         Props drawId = Props.None;
+
+        bool testWeb = false;
 
         public Game1()
         {
@@ -189,7 +195,38 @@ namespace SoshiLand
 
             prevKeyboardState = kbInput;
 
+
+            if (kbInput.IsKeyDown(Keys.A) && !testWeb)
+            {
+                testWeb = true;
+
+                string uriRequest = "http://daum.heroku.com/soshi";
+
+                debugMessageQueue.addMessageToQueue("Attempting to send Request to " + uriRequest);
+                HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
+                httpRequest.BeginGetResponse(new AsyncCallback(HttpResponseHandler), httpRequest);
+            }
+
             base.Update(gameTime);
+        }
+
+        public void HttpResponseHandler(IAsyncResult result)
+        {
+            // acquire the result.
+            HttpWebRequest httpRequest = (HttpWebRequest)result.AsyncState;
+
+            // acquire the feed response.
+            HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.EndGetResponse(result);
+
+            // load the response into an xml reader.
+            XmlReader xmlReader = XmlReader.Create(httpResponse.GetResponseStream());
+
+            // determine if any feed results were returned.
+            while (xmlReader.Read())
+            {
+                string text = xmlReader.ReadInnerXml();
+                debugMessageQueue.addMessageToQueue(text);
+            }
         }
 
         /// <summary>
