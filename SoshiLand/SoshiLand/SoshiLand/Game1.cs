@@ -193,19 +193,19 @@ namespace SoshiLand
 
             testGame.PlayerInputUpdate();
 
-            prevKeyboardState = kbInput;
-
-
-            if (kbInput.IsKeyDown(Keys.A) && !testWeb)
+            if (kbInput.IsKeyDown(Keys.A) && prevKeyboardState.IsKeyUp(Keys.A))
             {
-                testWeb = true;
-
                 string uriRequest = "http://daum.heroku.com/soshi";
 
                 debugMessageQueue.addMessageToQueue("Attempting to send Request to " + uriRequest);
                 HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
                 httpRequest.BeginGetResponse(new AsyncCallback(HttpResponseHandler), httpRequest);
             }
+
+            prevKeyboardState = kbInput;
+
+
+
 
             base.Update(gameTime);
         }
@@ -222,10 +222,21 @@ namespace SoshiLand
             XmlReader xmlReader = XmlReader.Create(httpResponse.GetResponseStream());
 
             // determine if any feed results were returned.
+
             while (xmlReader.Read())
             {
-                string text = xmlReader.ReadInnerXml();
-                debugMessageQueue.addMessageToQueue(text);
+                switch (xmlReader.Name)
+                {
+
+                    case "to":
+                    case "from":
+                    case "heading":
+                    case "body":
+                        debugMessageQueue.addMessageToQueue(xmlReader.Name + ": " + xmlReader.ReadInnerXml());
+                        break;
+
+                }
+
             }
         }
 
