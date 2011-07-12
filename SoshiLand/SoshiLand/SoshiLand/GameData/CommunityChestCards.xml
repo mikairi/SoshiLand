@@ -110,72 +110,72 @@
     <Special></Special>
   </CommunityChestCard>
   <CommunityChestCard>
-    <Description></Description>
+    <Description>Your Macbook or iPad crashes. Take it to the Apple store to repair, pay $75.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>75</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
     <Special></Special>
   </CommunityChestCard>
   <CommunityChestCard>
-    <Description></Description>
+    <Description>You feel under the weather and go to the hospital to get an IV, pay $200.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>200</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
     <Special></Special>
   </CommunityChestCard>
   <CommunityChestCard>
-    <Description></Description>
+    <Description>Your heels are too worn out to wear, buy a new pair at the department store, pay $100.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>100</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
     <Special></Special>
   </CommunityChestCard>
   <CommunityChestCard>
-    <Description></Description>
+    <Description>You decide to go on a picnic with the rest of the members. Go to the mart to buy ingredients, pay $50.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>50</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
     <Special></Special>
   </CommunityChestCard>
   <CommunityChestCard>
-    <Description></Description>
+    <Description>You run out of candles for your nightly 5-minute talk. Go buy more candles, pay $20.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>20</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
     <Special></Special>
   </CommunityChestCard>
   <CommunityChestCard>
-    <Description></Description>
+    <Description>You go to Disneyland with the rest of the group. Pay $105.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>105</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
     <Special></Special>
   </CommunityChestCard>
   <CommunityChestCard>
-    <Description></Description>
+    <Description>You buy masks to hide your identities at an amusement park. Pay $50.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>50</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
     <Special></Special>
   </CommunityChestCard>
   <CommunityChestCard>
-    <Description></Description>
+    <Description>You go to karaoke (noraebang) with the other members. Pay $50.</Description>
     <MoneyAdded>0</MoneyAdded>
-    <MoneySubtracted>0</MoneySubtracted>
+    <MoneySubtracted>50</MoneySubtracted>
     <PositionModifier>0</PositionModifier>
     <PositionMover>0</PositionMover>
     <PerPlayer>false</PerPlayer>
