@@ -197,7 +197,7 @@ So... We'll use a number system for that.
       <HotelCost>100</HotelCost>
       <PropertyPrice>160</PropertyPrice>
     </Tile>
-    <Tile name ="Wenceslsas Square">
+    <Tile name ="Wenceslas Square">
       <Member>Hyoyeon</Member>
       <Location>Prague, Czech Republic</Location>
       <Rent>14</Rent>
