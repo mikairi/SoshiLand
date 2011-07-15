@@ -23,7 +23,7 @@ namespace SoshiLand
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        
         public static ContentManager Content;
 
         // For debugging, since Silverlight doesn't seem to allow debugging within the IDE.
@@ -200,6 +200,7 @@ namespace SoshiLand
                 debugMessageQueue.addMessageToQueue("Attempting to send Request to " + uriRequest);
                 HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
                 httpRequest.BeginGetResponse(new AsyncCallback(HttpResponseHandler), httpRequest);
+
             }
 
             prevKeyboardState = kbInput;

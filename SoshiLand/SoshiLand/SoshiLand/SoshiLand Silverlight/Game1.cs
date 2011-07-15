@@ -9,12 +9,17 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 using System.Text.RegularExpressions;
-
+using System.IO;
+using System.Text;
 using ExEnSilver.Graphics;
 
 // For Network
 using System.Net;
 using System.Xml;
+
+using Newtonsoft.Json;
+
+
 
 namespace SoshiLandSilverlight
 {
@@ -67,8 +72,6 @@ namespace SoshiLandSilverlight
         // An integer that determines which property card to show. 0 means no card is selected.
         Props drawId = Props.None;
 
-        bool testWeb = false;
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager( this );
@@ -94,6 +97,13 @@ namespace SoshiLandSilverlight
             debugMessageQueue = new DebugMessageQueue();
 
             testGame = new SoshilandGame();
+
+            // TEMPORARY creating user for JSON
+            User testUser = new User();
+            testUser.Name = "Mark";
+            testUser.Money = 1500;
+            testUser.BoardPosition = 0;
+
 
             base.Initialize();
 
@@ -195,23 +205,88 @@ namespace SoshiLandSilverlight
 
             testGame.PlayerInputUpdate();
 
+            // Test for Grabbing Data (GET)
             if (kbInput.IsKeyDown(Keys.A) && prevKeyboardState.IsKeyUp(Keys.A))
             {
                 string uriRequest = "http://daum.heroku.com/soshi";
 
                 debugMessageQueue.addMessageToQueue("Attempting to send Request to " + uriRequest);
                 HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
+
                 httpRequest.BeginGetResponse(new AsyncCallback(HttpResponseHandler), httpRequest);
+            }
+
+            // Test for Writing Data (POST)
+            if (kbInput.IsKeyDown(Keys.S) && prevKeyboardState.IsKeyUp(Keys.S))
+            {
+                string uriRequest = "http://daum.heroku.com/soshi";
+
+                debugMessageQueue.addMessageToQueue("Attempting to add a user to" + uriRequest);
+                
+                
+                HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
+
+                httpRequest.Method = "POST";
+                httpRequest.BeginGetRequestStream(new AsyncCallback(RequestReady), httpRequest);
             }
 
             prevKeyboardState = kbInput;
             
-            
-            
-            
             base.Update( gameTime );
         }
-        
+
+        [JsonObject(MemberSerialization.OptIn)]
+        public class User
+        {
+            [JsonProperty]
+            public string Name { get; set; }
+            [JsonProperty]
+            public int Money { get; set; }
+            [JsonProperty]
+            public int BoardPosition { get; set; }
+        }
+
+        void RequestReady(IAsyncResult result)
+        {
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            Stream stream = request.EndGetRequestStream(result);
+
+            // Send the post variables  
+            StreamWriter writer = new StreamWriter(stream);
+
+            User testUser = new User();
+            testUser.BoardPosition = 10;
+            testUser.Money = 2000;
+            testUser.Name = "John Smith";
+
+            string testUserText = JsonConvert.SerializeObject(testUser);
+
+            writer.WriteLine(testUserText);
+            //writer.WriteLine("Name=John Smith");writer.WriteLine("Money=2000");writer.WriteLine("BoardPosition=10");
+
+            debugMessageQueue.addMessageToQueue("Writing data: " + testUserText);
+
+            writer.Flush();
+            writer.Close();
+
+            request.BeginGetResponse(new AsyncCallback(ResponseReady), request);
+        }
+
+        // Get the Result  
+        void ResponseReady(IAsyncResult result)
+        {
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(result);
+
+            Stream responseStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(responseStream);
+            // get the result text  
+            string resultString = reader.ReadToEnd();
+
+            debugMessageQueue.addMessageToQueue("Response: " + resultString);
+            
+        }  
+
         public void HttpResponseHandler(IAsyncResult result)
         {
             // acquire the result.
@@ -220,28 +295,16 @@ namespace SoshiLandSilverlight
             // acquire the feed response.
             HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.EndGetResponse(result);
 
-            // load the response into an xml reader.
-            XmlReader xmlReader = XmlReader.Create(httpResponse.GetResponseStream());
+            // load the response into a stream reader
+            var streamReader = new StreamReader(httpResponse.GetResponseStream());
+            // Convert stream into string
+            string text = streamReader.ReadToEnd();
 
-            // determine if any feed results were returned.
+            //User readData = JsonConvert.DeserializeObject<User>(text);
 
-            while (xmlReader.Read())
-            {
-                switch (xmlReader.Name)
-                {
-
-                    case "to":
-                    case "from":
-                    case "heading":
-                    case "body":
-                        debugMessageQueue.addMessageToQueue(xmlReader.Name + ": " + xmlReader.ReadInnerXml());
-                        break;
-
-                }
-                
-            }
+            debugMessageQueue.addMessageToQueue(text);
         }
-        
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
