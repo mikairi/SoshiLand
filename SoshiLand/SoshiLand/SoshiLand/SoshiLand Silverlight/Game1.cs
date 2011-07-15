@@ -122,7 +122,7 @@ namespace SoshiLandSilverlight
             
             // Load the background which is also the board.
             background = base.Content.Load<Texture2D>("assets/main_screen_wide");
-            mainFrame = new Rectangle( 0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height );
+            mainFrame = new Rectangle( 200, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height );
             zoomPos = new Vector2( (float) mainFrame.Width * (float) 0.84375, (float) mainFrame.Height * (float) 0.0875 );
             
             // Load property cards.

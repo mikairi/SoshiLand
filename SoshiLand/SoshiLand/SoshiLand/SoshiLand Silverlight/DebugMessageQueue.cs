@@ -27,7 +27,6 @@ namespace SoshiLandSilverlight
 
         public DebugMessageQueue()
         {
-
             spriteFont = Game1.Content.Load<SpriteFont>("SpriteFont1"); 
         }
 
@@ -77,9 +76,8 @@ namespace SoshiLandSilverlight
         {
             for (int i = 0; i < listOfPlayers.Count; i++)
             {
-                spriteBatch.DrawString(spriteFont, listOfPlayers[i].getName + " Cash: #" + listOfPlayers[i].getMoney + ". Total Worth: $" + listOfPlayers[i].getNetWorth,
-                    new Vector2(1000, 30*i), Color.DeepPink);
-
+                spriteBatch.DrawString(spriteFont, listOfPlayers[i].getName + ": $" + listOfPlayers[i].getMoney + ". Worth: $" + listOfPlayers[i].getNetWorth,
+                    new Vector2(1200, 30*i), Color.DeepPink);
             }
         }
 
