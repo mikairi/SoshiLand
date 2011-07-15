@@ -18,7 +18,7 @@ using System.Net;
 using System.Xml;
 
 using Newtonsoft.Json;
-
+using SoshiLandSilverlight.GameData.JSON;
 
 
 namespace SoshiLandSilverlight
@@ -99,7 +99,7 @@ namespace SoshiLandSilverlight
             testGame = new SoshilandGame();
 
             // TEMPORARY creating user for JSON
-            User testUser = new User();
+            PlayerJson testUser = new PlayerJson();
             testUser.Name = "Mark";
             testUser.Money = 1500;
             testUser.BoardPosition = 0;
@@ -235,17 +235,6 @@ namespace SoshiLandSilverlight
             base.Update( gameTime );
         }
 
-        [JsonObject(MemberSerialization.OptIn)]
-        public class User
-        {
-            [JsonProperty]
-            public string Name { get; set; }
-            [JsonProperty]
-            public int Money { get; set; }
-            [JsonProperty]
-            public int BoardPosition { get; set; }
-        }
-
         void RequestReady(IAsyncResult result)
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
@@ -254,7 +243,7 @@ namespace SoshiLandSilverlight
             // Send the post variables  
             StreamWriter writer = new StreamWriter(stream);
 
-            User testUser = new User();
+            PlayerJson testUser = new PlayerJson();
             testUser.BoardPosition = 10;
             testUser.Money = 2000;
             testUser.Name = "John Smith";
@@ -262,7 +251,6 @@ namespace SoshiLandSilverlight
             string testUserText = JsonConvert.SerializeObject(testUser);
 
             writer.WriteLine(testUserText);
-            //writer.WriteLine("Name=John Smith");writer.WriteLine("Money=2000");writer.WriteLine("BoardPosition=10");
 
             debugMessageQueue.addMessageToQueue("Writing data: " + testUserText);
 
@@ -284,7 +272,6 @@ namespace SoshiLandSilverlight
             string resultString = reader.ReadToEnd();
 
             debugMessageQueue.addMessageToQueue("Response: " + resultString);
-            
         }  
 
         public void HttpResponseHandler(IAsyncResult result)

@@ -80,6 +80,7 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameData\JSON\PlayerJson.cs" />
     <Compile Include="GameObjects\Card.cs" />
     <Compile Include="DebugMessageQueue.cs" />
     <Compile Include="Enums.cs" />
