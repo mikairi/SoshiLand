@@ -1,0 +1,23 @@
+﻿<navigation:Page x:Class="SoshiLandSilverlight.StartPage" 
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           mc:Ignorable="d"
+           xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+           d:DesignWidth="1280" d:DesignHeight="720"
+           Title="Welcome to SoshiLand!">
+    <Canvas x:Name="MainCanvas" Background="White">
+        <Grid x:Name="LayoutRoot">
+            <Viewbox>
+                <Grid Margin="0, 150" Height="720" Width="1280">
+                    <StackPanel Orientation="Vertical">
+                        <TextBox x:Name="UserName" Height="30" Width="200" Canvas.Left="200" Canvas.Top="181" Text="Enter Your Name in this Text Box" GotFocus="UserName_GotFocus" ></TextBox>
+                        <Button x:Name="enterUserName" Height="30" Width="80" Content="Enter" Canvas.Left="258" Canvas.Top="233" Click="enterUserName_Click"></Button>
+                    </StackPanel>
+                </Grid>
+            </Viewbox>
+        </Grid>
+    </Canvas>
+    
+</navigation:Page>

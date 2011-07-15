@@ -1,0 +1,23 @@
+﻿<navigation:Page x:Class="SoshiLandSilverlight.ChatRoom" 
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           mc:Ignorable="d"
+           xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+           d:DesignWidth="1280" d:DesignHeight="720"
+           Title="Page1 Page">
+    <Canvas x:Name="MainCanvas" Background="White">
+        <Grid x:Name="LayoutRoot">
+            <TextBlock Text="Current Players" Canvas.Top="500" Margin="226,172,0,0" Height="37" VerticalAlignment="Top" HorizontalAlignment="Left" Width="227"></TextBlock>
+            <Viewbox>
+                <Grid Margin="0, 350" Height="80" Width="1280">
+                        
+                    <StackPanel Orientation="Vertical">
+                        <Button x:Name="startGame" Height="30" Width="80" Content="Start Game" Canvas.Left="258" Canvas.Top="233" Click="startGame_Click"></Button>
+                    </StackPanel>
+                </Grid>
+            </Viewbox>
+        </Grid>
+    </Canvas>
+</navigation:Page>

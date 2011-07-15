@@ -80,6 +80,8 @@ namespace SoshiLandSilverlight
             IsMouseVisible = true;
 
             // Preferred window size is 640x640
+            //graphics.PreferredBackBufferHeight = 640;
+            //graphics.PreferredBackBufferWidth = 640;
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
         }
