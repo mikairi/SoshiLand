@@ -10,11 +10,12 @@
     <Canvas x:Name="MainCanvas" Background="White">
         <Grid x:Name="LayoutRoot">
             <TextBlock Text="Current Players" Canvas.Top="500" Margin="226,172,0,0" Height="37" VerticalAlignment="Top" HorizontalAlignment="Left" Width="227"></TextBlock>
+            <TextBlock x:Name="ListOfCurrentPlayers" Text="test:" Canvas.Top="500" Margin="526,79,0,0" Height="266" VerticalAlignment="Top" HorizontalAlignment="Left" Width="227"></TextBlock>
             <Viewbox>
                 <Grid Margin="0, 350" Height="80" Width="1280">
                         
                     <StackPanel Orientation="Vertical">
-                        <Button x:Name="startGame" Height="30" Width="80" Content="Start Game" Canvas.Left="258" Canvas.Top="233" Click="startGame_Click"></Button>
+                        <Button x:Name="startGame" Height="30" Width="80" Content="Start Game" Canvas.Left="258" Canvas.Top="233" Click="startGame_Click" MouseEnter="startGame_MouseEnter"></Button>
                     </StackPanel>
                 </Grid>
             </Viewbox>

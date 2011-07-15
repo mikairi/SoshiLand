@@ -89,6 +89,7 @@
     <Compile Include="GameObjects\DeckOfCards.cs" />
     <Compile Include="Initialization.cs" />
     <Compile Include="GameObjects\Player.cs" />
+    <Compile Include="Network\Network.cs" />
     <Compile Include="Silverlight Pages\ChatRoomPage.xaml.cs">
       <DependentUpon>ChatRoomPage.xaml</DependentUpon>
     </Compile>

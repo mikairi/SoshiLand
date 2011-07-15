@@ -215,7 +215,7 @@ namespace SoshiLandSilverlight
                 debugMessageQueue.addMessageToQueue("Attempting to send Request to " + uriRequest);
                 HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
 
-                httpRequest.BeginGetResponse(new AsyncCallback(HttpResponseHandler), httpRequest);
+                httpRequest.BeginGetResponse(new AsyncCallback(Network.HttpResponseHandler), httpRequest);
             }
 
             // Test for Writing Data (POST)
