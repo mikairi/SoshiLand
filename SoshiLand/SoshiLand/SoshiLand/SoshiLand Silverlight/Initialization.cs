@@ -446,7 +446,6 @@ namespace SoshiLandSilverlight
             }
         }
 
-
         public void PlaceAllPiecesOnGo(List<Player> listOfPlayers)
         {
             Game1.debugMessageQueue.addMessageToQueue("Placing all players on Go");

@@ -118,8 +118,11 @@ namespace SoshiLandSilverlight
                         else
                             optionPromptMortgageOrTrade = true;         // Player must decide to mortgage or trade to get money
                     }
+                    else
+                        // Otherwise, player landed on his or her own property, so go to next phase
+                        turnPhase = 2;
 
-                    // Otherwise, player landed on his or her own property, so do nothing
+                    
                     break;
 
                 case TileType.Utility:
@@ -152,6 +155,9 @@ namespace SoshiLandSilverlight
                         else
                             optionPromptMortgageOrTrade = true;             // Player must decide to mortgage or trade to get money
                     }
+                    else
+                        // Otherwise, player landed on his or her own property, so go to next phase
+                        turnPhase = 2;
                     break;
 
                 case TileType.Chance:
