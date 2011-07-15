@@ -11,6 +11,7 @@ namespace SoshiLandSilverlight
 	{
         public static GameState currentGameState = GameState.EnterUserName;
         public static MainPage mPage;
+
 		protected override void SetupMainPage(MainPage mainPage)
 		{
             mPage = mainPage;
@@ -40,7 +41,7 @@ namespace SoshiLandSilverlight
                 case GameState.InGame:
                     mPage.Children.Clear();     // Clear all Children
 
-                    var game = new Game1();     // Create a new instance of a SoshiLand game
+                    var game = new Game1(ChatRoom.chatroomListOfPlayers);     // Create a new instance of a SoshiLand game
 			        mPage.Children.Add(game);   // Add the game as a child of the Silverlight App
 			        game.Play();                // Starts the game logic
                     break;

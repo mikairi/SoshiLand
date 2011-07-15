@@ -39,8 +39,8 @@ namespace SoshiLandSilverlight
         public static DebugMessageQueue debugMessageQueue;
 
         // Test
-        SoshilandGame testGame;
-        Player testPlayer = new Player("Test Player");
+        SoshilandGame soshiLandGame;
+        string[] playerStringArray;
 
         KeyboardState prevKeyboardState = Keyboard.GetState();
 
@@ -72,7 +72,7 @@ namespace SoshiLandSilverlight
         // An integer that determines which property card to show. 0 means no card is selected.
         Props drawId = Props.None;
 
-        public Game1()
+        public Game1(string[] players)
         {
             graphics = new GraphicsDeviceManager( this );
             base.Content.RootDirectory = "Content";
@@ -84,6 +84,8 @@ namespace SoshiLandSilverlight
             //graphics.PreferredBackBufferWidth = 640;
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
+
+            playerStringArray = players;
         }
 
         /// <summary>
@@ -95,18 +97,11 @@ namespace SoshiLandSilverlight
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            debugMessageQueue = new DebugMessageQueue();
-
-            testGame = new SoshilandGame();
-
-            // TEMPORARY creating user for JSON
-            PlayerJson testUser = new PlayerJson();
-            testUser.Name = "Mark";
-            testUser.Money = 1500;
-            testUser.BoardPosition = 0;
-
-
+            if (playerStringArray != null)
+            {
+                debugMessageQueue = new DebugMessageQueue();
+                soshiLandGame = new SoshilandGame(playerStringArray);
+            }
             base.Initialize();
 
         }
@@ -204,8 +199,9 @@ namespace SoshiLandSilverlight
                 else drawId = Props.None;
             }
             else drawId = Props.None;
-
-            testGame.PlayerInputUpdate();
+            
+            if (soshiLandGame != null)
+                soshiLandGame.PlayerInputUpdate();
 
             prevKeyboardState = kbInput;
             

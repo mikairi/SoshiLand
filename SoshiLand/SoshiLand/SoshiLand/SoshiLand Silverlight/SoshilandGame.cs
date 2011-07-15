@@ -67,33 +67,21 @@ namespace SoshiLandSilverlight
 
         private KeyboardState previousKeyboardInput;    
 
-        // TEMPORARY
         Player[] playerArray;
 
-        public SoshilandGame()
+        public SoshilandGame(string[] players)
         {
             Initialization gameInitialization = new Initialization();
 
             gameInitialization.InitializeTiles(Tiles);      // Initialize Tiles on the board
             gameInitialization.InitializeCards(ChanceCards, CommunityChestCards);   // Initialize Chance and Community Chest cards
 
-            // Temporary list of players
-            Player player1 = new Player("Mark");
-            Player player2 = new Player("Wooski");
-            Player player3 = new Player("Yook");
-            Player player4 = new Player("Addy");
-            Player player5 = new Player("Colby");
-            Player player6 = new Player("Skylar");
-            Player player7 = new Player("Mako");
+            playerArray = new Player[players.Length];
 
-            playerArray = new Player[7];
-            playerArray[0] = player1;
-            playerArray[1] = player2;
-            playerArray[2] = player3;
-            playerArray[3] = player4;
-            playerArray[4] = player5;
-            playerArray[5] = player6;
-            playerArray[6] = player7;
+            for (int i = 0; i < players.Length; i++)
+            {
+                playerArray[i] = new Player(players[i]);
+            }
 
             gameInitialization.DeterminePlayerOrder(playerArray, ref ListOfPlayers);        // Determine order of players
             // Players choose pieces (this can be implemented later)

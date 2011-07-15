@@ -23,6 +23,8 @@ namespace SoshiLandSilverlight
     {
         // Timer for polling
         private DispatcherTimer timer;
+        public static string[] chatroomListOfPlayers;
+        private List<PlayerJson> listOfPlayers;
 
         public ChatRoom()
         {
@@ -44,7 +46,23 @@ namespace SoshiLandSilverlight
 
         private void startGame_Click(object sender, RoutedEventArgs e)
         {
+            
+            chatroomListOfPlayers = new string[listOfPlayers.Count];
+
+            for (int i = 0; i < listOfPlayers.Count; i++)
+            {
+                chatroomListOfPlayers[i] = listOfPlayers[i].Name;
+            }
+            
+            // Temporary
+            /*
+            chatroomListOfPlayers = new string[2];
+            chatroomListOfPlayers[0] = "Mark";
+            chatroomListOfPlayers[1] = "Mako";
+            */
             App.ChangeGameState(GameState.InGame);
+            
+
         }
 
         public void updateListOfPlayers(object o, EventArgs sender)
@@ -63,7 +81,7 @@ namespace SoshiLandSilverlight
             if (jsonListOfPlayers != "")
             {
                 // Deserialize into a list
-                List<PlayerJson> listOfPlayers = JsonConvert.DeserializeObject<List<PlayerJson>>(jsonListOfPlayers);
+                listOfPlayers = JsonConvert.DeserializeObject<List<PlayerJson>>(jsonListOfPlayers);
                 
                 // Clear Text first
                 ListOfCurrentPlayers.Text = "";             
