@@ -103,7 +103,6 @@
     <Compile Include="SoshiLandGameFunctions.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="GameObjects\UtilityTile.cs" />
-    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Content\nobile.ttf" />

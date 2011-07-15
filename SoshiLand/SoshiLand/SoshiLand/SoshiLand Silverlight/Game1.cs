@@ -272,8 +272,6 @@ namespace SoshiLandSilverlight
                 debugMessageQueue.PrintMessages(gameTime, spriteBatch);
                 Game1.debugMessageQueue.PrintLeaderboard(SoshilandGame.ListOfPlayers, spriteBatch);
                 // Post player standings on right side
-
-
             }
 
 

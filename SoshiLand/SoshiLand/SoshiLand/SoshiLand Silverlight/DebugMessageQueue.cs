@@ -30,8 +30,6 @@ namespace SoshiLandSilverlight
             spriteFont = Game1.Content.Load<SpriteFont>("SpriteFont1"); 
         }
 
-        
-
         public void addMessageToQueue(string message)
         {
             if (Game1.DEBUG)
