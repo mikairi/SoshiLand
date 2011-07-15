@@ -15,7 +15,7 @@
                 <Grid Margin="0, 350" Height="80" Width="1280">
                         
                     <StackPanel Orientation="Vertical">
-                        <Button x:Name="startGame" Height="30" Width="80" Content="Start Game" Canvas.Left="258" Canvas.Top="233" Click="startGame_Click" MouseEnter="startGame_MouseEnter"></Button>
+                        <Button x:Name="startGame" Height="30" Width="80" Content="Start Game" Canvas.Left="258" Canvas.Top="233" Click="startGame_Click" ></Button>
                     </StackPanel>
                 </Grid>
             </Viewbox>

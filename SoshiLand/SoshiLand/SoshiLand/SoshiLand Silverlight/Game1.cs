@@ -207,91 +207,9 @@ namespace SoshiLandSilverlight
 
             testGame.PlayerInputUpdate();
 
-            // Test for Grabbing Data (GET)
-            if (kbInput.IsKeyDown(Keys.A) && prevKeyboardState.IsKeyUp(Keys.A))
-            {
-                string uriRequest = "http://daum.heroku.com/soshi";
-
-                debugMessageQueue.addMessageToQueue("Attempting to send Request to " + uriRequest);
-                HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
-
-                httpRequest.BeginGetResponse(new AsyncCallback(Network.HttpResponseHandler), httpRequest);
-            }
-
-            // Test for Writing Data (POST)
-            if (kbInput.IsKeyDown(Keys.S) && prevKeyboardState.IsKeyUp(Keys.S))
-            {
-                string uriRequest = "http://daum.heroku.com/soshi";
-
-                debugMessageQueue.addMessageToQueue("Attempting to add a user to" + uriRequest);
-                
-                
-                HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
-
-                httpRequest.Method = "POST";
-                httpRequest.BeginGetRequestStream(new AsyncCallback(RequestReady), httpRequest);
-            }
-
             prevKeyboardState = kbInput;
             
             base.Update( gameTime );
-        }
-
-        void RequestReady(IAsyncResult result)
-        {
-            HttpWebRequest request = result.AsyncState as HttpWebRequest;
-            Stream stream = request.EndGetRequestStream(result);
-
-            // Send the post variables  
-            StreamWriter writer = new StreamWriter(stream);
-
-            PlayerJson testUser = new PlayerJson();
-            testUser.BoardPosition = 10;
-            testUser.Money = 2000;
-            testUser.Name = "John Smith";
-
-            string testUserText = JsonConvert.SerializeObject(testUser);
-
-            writer.WriteLine(testUserText);
-
-            debugMessageQueue.addMessageToQueue("Writing data: " + testUserText);
-
-            writer.Flush();
-            writer.Close();
-
-            request.BeginGetResponse(new AsyncCallback(ResponseReady), request);
-        }
-
-        // Get the Result  
-        void ResponseReady(IAsyncResult result)
-        {
-            HttpWebRequest request = result.AsyncState as HttpWebRequest;
-            HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(result);
-
-            Stream responseStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(responseStream);
-            // get the result text  
-            string resultString = reader.ReadToEnd();
-
-            debugMessageQueue.addMessageToQueue("Response: " + resultString);
-        }  
-
-        public void HttpResponseHandler(IAsyncResult result)
-        {
-            // acquire the result.
-            HttpWebRequest httpRequest = (HttpWebRequest)result.AsyncState;
-
-            // acquire the feed response.
-            HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.EndGetResponse(result);
-
-            // load the response into a stream reader
-            var streamReader = new StreamReader(httpResponse.GetResponseStream());
-            // Convert stream into string
-            string text = streamReader.ReadToEnd();
-
-            //User readData = JsonConvert.DeserializeObject<User>(text);
-
-            debugMessageQueue.addMessageToQueue(text);
         }
 
         /// <summary>

@@ -14,15 +14,26 @@ using System.Windows.Navigation;
 using SoshiLandSilverlight;
 using Newtonsoft.Json;
 using SoshiLandSilverlight.GameData.JSON;
+
+using System.Windows.Threading;
+
 namespace SoshiLandSilverlight
 {
     public partial class ChatRoom : Page
     {
+        // Timer for polling
+        private DispatcherTimer timer;
+
         public ChatRoom()
         {
             InitializeComponent();
+            
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 0, 1);  // 1 second interval
+            timer.Tick += new EventHandler(updateListOfPlayers);
+            timer.Start();
+
             ListOfCurrentPlayers.Text = "";
-            updateListOfPlayers();
         }
 
         // Executes when the user navigates to this page.
@@ -36,34 +47,34 @@ namespace SoshiLandSilverlight
             App.ChangeGameState(GameState.InGame);
         }
 
-        public void updateListOfPlayers()
+        public void updateListOfPlayers(object o, EventArgs sender)
         {
+            // URI for list of players
             string uriRequest = "http://daum.heroku.com/soshi";
 
+            // Send the GET request for the JSON of players
             HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
             httpRequest.BeginGetResponse(new AsyncCallback(Network.HttpResponseHandler), httpRequest);
 
+            // Store the response in a string
             string jsonListOfPlayers = Network.currentResponse;
+            // Add square brackets so the string can be deserialized
             jsonListOfPlayers = Network.SurroundWithSquareBrackets(jsonListOfPlayers);
             if (jsonListOfPlayers != "")
             {
+                // Deserialize into a list
                 List<PlayerJson> listOfPlayers = JsonConvert.DeserializeObject<List<PlayerJson>>(jsonListOfPlayers);
-
-                ListOfCurrentPlayers.Text = "";             // Clear Text first
+                
+                // Clear Text first
+                ListOfCurrentPlayers.Text = "";             
 
                 // Iterate through the string to add 
                 foreach (PlayerJson p in listOfPlayers)
                 {
+                    // Add the player's name line by line
                     ListOfCurrentPlayers.Text += p.Name + System.Environment.NewLine;
                 }
-                
             }
         }
-
-        private void startGame_MouseEnter(object sender, MouseEventArgs e)
-        {
-            updateListOfPlayers();
-        }
-
     }
 }
