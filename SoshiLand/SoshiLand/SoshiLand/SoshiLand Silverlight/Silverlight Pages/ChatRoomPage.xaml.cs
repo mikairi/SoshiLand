@@ -84,7 +84,7 @@ namespace SoshiLandSilverlight
                 listOfPlayers = JsonConvert.DeserializeObject<List<PlayerJson>>(jsonListOfPlayers);
                 
                 // Clear Text first
-                ListOfCurrentPlayers.Text = "";             
+                ListOfCurrentPlayers.Text = Network.currentResponseFromRequest + System.Environment.NewLine;             
 
                 // Iterate through the string to add 
                 foreach (PlayerJson p in listOfPlayers)

@@ -11,6 +11,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
 
+using Newtonsoft.Json;
+using SoshiLandSilverlight.GameData.JSON;
+
 namespace SoshiLandSilverlight
 {
     public partial class StartPage : Page
@@ -32,8 +35,23 @@ namespace SoshiLandSilverlight
 
         void enterUserName_Click(object sender, RoutedEventArgs e)
         {
+            string uri = "http://daum.heroku.com/soshi";
+
             // Store user's name in a string
             string userName = UserName.Text;
+
+            PlayerJson user = new PlayerJson();
+            user.BoardPosition = 10;
+            user.Money = 1500;
+            user.Name = userName;
+
+            string testUserText = JsonConvert.SerializeObject(user);
+
+            Network.currentRequest = testUserText;
+
+            HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uri));
+            httpRequest.Method = "POST";
+            httpRequest.BeginGetRequestStream(new AsyncCallback(Network.RequestReady), httpRequest);
 
             // Switch to Chatroom
             App.ChangeGameState(GameState.ChatRoom);

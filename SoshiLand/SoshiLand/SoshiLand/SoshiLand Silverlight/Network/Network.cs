@@ -23,7 +23,10 @@ namespace SoshiLandSilverlight
     public static class Network
     {
         public static string currentResponse = "";
+        public static string currentRequest = "";
+        public static string currentResponseFromRequest = "";
 
+        // POST request
         public static void RequestReady(IAsyncResult result)
         {
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
@@ -32,14 +35,8 @@ namespace SoshiLandSilverlight
             // Send the post variables  
             StreamWriter writer = new StreamWriter(stream);
 
-            PlayerJson testUser = new PlayerJson();
-            testUser.BoardPosition = 10;
-            testUser.Money = 2000;
-            testUser.Name = "John Smith";
-
-            string testUserText = JsonConvert.SerializeObject(testUser);
-
-            writer.WriteLine(testUserText);
+            // Write the request string
+            writer.WriteLine(currentRequest);
 
             //Game1.debugMessageQueue.addMessageToQueue("Writing data: " + testUserText);
 
@@ -59,6 +56,8 @@ namespace SoshiLandSilverlight
             StreamReader reader = new StreamReader(responseStream);
             // get the result text  
             string resultString = reader.ReadToEnd();
+
+            currentResponseFromRequest = resultString;
 
             //Game1.debugMessageQueue.addMessageToQueue("Response: " + resultString);
         }
