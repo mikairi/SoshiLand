@@ -22,6 +22,12 @@ namespace SoshiLandSilverlight
 {
     public static class Network
     {
+        // This api_key is required for all requests
+        private static string param_api_key = "api_key=ef05a0898f787292f5d5c14ebc661b22";
+
+        public static string uriRoot = "http://soshiland.ssf.me/?" + param_api_key;
+        public static string uriUsers = "http://soshiland.ssf.me/users?" + param_api_key;
+
         public static string currentResponse = "";
         public static string currentRequest = "";
         public static string currentResponseFromRequest = "";

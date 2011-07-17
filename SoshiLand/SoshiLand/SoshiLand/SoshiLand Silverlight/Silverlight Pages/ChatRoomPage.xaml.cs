@@ -51,7 +51,7 @@ namespace SoshiLandSilverlight
 
             for (int i = 0; i < listOfPlayers.Count; i++)
             {
-                chatroomListOfPlayers[i] = listOfPlayers[i].Name;
+                chatroomListOfPlayers[i] = listOfPlayers[i].user_name;
             }
             
             // Temporary
@@ -68,7 +68,7 @@ namespace SoshiLandSilverlight
         public void updateListOfPlayers(object o, EventArgs sender)
         {
             // URI for list of players
-            string uriRequest = "http://daum.heroku.com/soshi";
+            string uriRequest = Network.uriUsers;
 
             // Send the GET request for the JSON of players
             HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
@@ -77,20 +77,20 @@ namespace SoshiLandSilverlight
             // Store the response in a string
             string jsonListOfPlayers = Network.currentResponse;
             // Add square brackets so the string can be deserialized
-            jsonListOfPlayers = Network.SurroundWithSquareBrackets(jsonListOfPlayers);
+            //jsonListOfPlayers = Network.SurroundWithSquareBrackets(jsonListOfPlayers);
             if (jsonListOfPlayers != "")
             {
                 // Deserialize into a list
                 listOfPlayers = JsonConvert.DeserializeObject<List<PlayerJson>>(jsonListOfPlayers);
                 
                 // Clear Text first
-                ListOfCurrentPlayers.Text = Network.currentResponseFromRequest + System.Environment.NewLine;             
+                ListOfCurrentPlayers.Text = "";             
 
                 // Iterate through the string to add 
                 foreach (PlayerJson p in listOfPlayers)
                 {
                     // Add the player's name line by line
-                    ListOfCurrentPlayers.Text += p.Name + System.Environment.NewLine;
+                    ListOfCurrentPlayers.Text += p.user_name + System.Environment.NewLine;
                 }
             }
         }

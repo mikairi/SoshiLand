@@ -35,6 +35,8 @@ namespace SoshiLandSilverlight
 
         void enterUserName_Click(object sender, RoutedEventArgs e)
         {
+            /*
+
             string uri = "http://daum.heroku.com/soshi";
 
             // Store user's name in a string
@@ -52,7 +54,7 @@ namespace SoshiLandSilverlight
             HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uri));
             httpRequest.Method = "POST";
             httpRequest.BeginGetRequestStream(new AsyncCallback(Network.RequestReady), httpRequest);
-
+            */
             // Switch to Chatroom
             App.ChangeGameState(GameState.ChatRoom);
         }

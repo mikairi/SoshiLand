@@ -17,10 +17,10 @@ namespace SoshiLandSilverlight.GameData.JSON
     public class PlayerJson
     {
         [JsonProperty]
-        public string Name { get; set; }
+        public string user_name { get; set; }
         [JsonProperty]
-        public int Money { get; set; }
+        public int money { get; set; }
         [JsonProperty]
-        public int BoardPosition { get; set; }
+        public int board_position { get; set; }
     }
 }
