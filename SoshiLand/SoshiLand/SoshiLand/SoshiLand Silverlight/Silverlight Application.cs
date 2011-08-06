@@ -20,8 +20,10 @@ namespace SoshiLandSilverlight
 
             ContentManager.SilverlightFontTranslation("SpriteFont1", new SpriteFontTTF(fontSource, fontFamily, 14));
 
+            ChangeGameState(GameState.InGame);
+
             // Start the app by prompting User Name
-            ChangeGameState(GameState.EnterUserName);
+            //ChangeGameState(GameState.EnterUserName);
 		}
 
         public static void ChangeGameState(GameState gameState)
@@ -41,7 +43,19 @@ namespace SoshiLandSilverlight
                 case GameState.InGame:
                     mPage.Children.Clear();     // Clear all Children
 
-                    var game = new Game1(ChatRoom.chatroomListOfPlayers);     // Create a new instance of a SoshiLand game
+                    // Temporary, until we implement grabbing the list of players from the server
+                    string[] listOfPlayers = new string[7];
+
+                    listOfPlayers[0] = "Mark";
+                    listOfPlayers[1] = "Addy";
+                    listOfPlayers[2] = "Yook";
+                    listOfPlayers[3] = "Wooski";
+                    listOfPlayers[4] = "Skylar";
+                    listOfPlayers[5] = "Colby";
+                    listOfPlayers[6] = "Mako";
+
+                    var game = new Game1(listOfPlayers);     // Create a new instance of a SoshiLand game
+                    //var game = new Game1(ChatRoom.chatroomListOfPlayers);     // Create a new instance of a SoshiLand game
 			        mPage.Children.Add(game);   // Add the game as a child of the Silverlight App
 			        game.Play();                // Starts the game logic
                     break;
