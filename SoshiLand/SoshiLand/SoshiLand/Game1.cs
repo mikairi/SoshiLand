@@ -9,10 +9,14 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 using System.Text.RegularExpressions;
+using System.IO;
+using System.Text;
 
 // For Network
 using System.Net;
 using System.Xml;
+
+
 
 namespace SoshiLand
 {
@@ -23,7 +27,7 @@ namespace SoshiLand
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
         public static ContentManager Content;
 
         // For debugging, since Silverlight doesn't seem to allow debugging within the IDE.
@@ -32,8 +36,8 @@ namespace SoshiLand
         public static DebugMessageQueue debugMessageQueue;
 
         // Test
-        SoshilandGame testGame;
-        Player testPlayer = new Player("Test Player");
+        SoshilandGame soshiLandGame;
+        string[] playerStringArray;
 
         KeyboardState prevKeyboardState = Keyboard.GetState();
 
@@ -65,18 +69,20 @@ namespace SoshiLand
         // An integer that determines which property card to show. 0 means no card is selected.
         Props drawId = Props.None;
 
-        bool testWeb = false;
-
-        public Game1()
+        public Game1(string[] players)
         {
-            graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager( this );
             base.Content.RootDirectory = "Content";
             Game1.Content = base.Content;
             IsMouseVisible = true;
 
             // Preferred window size is 640x640
+            //graphics.PreferredBackBufferHeight = 640;
+            //graphics.PreferredBackBufferWidth = 640;
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
+
+            playerStringArray = players;
         }
 
         /// <summary>
@@ -88,11 +94,11 @@ namespace SoshiLand
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            debugMessageQueue = new DebugMessageQueue();
-
-            testGame = new SoshilandGame();
-
+            if (playerStringArray != null)
+            {
+                debugMessageQueue = new DebugMessageQueue();
+                soshiLandGame = new SoshilandGame(playerStringArray);
+            }
             base.Initialize();
 
         }
@@ -104,25 +110,25 @@ namespace SoshiLand
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            spriteBatch = new SpriteBatch( GraphicsDevice );
+            
             // Load the background which is also the board.
             background = base.Content.Load<Texture2D>("assets/main_screen_wide");
-            mainFrame = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            zoomPos = new Vector2((float)mainFrame.Width * (float)0.84375, (float)mainFrame.Height * (float)0.0875);
-
+            mainFrame = new Rectangle( 200, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height );
+            zoomPos = new Vector2( (float) mainFrame.Width * (float) 0.84375, (float) mainFrame.Height * (float) 0.0875 );
+            
             // Load property cards.
-            propLaScala = Content.Load<Texture2D>("assets\\prop_la_scala");
-            propBali = Content.Load<Texture2D>("assets\\prop_bali");
-            propTempMount = Content.Load<Texture2D>("assets\\prop_temp_mount");
-            propDamnoenMart = Content.Load<Texture2D>("assets\\prop_damnoen_mart");
-            propGreatWall = Content.Load<Texture2D>("assets\\prop_great_wall");
-            propTajMahal = Content.Load<Texture2D>("assets\\prop_taj_mahal");
-            propStatLiberty = Content.Load<Texture2D>("assets\\prop_stat_liberty");
-            propEiffel = Content.Load<Texture2D>("assets\\prop_eiffel");
-            propParthenon = Content.Load<Texture2D>("assets\\prop_parthenon");
-            chance1 = Content.Load<Texture2D>("assets\\chance1");
-            forever9 = Content.Load<Texture2D>("assets\\forever9");
+            propLaScala = Content.Load<Texture2D>( "assets\\prop_la_scala" );
+            propBali = Content.Load<Texture2D>( "assets\\prop_bali" );
+            propTempMount = Content.Load<Texture2D>( "assets\\prop_temp_mount" );
+            propDamnoenMart = Content.Load<Texture2D>( "assets\\prop_damnoen_mart" );
+            propGreatWall = Content.Load<Texture2D>( "assets\\prop_great_wall" );
+            propTajMahal = Content.Load<Texture2D>( "assets\\prop_taj_mahal" );
+            propStatLiberty = Content.Load<Texture2D>( "assets\\prop_stat_liberty" );
+            propEiffel = Content.Load<Texture2D>( "assets\\prop_eiffel" );
+            propParthenon = Content.Load<Texture2D>( "assets\\prop_parthenon" );
+            chance1 = Content.Load<Texture2D>( "assets\\chance1" );
+            forever9 = Content.Load<Texture2D>( "assets\\forever9" );
         }
 
         /// <summary>
@@ -139,10 +145,10 @@ namespace SoshiLand
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        protected override void Update( GameTime gameTime )
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if ( GamePad.GetState( PlayerIndex.One ).Buttons.Back == ButtonState.Pressed )
                 this.Exit();
 
             KeyboardState kbInput = Keyboard.GetState();
@@ -157,140 +163,98 @@ namespace SoshiLand
             //}
 
             MouseState ms = Mouse.GetState();
-
+            
             // Set drawId based on the mouse position when left-clicked. Commented out to develop new UI.
-            if (ms.Y <= 84)
+            if ( ms.Y <= 84 )
             {
-                if (ms.X >= 324)
+                if ( ms.X >= 324 )
                 {
-                    if (ms.X <= 375)
+                    if ( ms.X <= 375 )
                         drawId = Props.LaScala;
-                    else if (ms.X <= 425)
+                    else if ( ms.X <= 425 )
                         drawId = Props.Bali;
-                    else if (ms.X <= 474)
+                    else if ( ms.X <= 474 )
                         drawId = Props.Chance1;
-                    else if (ms.X <= 525)
+                    else if ( ms.X <= 525 )
                         drawId = Props.TempleMount;
-                    else if (ms.X <= 575)
+                    else if ( ms.X <= 575 )
                         drawId = Props.DamnoenMarket;
-                    else if (ms.X <= 626)
+                    else if ( ms.X <= 626 )
                         drawId = Props.GreatWall;
-                    else if (ms.X <= 677)
+                    else if ( ms.X <= 677 )
                         drawId = Props.TajMahal;
-                    else if (ms.X <= 727)
+                    else if ( ms.X <= 727 )
                         drawId = Props.StatueLiberty;
-                    else if (ms.X <= 778)
+                    else if ( ms.X <= 778 )
                         drawId = Props.Forever9;
-                    else if (ms.X <= 827)
+                    else if ( ms.X <= 827 )
                         drawId = Props.EiffelTower;
-                    else if (ms.X <= 876)
+                    else if ( ms.X <= 876 )
                         drawId = Props.Parthenon;
                     else drawId = Props.None;
                 }
                 else drawId = Props.None;
             }
             else drawId = Props.None;
-
-            testGame.PlayerInputUpdate();
-
-            if (kbInput.IsKeyDown(Keys.A) && prevKeyboardState.IsKeyUp(Keys.A))
-            {
-                string uriRequest = "http://daum.heroku.com/soshi";
-
-                debugMessageQueue.addMessageToQueue("Attempting to send Request to " + uriRequest);
-                HttpWebRequest httpRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(uriRequest));
-                httpRequest.BeginGetResponse(new AsyncCallback(HttpResponseHandler), httpRequest);
-
-            }
+            
+            if (soshiLandGame != null)
+                soshiLandGame.PlayerInputUpdate();
 
             prevKeyboardState = kbInput;
-
-
-
-
-            base.Update(gameTime);
-        }
-
-        public void HttpResponseHandler(IAsyncResult result)
-        {
-            // acquire the result.
-            HttpWebRequest httpRequest = (HttpWebRequest)result.AsyncState;
-
-            // acquire the feed response.
-            HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.EndGetResponse(result);
-
-            // load the response into an xml reader.
-            XmlReader xmlReader = XmlReader.Create(httpResponse.GetResponseStream());
-
-            // determine if any feed results were returned.
-
-            while (xmlReader.Read())
-            {
-                switch (xmlReader.Name)
-                {
-
-                    case "to":
-                    case "from":
-                    case "heading":
-                    case "body":
-                        debugMessageQueue.addMessageToQueue(xmlReader.Name + ": " + xmlReader.ReadInnerXml());
-                        break;
-
-                }
-
-            }
+            
+            base.Update( gameTime );
         }
 
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw( GameTime gameTime )
         {
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear( Color.White );
 
-
+            
             spriteBatch.Begin();
 
+            
+            spriteBatch.Draw( background, mainFrame, Color.White );
 
-            spriteBatch.Draw(background, mainFrame, Color.White);
-
-
+            
             // Draw a property card based on the current drawId
-            switch (drawId)
+            switch ( drawId )
             {
                 case Props.LaScala:
-                    spriteBatch.Draw(propLaScala, zoomPos, Color.White);
+                    spriteBatch.Draw( propLaScala, zoomPos, Color.White );
                     break;
                 case Props.Bali:
-                    spriteBatch.Draw(propBali, zoomPos, Color.White);
+                    spriteBatch.Draw( propBali, zoomPos, Color.White );
                     break;
                 case Props.Chance1:
-                    spriteBatch.Draw(chance1, zoomPos, Color.White);
+                    spriteBatch.Draw( chance1, zoomPos, Color.White );
                     break;
                 case Props.TempleMount:
-                    spriteBatch.Draw(propTempMount, zoomPos, Color.White);
+                    spriteBatch.Draw( propTempMount, zoomPos, Color.White );
                     break;
                 case Props.DamnoenMarket:
-                    spriteBatch.Draw(propDamnoenMart, zoomPos, Color.White);
+                    spriteBatch.Draw( propDamnoenMart, zoomPos, Color.White );
                     break;
                 case Props.GreatWall:
-                    spriteBatch.Draw(propGreatWall, zoomPos, Color.White);
+                    spriteBatch.Draw( propGreatWall, zoomPos, Color.White );
                     break;
                 case Props.TajMahal:
-                    spriteBatch.Draw(propTajMahal, zoomPos, Color.White);
+                    spriteBatch.Draw( propTajMahal, zoomPos, Color.White );
                     break;
                 case Props.StatueLiberty:
-                    spriteBatch.Draw(propStatLiberty, zoomPos, Color.White);
+                    spriteBatch.Draw( propStatLiberty, zoomPos, Color.White );
                     break;
                 case Props.Forever9:
-                    spriteBatch.Draw(forever9, zoomPos, Color.White);
+                    spriteBatch.Draw( forever9, zoomPos, Color.White );
                     break;
                 case Props.EiffelTower:
-                    spriteBatch.Draw(propEiffel, zoomPos, Color.White);
+                    spriteBatch.Draw( propEiffel, zoomPos, Color.White );
                     break;
                 case Props.Parthenon:
-                    spriteBatch.Draw(propParthenon, zoomPos, Color.White);
+                    spriteBatch.Draw( propParthenon, zoomPos, Color.White );
                     break;
                 default:
                     break;
@@ -301,21 +265,19 @@ namespace SoshiLand
                 debugMessageQueue.PrintMessages(gameTime, spriteBatch);
                 Game1.debugMessageQueue.PrintLeaderboard(SoshilandGame.ListOfPlayers, spriteBatch);
                 // Post player standings on right side
-
-
             }
 
 
             spriteBatch.End();
 
-            base.Draw(gameTime);
-
+            base.Draw( gameTime );
+            
         }
 
         // Return a Vector2 indicating the position to draw a property card (or a sprite in general).
-        private Vector2 makeTexturePos(Texture2D tex)
+        private Vector2 makeTexturePos( Texture2D tex )
         {
-            Vector2 v = new Vector2(mainFrame.Width / 2 - tex.Width / 2, mainFrame.Height / 2 - tex.Height / 2);
+            Vector2 v = new Vector2( mainFrame.Width / 2 - tex.Width / 2, mainFrame.Height / 2 - tex.Height / 2 );
             return v;
         }
     }

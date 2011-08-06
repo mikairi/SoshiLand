@@ -22,6 +22,11 @@ namespace SoshiLand
         // Special cards (namely Jail related cards, but if we decide to add other special cards later, this'll be easier to implement with this enum
         private SpecialCardType specialCardType = SpecialCardType.None;
 
+        public string getDescription
+        {
+            get { return description; }
+        }
+
         public bool getPerPlayer
         {
             get { return perPlayer; }

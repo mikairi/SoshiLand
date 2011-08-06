@@ -14,7 +14,7 @@ namespace SoshiLand
 {
     class SoshilandGame
     {
-        public static List<Player> ListOfPlayers;             // Contains the list of players in the game. This will be in the order from first to last player
+        public static List<Player> ListOfPlayers;                  // Contains the list of players in the game. This will be in the order from first to last player
         public static Player currentTurnsPlayers;             // Holds the Player of the current turn         
         public static Tile[] Tiles = new Tile[48];            // Array of Tiles
 
@@ -46,12 +46,12 @@ namespace SoshiLand
         private bool taxesMustPayTenPercent = false;
         private bool taxesMustPayTwoHundred = false;
         // Phase Flags
-
+        
         // 0 = Pre Roll Phase
         // Player has option to trade, develop or mortgage / unmortgage.
         // If player is in jail, player has option to Pay to get out of jail, or roll doubles
         // Phase ends after player chooses to roll dice
-
+        
         // 1 = Roll Phase
         // Player has landed on a Tile.
         // If tile is a property, Player is forced to purchase or auction
@@ -63,37 +63,25 @@ namespace SoshiLand
         // Player has option to trade, develop or mortgage / unmortgage.
         // Phase ends after playing chooses to end his or her turn
 
-        public static byte turnPhase = 0;
+        public static byte turnPhase = 0;                 
 
-        private KeyboardState previousKeyboardInput;
+        private KeyboardState previousKeyboardInput;    
 
-        // TEMPORARY
         Player[] playerArray;
 
-        public SoshilandGame()
+        public SoshilandGame(string[] players)
         {
             Initialization gameInitialization = new Initialization();
 
             gameInitialization.InitializeTiles(Tiles);      // Initialize Tiles on the board
             gameInitialization.InitializeCards(ChanceCards, CommunityChestCards);   // Initialize Chance and Community Chest cards
 
-            // Temporary list of players
-            Player player1 = new Player("Mark");
-            Player player2 = new Player("Wooski");
-            Player player3 = new Player("Yook");
-            Player player4 = new Player("Addy");
-            Player player5 = new Player("Colby");
-            Player player6 = new Player("Skylar");
-            Player player7 = new Player("Mako");
+            playerArray = new Player[players.Length];
 
-            playerArray = new Player[7];
-            playerArray[0] = player1;
-            playerArray[1] = player2;
-            playerArray[2] = player3;
-            playerArray[3] = player4;
-            playerArray[4] = player5;
-            playerArray[5] = player6;
-            playerArray[6] = player7;
+            for (int i = 0; i < players.Length; i++)
+            {
+                playerArray[i] = new Player(players[i]);
+            }
 
             gameInitialization.DeterminePlayerOrder(playerArray, ref ListOfPlayers);        // Determine order of players
             // Players choose pieces (this can be implemented later)
@@ -130,8 +118,11 @@ namespace SoshiLand
                         else
                             optionPromptMortgageOrTrade = true;         // Player must decide to mortgage or trade to get money
                     }
+                    else
+                        // Otherwise, player landed on his or her own property, so go to next phase
+                        turnPhase = 2;
 
-                    // Otherwise, player landed on his or her own property, so do nothing
+                    
                     break;
 
                 case TileType.Utility:
@@ -164,6 +155,9 @@ namespace SoshiLand
                         else
                             optionPromptMortgageOrTrade = true;             // Player must decide to mortgage or trade to get money
                     }
+                    else
+                        // Otherwise, player landed on his or her own property, so go to next phase
+                        turnPhase = 2;
                     break;
 
                 case TileType.Chance:
@@ -183,13 +177,13 @@ namespace SoshiLand
                     turnPhase = 2;              // Nothing happens, so go to last phase
                     break;
                 case TileType.ShoppingSpree:
-                    currentTurnsPlayers.PlayerPaysBank(75); // Pay Bank taxes
-                    turnPhase = 2;
+                        currentTurnsPlayers.PlayerPaysBank(75); // Pay Bank taxes
+                        turnPhase = 2;
                     break;
                 case TileType.SpecialLuxuryTax:
-                    Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
-                    Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
-                    optionPromptLuxuryTax = true;
+                        Game1.debugMessageQueue.addMessageToQueue("Player " + "\"" + currentTurnsPlayers.getName + "\"" + " must choose to pay 10% of net worth, or $200");
+                        Game1.debugMessageQueue.addMessageToQueue("Press K to pay 10% of net worth, or L to pay $200");
+                        optionPromptLuxuryTax = true;
                     break;
                 case TileType.GoToJail:
                     SoshiLandGameFunctions.MovePlayerToJail(player);
@@ -212,7 +206,7 @@ namespace SoshiLand
                 Game1.debugMessageQueue.addMessageToQueue(optionsMessage);
             }
         }
-
+        
         public void PlayerInputUpdate()
         {
             KeyboardState kbInput = Keyboard.GetState();
@@ -295,12 +289,12 @@ namespace SoshiLand
                             SoshiLandGameFunctions.RollDice(currentTurnsPlayers);              // Rolls Dice and Move Piece to Tile
                             turnPhase = 1;                              // Set next phase
                             PlayerOptions(currentTurnsPlayers);         // Calculate options for player
-
+                            
                         }
                     }
                     break;
 
-                // Roll Phase
+                    // Roll Phase
                 case 1:
                     if (optionsCalculated)
                     {
@@ -318,7 +312,7 @@ namespace SoshiLand
                             else
                                 Game1.debugMessageQueue.addMessageToQueue(
                                     "Player " + "\"" + currentTurnsPlayers.getName + "\"" + " cannot purchase \"" + Tiles[currentTurnsPlayers.CurrentBoardPosition].getName + "\"");
-
+                            
                             // Turn off option to purchase if successful purchase has been made
                             if (successfulPurchase)
                             {
@@ -372,7 +366,7 @@ namespace SoshiLand
                         // Player chooses to trade
                     }
                     break;
-                // Post Roll Phase
+                    // Post Roll Phase
 
                 case 2:
                     // Player chooses to end turn
@@ -405,6 +399,6 @@ namespace SoshiLand
             previousKeyboardInput = kbInput;
         }
 
-
+        
     }
 }

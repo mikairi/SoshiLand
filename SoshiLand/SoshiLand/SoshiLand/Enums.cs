@@ -74,4 +74,11 @@ namespace SoshiLand
         GoToJailCard,
         CanPassGo
     };
+
+    public enum GameState
+    {
+        EnterUserName,
+        ChatRoom,
+        InGame
+    }
 }
