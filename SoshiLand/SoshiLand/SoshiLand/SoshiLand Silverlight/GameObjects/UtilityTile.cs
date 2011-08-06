@@ -14,6 +14,11 @@ namespace SoshiLandSilverlight
 
         private bool mortgaged = false;         // Flag for whether this Utility is mortgaged
 
+        public int getMortgageValue
+        {
+            get { return mortgageValue; }
+        }
+
         public bool MortgageStatus
         {
             set { mortgaged = value; }

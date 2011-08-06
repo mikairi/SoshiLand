@@ -176,5 +176,50 @@ namespace SoshiLandSilverlight
 
         }
 
+        public static void MortgageProperty(PropertyTile property)
+        {
+            // Check if property can be mortgaged first - 0 houses and not already mortgaged
+            if (property.getNumberOfHouses == 0 && !property.MortgageStatus)
+            {
+                property.MortgageStatus = true;                             // Set mortgage status to True
+                property.Owner.BankPaysPlayer(property.getMortgageValue);   // Pay the owner of the property the mortgage value of the property
+            }
+            else
+                Game1.debugMessageQueue.addMessageToQueue("Warning: Property cannot be mortgaged");
+        }
+        public static void MortgageUtility(UtilityTile utlity)
+        {
+            // Check if property can be mortgaged first - No houses and not already mortgaged
+            if (!utlity.MortgageStatus)
+            {
+                utlity.MortgageStatus = true;                           // Set mortgage status to True
+                utlity.Owner.BankPaysPlayer(utlity.getMortgageValue);   // Pay the owner of the property the mortgage value of the property
+            }
+            else
+                Game1.debugMessageQueue.addMessageToQueue("Warning: Utility cannot be mortgaged");
+        }
+        public static void UnmortgageProperty(PropertyTile property)
+        {
+            // Check if property is mortgaged
+            if (property.MortgageStatus)
+            {
+                int payment = (int)(property.getMortgageValue * 1.1f);      // Calculate mortgage + 10% interest
+                property.Owner.PlayerPaysBank(payment);                     // Pay bank amount
+            }
+            else
+                Game1.debugMessageQueue.addMessageToQueue("Warning: Property cannot be unmortgaged");
+        }
+
+        public static void UnmortgageUtility(UtilityTile utility)
+        {
+            // Check if property is mortgaged
+            if (utility.MortgageStatus)
+            {
+                int payment = (int)(utility.getMortgageValue * 1.1f);      // Calculate mortgage + 10% interest
+                utility.Owner.PlayerPaysBank(payment);                     // Pay bank amount
+            }
+            else
+                Game1.debugMessageQueue.addMessageToQueue("Warning: Utility cannot be unmortgaged");
+        }
     }
 }
