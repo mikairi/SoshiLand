@@ -12,6 +12,8 @@ Content\assets\prop_taj_mahal.xnb
 Content\assets\prop_temp_mount.xnb
 Content\assets\main_screen_wide.xnb
 Content\SpriteFont1.xnb
+SpriteFont1-exenfont.png
+SpriteFont1-exenfont@2x.png
 GameData\PropertyCards.xml
 GameData\ChanceCards.xml
 GameData\CommunityChestCards.xml

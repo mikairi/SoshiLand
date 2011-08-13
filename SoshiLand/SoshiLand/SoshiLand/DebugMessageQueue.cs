@@ -20,14 +20,15 @@ namespace SoshiLand
 
         public DebugMessageQueue()
         {
-            spriteFont = Game1.Content.Load<SpriteFont>("SpriteFont1"); 
+            // Not needed for XNA
+            //spriteFont = Game1.Content.Load<SpriteFont>("SpriteFont1"); 
         }
 
         public void addMessageToQueue(string message)
         {
             if (Game1.DEBUG)
             {
-                MessageQueue.Add(message);
+                //MessageQueue.Add(message);
                 Console.WriteLine(message);
             }
         }
@@ -59,7 +60,7 @@ namespace SoshiLand
                 if (MessageQueue.Count > i)
                 {
                     //spriteBatch.Begin();
-                    spriteBatch.DrawString(spriteFont, MessageQueue[i], new Vector2(0, 30 * i), Color.HotPink);
+                    //spriteBatch.DrawString(spriteFont, MessageQueue[i], new Vector2(0, 30 * i), Color.HotPink);
                     //spriteBatch.End();
                 }
             }
@@ -71,8 +72,8 @@ namespace SoshiLand
         {
             for (int i = 0; i < listOfPlayers.Count; i++)
             {
-                spriteBatch.DrawString(spriteFont, listOfPlayers[i].getName + ": $" + listOfPlayers[i].getMoney + ". Worth: $" + listOfPlayers[i].getNetWorth,
-                    new Vector2(1200, 30*i), Color.DeepPink);
+                //spriteBatch.DrawString(spriteFont, listOfPlayers[i].getName + ": $" + listOfPlayers[i].getMoney + ". Worth: $" + listOfPlayers[i].getNetWorth,
+                    //new Vector2(1200, 30*i), Color.DeepPink);
             }
         }
 

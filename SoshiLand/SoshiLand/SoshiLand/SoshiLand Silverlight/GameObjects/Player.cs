@@ -30,7 +30,7 @@ namespace SoshiLandSilverlight
 
         public bool inJail
         {
-            set { Jail = true; }
+            set { Jail = value; }
             get { return Jail; }
         }
 

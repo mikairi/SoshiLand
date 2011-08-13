@@ -116,7 +116,7 @@
     <Compile Include="SpriteFont1.spritefont">
       <Name>SpriteFont1</Name>
       <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
+      <Processor>NuclexFontDescriptionProcessorShim</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

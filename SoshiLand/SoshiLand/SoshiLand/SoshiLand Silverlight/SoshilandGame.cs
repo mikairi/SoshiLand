@@ -45,6 +45,7 @@ namespace SoshiLandSilverlight
 
         private bool taxesMustPayTenPercent = false;
         private bool taxesMustPayTwoHundred = false;
+
         // Phase Flags
         
         // 0 = Pre Roll Phase
@@ -240,17 +241,19 @@ namespace SoshiLandSilverlight
                                     currentTurnsPlayers.PlayerPaysBank(50);             // Pay bank fine
                                 }
 
+                                currentTurnsPlayers.turnsInJail = 0;                // Set turns in jail back to zero
                                 currentTurnsPlayers.inJail = false;                 // Set player out of jail
                                 Game1.debugMessageQueue.addMessageToQueue("Player is no longer in jail!");
-                                currentTurnsPlayers.turnsInJail = 0;                // Set turns in jail back to zero
+                                
 
                                 SoshiLandGameFunctions.MovePlayerDiceRoll(currentTurnsPlayers, currentDiceRoll);   // Move player piece
+                                turnPhase = 1;                                              // Set the next phase
                                 PlayerOptions(currentTurnsPlayers);                         // Calculate options for player
 
 
                                 DoublesRolled = false;  // Turn off doubles rolled flag because player is not supposed to take another turn after getting out of jail
 
-                                turnPhase = 1;          // Set the next phase
+                                
                                 break;
                             }
                             else
@@ -326,6 +329,8 @@ namespace SoshiLandSilverlight
 
                         // Player chooses to Auction
 
+
+
                         if (optionPromptLuxuryTax)
                         {
                             bool successfulTaxPayment = false;
@@ -366,6 +371,8 @@ namespace SoshiLandSilverlight
                         // Player chooses to trade
                     }
                     break;
+
+
                     // Post Roll Phase
 
                 case 2:
